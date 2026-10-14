@@ -133,7 +133,7 @@ canvas { width: 100%; display: block; background: transparent; border-radius: 12
 .lv b { font-family: var(--mono); font-weight: 500; font-size: 12px; text-align: right; }
 .lvbar { height: 10px; border-radius: 999px; background: var(--panel2); overflow: hidden; }
 .lvbar i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .8s var(--spring); }
-#lvHopper i { background: linear-gradient(90deg, #b08968, #7f5539); } #lvAcid i { background: linear-gradient(90deg, #7cd4ff, var(--sky)); }
+#lvHopper i { background: linear-gradient(90deg, #ede0c8, #c9a978); } #lvBio i { background: linear-gradient(90deg, #6b6b6b, #1f1c1a); } #lvAcid i { background: linear-gradient(90deg, #7cd4ff, var(--sky)); }
 #lvNaoh i { background: linear-gradient(90deg, #c4b5fd, var(--grape)); } #lvWater i { background: linear-gradient(90deg, #93c5fd, var(--water)); }
 #lvWaste i { background: linear-gradient(90deg, #d9f99d, #84cc16); } #lvTray i { background: linear-gradient(90deg, var(--sun), #f97316); }
 #lvWaste.warn i { background: var(--bad); animation: blink 1s infinite; }

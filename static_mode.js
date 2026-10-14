@@ -14,21 +14,22 @@
     if (history.length > 1200) history.shift();
     listeners.forEach((l) => l.onmessage && l.onmessage(e)); };
 
-  const P = { dose_g: 30.6, auger_g_per_rev: 0.89, auger_rpm: 30, dissolve_min: 120, drip_min: 40, peri_duty: 140,
+  const P = { dose_g: 30.0, biochar_pct: 2.0, bio_g_per_rev: 0.09, bio_rpm: 30, auger_g_per_rev: 0.89, auger_rpm: 30, dissolve_min: 120, drip_min: 40, peri_duty: 140,
     set_min: 360, chamber_stir_duty: 90, top_stir_duty: 200, drain_s: 60, rinse_spray_s: 20, rinse_drain_s: 40,
     ph_target: 7.5, rinse_max: 12, servo_home: 10, servo_dump: 120, dump_hold_s: 5, ph_v7: 2.50, ph_slope: 0.18 };
-  const O = { peri: 0, auger: 0, top: 0, ch: 0, rinse: 0, valve: 0, servo: 10 };
-  const S = { speed: 60, st: 'IDLE', t_step: 0, len: 0, t: 0, rinse: 0, estop: false, test: false, powder: 0, dissolved: 0,
+  const O = { peri: 0, auger: 0, bio: 0, top: 0, ch: 0, rinse: 0, valve: 0, servo: 10 };
+  const S = { speed: 60, st: 'IDLE', t_step: 0, len: 0, t: 0, rinse: 0, estop: false, test: false, powder: 0, biochar: 0, dissolved: 0,
     acid: 0, dripped: 0, beads: 0, oh: 1e-7, ph: 7, true_k: rnd(0.10, 0.16), flow_k: rnd(0.92, 1.08) };
-  const doseS = () => P.dose_g / P.auger_g_per_rev / P.auger_rpm * 60;
+  const chitS = () => P.dose_g / P.auger_g_per_rev / P.auger_rpm * 60, bioS = () => P.dose_g * P.biochar_pct / 100 / P.bio_g_per_rev / P.bio_rpm * 60;
+  const doseS = () => Math.max(chitS(), bioS());
   const periMl = (d) => Math.max(0, (d - 30) / 110 * 12.5) * S.flow_k;
-  const allOff = () => Object.assign(O, { peri: 0, auger: 0, top: 0, ch: 0, rinse: 0, valve: 0 });
+  const allOff = () => Object.assign(O, { peri: 0, auger: 0, bio: 0, top: 0, ch: 0, rinse: 0, valve: 0 });
   const top = (d) => { O.top = d > 0 && d < 128 ? 128 : Math.trunc(d); };
 
   function enter(s, len) {
     S.st = s; S.t_step = S.t; S.len = len; emit({ t: 'log', msg: '-> ' + s });
-    if (s === 'DOSE') { top(P.top_stir_duty); O.auger = 255; Object.assign(S, { powder: 0, dissolved: 0, acid: SOL_ML, dripped: 0, beads: 0, oh: 1e-7, ph: 7 }); }
-    else if (s === 'DISSOLVE') { O.auger = 0; top(P.top_stir_duty); }
+    if (s === 'DOSE') { top(P.top_stir_duty); O.auger = 255; O.bio = bioS() > 0 ? 255 : 0; Object.assign(S, { biochar: 0, powder: 0, dissolved: 0, acid: SOL_ML, dripped: 0, beads: 0, oh: 1e-7, ph: 7 }); }
+    else if (s === 'DISSOLVE') { O.auger = 0; O.bio = 0; top(P.top_stir_duty); }
     else if (s === 'DRIP') { top(P.top_stir_duty / 2); O.ch = P.chamber_stir_duty; O.peri = P.peri_duty; }
     else if (s === 'SET') { O.peri = 0; top(0); O.ch = Math.floor(P.chamber_stir_duty / 2); }
     else if (s === 'DRAIN') { O.ch = 0; O.valve = 1; S.oh = 2.0 * rnd(0.15, 0.3); }
@@ -58,6 +59,8 @@
   function step(dt) {
     S.t += dt;
     if (S.estop && S.st !== 'SAFE') enter('SAFE', 0);
+    if (S.st === 'DOSE') { if (S.t - S.t_step >= chitS()) O.auger = 0; if (S.t - S.t_step >= bioS()) O.bio = 0; }
+    if (O.bio) S.biochar += P.bio_g_per_rev * P.bio_rpm / 60 * dt * (O.bio / 255);
     if (O.auger) S.powder = Math.min(P.dose_g * 1.3, S.powder + P.auger_g_per_rev * P.auger_rpm / 60 * dt * (O.auger / 255));
     if (O.top && S.powder > 0) { const tau = 35 * 60 * 255 / Math.max(O.top, 1); S.dissolved += (1 - S.dissolved) * (1 - Math.exp(-dt / tau)); }
     if (O.peri && S.acid > 0) { const dv = Math.min(S.acid, periMl(O.peri) / 60 * dt); S.acid -= dv; S.dripped += dv; S.beads = Math.trunc(S.dripped / DROP_ML); }
@@ -84,10 +87,10 @@
     const n = Math.max(1, Math.trunc(sim / 2)); for (let i = 0; i < n; i++) step(sim / n);
     if (now - tStat < 500) return; tStat = now;
     const ph = S.ph + gauss(0.02), left = ['IDLE', 'DONE', 'SAFE'].includes(S.st) ? 0 : Math.max(0, S.len - (S.t - S.t_step)), p = {};
-    ['dose_g', 'auger_g_per_rev', 'dissolve_min', 'drip_min', 'set_min', 'peri_duty', 'top_stir_duty', 'chamber_stir_duty', 'ph_target', 'rinse_max', 'ph_v7', 'ph_slope'].forEach((k) => p[k] = P[k]);
+    ['dose_g', 'biochar_pct', 'bio_g_per_rev', 'auger_g_per_rev', 'dissolve_min', 'drip_min', 'set_min', 'peri_duty', 'top_stir_duty', 'chamber_stir_duty', 'ph_target', 'rinse_max', 'ph_v7', 'ph_slope'].forEach((k) => p[k] = P[k]);
     emit({ t: 'rig', ms: Math.trunc(S.t * 1000), state: S.st, left_s: Math.trunc(left), step_s: Math.trunc(S.len), ph: r(ph, 2),
       ph_v: r(P.ph_v7 - (ph - 7) * P.ph_slope, 3), rinse: S.rinse, estop: +S.estop, test: +S.test, out: { ...O }, p, sim: true,
-      speed: S.speed, sim_powder_g: r(S.powder, 1), sim_dissolved: r(S.dissolved, 3), sim_acid_ml: r(S.acid, 1),
+      speed: S.speed, sim_powder_g: r(S.powder, 1), sim_biochar_g: r(S.biochar, 2), sim_dissolved: r(S.dissolved, 3), sim_acid_ml: r(S.acid, 1),
       sim_dripped_ml: r(S.dripped, 1), sim_beads: S.beads, sim_flow_mlpm: r(periMl(O.peri), 2), sim_bead_d_mm: r(beadD(), 2) });
   }, 50);
 
