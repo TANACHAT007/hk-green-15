@@ -31,7 +31,7 @@ const STATE_TH = { IDLE: '😴 พร้อม', DOSE: '🥄 ป้อนผง'
 const G = {
   acid: { x: 113, y: 225, r: 54, z0: 729, h: 76 },             // 500 mL acetic acid
   chamber: { x: 170, y: 170, r: 90, z0: 316, h: 190 },          // 2 M NaOH
-  hopper: { x: 205, y: 225, r: 36, z0: 790, h: 95 },
+  hopper: { x: 252, y: 225, r: 38, z0: 842, h: 44 },
   needles: { x0: 118, x1: 214, y: [146, 176], z: 580 },
   augerOut: { x: 70, y: 225, z: 812 },
   basket: { x0: 352, x1: 590, y0: 18, y1: 328, z: 252 },
@@ -107,7 +107,7 @@ function size() { const w = host.clientWidth, h = host.clientHeight; if (!w || !
 // ---- camera presets with a smooth move
 const VIEWS = {
   all: { t: [420, 170, 450], d: [1.0, 0.55, 1.25], k: 1.0 },
-  mix: { t: [150, 225, 760], d: [0.9, 0.6, 1.2], k: 0.32 },
+  mix: { t: [150, 225, 770], d: [0.7, 0.75, -1.0], k: 0.3 },     // from behind: the front panel hides the tanks
   chamber: { t: [170, 170, 470], d: [0.9, 0.45, 1.25], k: 0.45 },
   rinse: { t: [560, 170, 240], d: [0.7, 0.75, 1.2], k: 0.5 },
 };
