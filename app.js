@@ -21,7 +21,8 @@ document.querySelectorAll('#tabs button').forEach((b) => b.onclick = () => {
   drawAll();
 });
 function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('theme', t); } catch (e) {} }
-try { setTheme(localStorage.getItem('theme') || 'dark'); } catch (e) { setTheme('dark'); }
+const osTheme = () => (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+try { setTheme(localStorage.getItem('theme') || osTheme()); } catch (e) { setTheme(osTheme()); }
 $('theme').onclick = () => { setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'); drawAll(); };
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const fmt = (x, d = 1) => (x === undefined || x === null || isNaN(x)) ? '—' : Number(x).toFixed(d);
@@ -88,6 +89,7 @@ function onRig(m) {
   if (st === 'IDLE') runT0 = null;
   if (!recipeFilled && m.p) fillRecipe(m.p);
   drawAll();
+  if (m.firmware === 'qemu') $('bMode').textContent = 'Mega เสมือน (เฟิร์มแวร์จริงใน QEMU)';
   if (window.onRig3d) window.onRig3d(m);
 }
 

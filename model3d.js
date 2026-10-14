@@ -57,7 +57,7 @@ function init() {
   renderer.domElement.addEventListener('pointerup', (e) => { if (pick && Math.hypot(e.clientX - pick[0], e.clientY - pick[1]) < 4) select(e); });
   new ResizeObserver(size).observe(host); size(); loop();
 }
-function theme() { scene.background = new THREE.Color(getComputedStyle(document.body).getPropertyValue('--panel2').trim() || '#20242c'); }
+function theme() { scene.background = new THREE.Color(getComputedStyle(document.body).getPropertyValue('--panel').trim() || '#20242c'); }
 function size() { const w = host.clientWidth, h = host.clientHeight; if (!w || !h) return; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
 function fit(objs) {
   const box = new THREE.Box3(); (objs || [model]).forEach((o) => box.expandByObject(o));

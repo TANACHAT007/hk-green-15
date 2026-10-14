@@ -3,34 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HK-Green-15 — ห้องทดสอบ</title>
+<title>HK-Green-15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <div>
-    <h1>HK-Green-15 — เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน-ไบโอชาร์อัตโนมัติ</h1>
-    <div class="sub">Arduino Mega · ไคโตซาน 6 % ใน 1 M กรดอะซิติก + ไบโอชาร์ → หยดผ่านเข็ม 12 หัวลง 2 M NaOH → แช่ 6 ชม. → ล้างจน pH ≈ 7 → เทลงถาดตาก</div>
+    <h1>HK-Green-15</h1>
+    <div class="sub">เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน-ไบโอชาร์อัตโนมัติ</div>
   </div>
   <div class="spacer"></div>
   <span id="bMode" class="badge">—</span>
   <span id="bLink" class="badge">ไม่มีข้อมูล</span>
   <span id="bSafety" class="badge">—</span>
-  <button class="b ghost" id="theme">☀/☾</button>
+  <button class="b ghost" id="theme" title="สลับโหมดสว่าง/มืด">◐</button>
 </header>
 <nav id="tabs">
   <button data-t="live" class="on">ภาพรวม</button>
-  <button data-t="run">ควบคุม / สูตร</button>
-  <button data-t="test">ทดสอบอุปกรณ์</button>
-  <button data-t="batch">บันทึกการทดลอง</button>
+  <button data-t="run">ควบคุม</button>
+  <button data-t="test">ทดสอบ</button>
+  <button data-t="batch">ผลทดลอง</button>
   <button data-t="cal">สอบเทียบ</button>
-  <button data-t="m3d">โมเดล 3 มิติ</button>
-  <button data-t="doc">เอกสารวิศวกรรม</button>
+  <button data-t="m3d">3 มิติ</button>
+  <button data-t="doc">เอกสาร</button>
 </nav>
 <main>
 <!-- ============================================================ live -->
 <section class="tab on" id="t-live">
-  <div class="card"><h3>ขั้นตอนการผลิต (state machine เดียวกับเฟิร์มแวร์)</h3>
+  <div class="card"><h3>ขั้นตอนตอนนี้</h3>
     <div class="steps" id="steps"></div>
     <div class="row" style="justify-content:space-between"><span class="state" id="stName">—</span>
       <span class="note" id="stDesc">—</span></div>
@@ -38,21 +40,21 @@
     <div class="kv" style="margin-top:6px"><span>เหลือในขั้นนี้</span><b id="stLeft">—</b><span>เวลาที่เหลือทั้งรอบ (ประมาณ)</span><b id="eta">—</b></div>
   </div>
   <div class="grid" style="margin-top:12px">
-    <div class="card"><h3>pH น้ำล้าง (PH-4502C ในถาดรอง)</h3><div><span class="big" id="ph">—</span><span class="unit">pH</span></div>
+    <div class="card"><h3>pH น้ำล้าง</h3><div><span class="big" id="ph">—</span><span class="unit">pH</span></div>
       <div class="phbar" style="margin:8px 0"><i id="phMark"></i></div>
       <div class="kv"><span>เป้าหมายหยุดล้าง</span><b id="phT">—</b><span>รอบล้าง</span><b id="rinseN">—</b><span>แรงดันหัววัด</span><b id="phV">—</b></div></div>
-    <div class="card"><h3>สารละลาย / เม็ดเจล</h3><div class="kv">
+    <div class="card"><h3>สารละลายและเม็ดเจล</h3><div class="kv">
       <span>ผงที่ป้อนแล้ว</span><b id="powder">—</b><span>ละลายแล้ว</span><b id="diss">—</b>
       <span>สารละลายในถังกรด</span><b id="acid">—</b><span>หยดไปแล้ว</span><b id="dripped">—</b>
       <span>อัตราไหลปั๊มหยด</span><b id="flow">—</b><span>ต่อเข็ม (เกณฑ์ ≤ 1.5 mL/min)</span><b id="perNeedle">—</b>
       <span>จำนวนเม็ด (ประมาณ)</span><b id="beads">—</b><span>ขนาดเม็ด (แบบจำลอง)</span><b id="beadD">—</b></div>
       <div class="note" id="simOnlyNote">ค่าปริมาณมาจากตัวจำลอง — เครื่องจริงไม่มีเซนเซอร์ระดับ</div></div>
-    <div class="card"><h3>อุปกรณ์ขับ (ค่าที่ Mega สั่งอยู่)</h3><div class="outs" id="outs"></div></div>
+    <div class="card"><h3>อุปกรณ์</h3><div class="outs" id="outs"></div></div>
   </div>
   <div class="split" style="margin-top:12px">
-    <div class="card"><h3>ผังกระบวนการ — ส่วนที่ทำงานอยู่จะเป็นสีฟ้า</h3><canvas id="proc" height="330"></canvas></div>
-    <div class="card"><h3>กราฟ pH ระหว่างล้าง (ย้อนหลัง)</h3><canvas id="trend" height="230"></canvas>
-      <h3 style="margin-top:10px">บันทึกระบบ</h3><div class="log" id="log"></div></div>
+    <div class="card"><h3>ผังการทำงาน</h3><canvas id="proc" height="330"></canvas></div>
+    <div class="card"><h3>pH ระหว่างล้าง</h3><canvas id="trend" height="230"></canvas>
+      <h3 style="margin-top:16px">บันทึก</h3><div class="log" id="log"></div></div>
   </div>
 </section>
 
@@ -63,14 +65,14 @@
       <div class="row"><button class="b green" id="start">▶ เริ่มรอบผลิต</button><button class="b red" id="stop">■ หยุดฉุกเฉิน (SAFE)</button>
         <button class="b ghost" id="reset">รีเซ็ตหลังหยุด (ดึง E-stop ขึ้นก่อน)</button></div>
       <div class="note">เริ่มได้เมื่อสถานะ IDLE หรือ DONE · ปุ่มเขียวหน้าเครื่องทำงานเหมือนกัน · E-stop ตัดไฟ 12 V มอเตอร์ด้วยฮาร์ดแวร์</div>
-      <div class="card sim" style="margin-top:12px"><h3>ตัวจำลอง: ความเร็วเวลา</h3>
+      <div class="card sim" style="margin-top:12px"><h3>ความเร็วตัวจำลอง</h3>
         <div class="row"><button class="b ghost" data-speed="1">×1</button><button class="b ghost" data-speed="60">×60</button>
           <button class="b ghost" data-speed="600">×600</button><button class="b ghost" data-speed="3600">×3600</button>
           <button class="b ghost" id="skip">ข้ามขั้นนี้</button><span class="mono" id="spd">—</span></div>
         <div class="row"><button class="b red" id="simEstop">กด E-stop</button><button class="b ghost" id="simEstopRel">ดึง E-stop ขึ้น</button></div>
         <div class="note">×600 = 1 วินาทีจริงเท่ากับ 10 นาที (ทั้งรอบ ~9 ชม. ใช้ ~1 นาที)</div></div>
     </div>
-    <div class="card"><h3>สูตร (ส่งไปที่ Mega ด้วย SET:คีย์=ค่า — หายเมื่อปิดเครื่อง)</h3>
+    <div class="card"><h3>สูตร</h3>
       <div class="row"><label class="f">ปริมาตรกรด (mL)<input type="number" id="vol" value="500" step="50"></label>
         <label class="f">ไคโตซาน (% w/v)<input type="number" id="chi" value="6" step="0.5"></label>
         <label class="f">ไบโอชาร์ (% w/w)<select id="bio"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></label>
@@ -85,11 +87,11 @@
 <!-- ============================================================ bench test -->
 <section class="tab" id="t-test">
   <div class="split">
-    <div class="card"><h3>ทดสอบอุปกรณ์ทีละตัว (TEST:out=ค่า — ทำได้เฉพาะ IDLE/DONE และ E-stop ไม่ถูกกด)</h3>
+    <div class="card"><h3>ทดสอบทีละตัว</h3>
       <div id="testRows"></div>
       <div class="row" style="margin-top:10px"><button class="b red" id="testOff">ปิดทั้งหมด</button></div>
       <div class="note">ใช้ตรวจสายไฟ ทิศหมุน และค่า PWM ต่ำสุดที่มอเตอร์ยังหมุน ก่อนใส่สารเคมีจริง · พัดลมกวนถังกรดถูกบังคับ ≥ 128 (50 %)</div></div>
-    <div class="card"><h3>เช็กลิสต์ก่อนเดินเครื่องครั้งแรก</h3>
+    <div class="card"><h3>ก่อนเดินเครื่องครั้งแรก</h3>
       <ol class="note" id="checklist">
         <li>E-stop: กดแล้วมอเตอร์ทุกตัวหยุด, หน้าเว็บขึ้น E-STOP</li>
         <li>ปั๊มหยด: หมุนทางที่ดูดจากถังกรดไปหัวเข็ม (กลับขั้วถ้าผิด)</li>
@@ -106,7 +108,7 @@
 <!-- ============================================================ batch logger -->
 <section class="tab" id="t-batch">
   <div class="split">
-    <div class="card"><h3>บันทึกผลแต่ละรอบ (ตามข้อเสนอโครงงาน: ไบโอชาร์ 0–3 % → การพองตัว %)</h3>
+    <div class="card"><h3>บันทึกผลรอบนี้</h3>
       <div class="row">
         <label class="f">ไบโอชาร์ (%)<select id="bBio"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></label>
         <label class="f">ซ้ำครั้งที่<input type="number" id="bRep" value="1" min="1"></label>
@@ -124,7 +126,7 @@
         <span class="note" id="bSwOut"></span></div>
       <div class="note">การพองตัว (%) = (น้ำหนักหลังแช่ − น้ำหนักแห้ง) ÷ น้ำหนักแห้ง × 100 · งานวิจัยเดิม: ไบโอชาร์ 2 % ได้ 605 %</div>
     </div>
-    <div class="card"><h3>สรุปตามสัดส่วนไบโอชาร์ (ค่าเฉลี่ย ± SD)</h3><canvas id="swChart" height="230"></canvas>
+    <div class="card"><h3>สรุปตามสัดส่วนไบโอชาร์</h3><canvas id="swChart" height="230"></canvas>
       <div class="tblwrap"><table id="sumTbl"></table></div></div>
   </div>
   <div class="card" style="margin-top:12px"><h3>ผลทั้งหมด <a href="/api/batches.csv" class="b ghost" style="text-decoration:none;margin-left:8px">ดาวน์โหลด CSV</a></h3>
@@ -134,17 +136,17 @@
 <!-- ============================================================ calibration -->
 <section class="tab" id="t-cal">
   <div class="grid">
-    <div class="card"><h3>หัววัด pH — สอบเทียบ 2 จุด (บัฟเฟอร์ pH 7 และ pH 4 หรือ 10)</h3>
+    <div class="card"><h3>หัววัด pH</h3>
       <ol class="note"><li>จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"</li><li>ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"</li><li>กด "ส่งค่าสอบเทียบ"</li></ol>
       <div class="row"><span class="mono" id="calV">V = —</span></div>
       <div class="row"><button class="b ghost" id="cal7">จำค่า pH 7</button><span class="mono" id="v7">—</span></div>
       <div class="row"><select id="buf2"><option value="4">pH 4.01</option><option value="10">pH 10.01</option></select><button class="b ghost" id="cal2">จำค่า</button><span class="mono" id="v2">—</span></div>
       <div class="row"><button class="b" id="calSend">ส่งค่าสอบเทียบ</button><span class="mono" id="calRes">—</span></div></div>
-    <div class="card"><h3>สกรูป้อนผง (auger) — กรัมต่อรอบ</h3>
+    <div class="card"><h3>สกรูป้อนผง</h3>
       <ol class="note"><li>ใส่ผงในถังพัก วางถ้วยบนตาชั่งใต้ช่องออก</li><li>สั่งเดิน 60 วินาที (30 rpm = 30 รอบ)</li><li>ชั่งน้ำหนัก → ใส่ค่า → ระบบคำนวณ g/rev</li></ol>
       <div class="row"><button class="b ghost" id="augRun">เดิน auger 60 s</button><span class="mono" id="augClk">—</span></div>
       <div class="row"><label class="f">ผงที่ได้ (g)<input type="number" id="augG" value="0" step="0.1"></label><button class="b" id="augSend">ส่งค่า</button><span class="mono" id="augRes">—</span></div></div>
-    <div class="card"><h3>ปั๊มหยด — หาค่า PWM ให้ได้ 500 mL ในเวลาหยด</h3>
+    <div class="card"><h3>ปั๊มหยด</h3>
       <ol class="note"><li>ใส่น้ำเปล่าในถังกรด วางกระบอกตวงใต้หัวเข็ม</li><li>เดินปั๊มที่ PWM ปัจจุบัน 60 วินาที แล้วตวง mL</li><li>ระบบคำนวณ PWM ใหม่ (สมมติอัตราไหลแปรผันตาม PWM − 30)</li></ol>
       <div class="row"><button class="b ghost" id="periRun">เดินปั๊ม 60 s</button><span class="mono" id="periClk">—</span></div>
       <div class="row"><label class="f">ตวงได้ (mL)<input type="number" id="periMl" value="0" step="0.5"></label><button class="b" id="periSend">คำนวณ + ส่ง</button><span class="mono" id="periRes">—</span></div>
@@ -160,7 +162,7 @@
     <div class="card m3view"><div id="m3d"></div>
       <div class="m3bar"><span id="m3dInfo">—</span><span class="spacer"></span><b id="m3dLive">ไม่มีอุปกรณ์ทำงาน</b></div></div>
     <div class="card m3side"><h3>ชิ้นส่วน</h3>
-      <div class="m3btns"><button class="b ghost" id="m3dShell">ซ่อนโครง/ฝา ดูข้างใน</button><button class="b ghost" id="m3dAll">แสดงทั้งหมด</button><button class="b ghost" id="m3dFit">มุมมองเริ่มต้น</button></div>
+      <div class="m3btns"><button class="b ghost" id="m3dShell">ดูข้างใน</button><button class="b ghost" id="m3dAll">แสดงทั้งหมด</button><button class="b ghost" id="m3dFit">รีเซ็ตมุม</button></div>
       <div id="m3dParts"></div>
       <p class="sub">สีเขียวเรืองแสง = อุปกรณ์ที่เฟิร์มแวร์กำลังสั่งงาน (เครื่องจริงหรือตัวจำลอง)</p></div>
   </div>
@@ -168,11 +170,11 @@
 
 <!-- ============================================================ documents -->
 <section class="tab" id="t-doc">
-  <div class="card" style="margin-bottom:12px"><h3>โมเดลเครื่อง (Fusion 360)</h3><img src="doc/render_iso.png" style="width:100%;max-width:900px;background:#fff;border-radius:6px" alt="render"></div>
-  <div class="card"><h3>แผนผังสายไฟ (สร้างจาก wiring_spec.py)</h3><img src="doc/wiring.svg" style="width:100%;background:#fff;border-radius:6px" alt="wiring"></div>
+  <div class="card" style="margin-bottom:12px"><h3>ภาพเครื่อง</h3><img src="doc/render_iso.png" style="width:100%;max-width:900px;background:#fff;border-radius:6px" alt="render"></div>
+  <div class="card"><h3>แผนผังสายไฟ</h3><img src="doc/wiring.svg" style="width:100%;background:#fff;border-radius:6px" alt="wiring"></div>
   <div class="grid" style="margin-top:12px">
     <div class="card"><h3>ผลตรวจระบบไฟฟ้า</h3><pre class="log" id="docE" style="max-height:360px"></pre></div>
-    <div class="card"><h3>ผลคำนวณความเป็นไปได้ (feasibility.md)</h3><pre class="log" id="docF" style="max-height:360px"></pre></div>
+    <div class="card"><h3>ผลคำนวณความเป็นไปได้</h3><pre class="log" id="docF" style="max-height:360px"></pre></div>
   </div>
 </section>
 </main>
