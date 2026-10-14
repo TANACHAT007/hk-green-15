@@ -21,13 +21,13 @@
   <button class="b ghost" id="theme" title="สลับโหมดสว่าง/มืด">◐</button>
 </header>
 <nav id="tabs">
-  <button data-t="live" class="on">ภาพรวม</button>
-  <button data-t="run">ควบคุม</button>
-  <button data-t="test">ทดสอบ</button>
-  <button data-t="batch">ผลทดลอง</button>
-  <button data-t="cal">สอบเทียบ</button>
-  <button data-t="m3d">3 มิติ</button>
-  <button data-t="doc">เอกสาร</button>
+  <button data-t="live" class="on">🏠 ภาพรวม</button>
+  <button data-t="run">🎮 ควบคุม</button>
+  <button data-t="test">🔧 ทดสอบ</button>
+  <button data-t="batch">📒 ผลทดลอง</button>
+  <button data-t="cal">🎯 สอบเทียบ</button>
+  <button data-t="m3d">🧊 3 มิติ</button>
+  <button data-t="doc">📄 เอกสาร</button>
 </nav>
 <main>
 <!-- ============================================================ live -->
@@ -159,12 +159,45 @@
 <!-- ============================================================ 3D model -->
 <section class="tab" id="t-m3d">
   <div class="m3wrap">
-    <div class="card m3view"><div id="m3d"></div>
-      <div class="m3bar"><span id="m3dInfo">—</span><span class="spacer"></span><b id="m3dLive">ไม่มีอุปกรณ์ทำงาน</b></div></div>
-    <div class="card m3side"><h3>ชิ้นส่วน</h3>
-      <div class="m3btns"><button class="b ghost" id="m3dShell">ดูข้างใน</button><button class="b ghost" id="m3dAll">แสดงทั้งหมด</button><button class="b ghost" id="m3dFit">รีเซ็ตมุม</button></div>
-      <div id="m3dParts"></div>
-      <p class="sub">สีเขียวเรืองแสง = อุปกรณ์ที่เฟิร์มแวร์กำลังสั่งงาน (เครื่องจริงหรือตัวจำลอง)</p></div>
+    <div class="card m3view">
+      <div id="m3d">
+        <div id="m3dLabels"></div><div id="m3dFun"></div>
+        <div class="h3hud">
+          <span id="h3State" class="h3state">—</span><span id="h3Left" class="h3sub"></span>
+          <span class="h3chip"><i id="h3PhDot"></i>pH <b id="h3Ph">—</b></span>
+          <span class="h3chip">🟤 <b id="h3Beads">0</b> เม็ด</span><span class="h3chip" id="h3Speed"></span>
+        </div>
+        <div class="h3views">
+          <button data-view="all" class="on">ทั้งเครื่อง</button><button data-view="mix">ถังผสม</button>
+          <button data-view="chamber">ถังขึ้นรูป</button><button data-view="rinse">โซนล้าง</button>
+        </div>
+        <div class="h3tools">
+          <button id="m3dXray" class="on" title="มองทะลุถัง">👀</button><button id="m3dLbl" class="on" title="ป้ายชื่อ">🏷️</button><button id="m3dSpin" title="หมุนอัตโนมัติ">🔄</button>
+        </div>
+        <div id="m3dToast"></div>
+      </div>
+      <div class="m3bar"><span id="m3dInfo">—</span></div>
+    </div>
+    <div class="m3side">
+      <div class="card">
+        <h3>เติมวัตถุดิบ</h3>
+        <div class="lv" id="lvHopper"><span>🥄 ผง</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillHopper">เติม</button></div>
+        <div class="lv" id="lvAcid"><span>🧴 กรด 1 M</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillAcid">เติม</button></div>
+        <div class="lv" id="lvNaoh"><span>🫧 NaOH</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillNaoh">เติม</button></div>
+        <div class="lv" id="lvWater"><span>🚰 น้ำล้าง</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillWater">เติม</button></div>
+        <div class="lv" id="lvWaste"><span>🗑️ น้ำทิ้ง</span><div class="lvbar"><i></i></div><b>—</b><button class="mini ghost" id="emptyWaste">เท</button></div>
+        <div class="lv" id="lvTray"><span>☀️ ถาดตาก</span><div class="lvbar"><i></i></div><b>—</b><button class="mini ghost" id="emptyTray">เก็บ</button></div>
+        <button class="b fun" id="fillAll">✨ เติมครบทุกอย่าง</button>
+      </div>
+      <div class="card">
+        <h3>เดินเครื่อง</h3>
+        <div class="row"><button class="b fun go" id="m3dStart">▶ START</button><button class="b fun stop" id="m3dStop">■ STOP</button><button class="b ghost" id="m3dReset">รีเซ็ต</button></div>
+        <div class="row spd"><span class="note" style="margin:0">ความเร็ว</span><button class="mini ghost" data-spd3="1">×1</button><button class="mini ghost" data-spd3="60">×60</button><button class="mini ghost" data-spd3="600">×600</button></div>
+      </div>
+      <details class="card"><summary><h3 style="display:inline">ชิ้นส่วน</h3></summary>
+        <div class="m3btns"><button class="mini ghost" id="m3dAll">แสดงทั้งหมด</button></div>
+        <div id="m3dParts"></div></details>
+    </div>
   </div>
 </section>
 
