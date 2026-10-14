@@ -37,6 +37,8 @@ const G = {
   basket: { x0: 352, x1: 590, y0: 18, y1: 328, z: 252 },
   spray: { z: 352 },
   tray: { x0: 625, x1: 795, y0: 50, y1: 290, z: 228 },
+  outlet: { x0: 278, x1: 486, y: 170, z: 318 },                 // 1" outlet: chamber -> valve -> over the basket
+  stirAcid: { x: 113, y: 225, z: 734, len: 40 }, stirCh: { x: 170, y: 170, z: 322, len: 50 },
   waste: { x0: 356, x1: 586, y0: 2, y1: 300, z0: 30, h: 108 },
   water: { x0: 616, x1: 810, y0: 2, y1: 300, z0: 30, h: 132 },
 };
@@ -177,9 +179,22 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
     this.from = animate && this.to.length ? to.map((_, i) => this.to[i % this.to.length].clone()) : to.map((v) => v.clone());
     this.to = to; this.m.count = n; this.t0 = performance.now(); this.dur = animate ? 1800 : 1;
   }
+  drain(n, dur) {   // valve open: beads leave one after another, through the outlet pipe, and drop into the basket
+    n = Math.min(this.n, n); this.from = this.spots('chamber', n); this.to = this.spots('basket', n); this.m.count = n;
+    this.t0 = performance.now(); this.dur = dur; this.flow = true;
+  }
+  flowPos(i, now) {
+    const n = this.m.count, delay = (i / Math.max(1, n)) * this.dur * 0.8, k = Math.max(0, Math.min(1, (now - this.t0 - delay) / (this.dur * 0.2 + 600)));
+    const a = this.from[i], port = P(G.outlet.x0, G.outlet.y, G.outlet.z), end = P(G.outlet.x1, G.outlet.y, G.outlet.z), b = this.to[i];
+    if (k < 0.25) return this.d.position.lerpVectors(a, port, k / 0.25);
+    if (k < 0.7) return this.d.position.lerpVectors(port, end, (k - 0.25) / 0.45);
+    const f = (k - 0.7) / 0.3; this.d.position.lerpVectors(end, b, f); return this.d.position;
+  }
   tick(t) {
-    const k = Math.min(1, (performance.now() - this.t0) / this.dur), e = 1 - (1 - k) ** 3;
+    const now = performance.now(), k = Math.min(1, (now - this.t0) / this.dur), e = 1 - (1 - k) ** 3;
+    if (this.flow && now - this.t0 > this.dur * 1.05 + 600) this.flow = false;
     for (let i = 0; i < this.m.count; i++) {
+      if (this.flow) { this.flowPos(i, now); this.d.updateMatrix(); this.m.setMatrixAt(i, this.d.matrix); continue; }
       this.d.position.lerpVectors(this.from[i], this.to[i], e);
       if (k < 1) this.d.position.y += Math.sin(k * Math.PI) * 60;                       // hop across
       else this.d.position.y += Math.abs(Math.sin(t * 3 + i)) * 0.8;                     // little jiggle
@@ -190,7 +205,7 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
 }
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
-let L = {}, drops, powder, spray, swirl, beads, tray, phMat;
+let L = {}, drops, powder, spray, swirl, beads, tray, phMat, stirA, stirC, drainAnim = null;
 function buildFx() {
   fx = new THREE.Group(); scene.add(fx);
   L.acid = cyl(G.acid, liquidMat(0x7cd4ff, 0.72));
@@ -206,6 +221,12 @@ function buildFx() {
   spray = new Particles(220, 1.2, 0x7cc8ff, { op: 0.75, g: 1400 });
   swirl = new Particles(60, 1.5, 0x3a2e24, { g: 0 });
   beads = new Beads(420, 0x4a3524); tray = new Beads(420, 0x7a5a3a);
+  const bar = (s) => { const g = new THREE.Group(), m = new THREE.Mesh(new THREE.CapsuleGeometry(4, s.len - 8, 6, 12), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.3, clearcoat: 1 }));
+    m.rotation.z = Math.PI / 2; g.add(m); g.position.copy(P(s.x, s.y, s.z)); fx.add(g); return g; };
+  stirA = bar(G.stirAcid); stirC = bar(G.stirCh);
+  Object.values(groups).forEach((Gp) => Gp.objs.forEach((o) => o.traverse((x) => {   // hide the static stir bar from the CAD model
+    if (!x.isMesh) return; const s = new THREE.Box3().setFromObject(x).getSize(new THREE.Vector3()), d = [s.x, s.y, s.z].sort((a, b) => a - b);
+    if (d[2] > 34 && d[2] < 46 && d[1] < 10 && d[0] < 10 && x.userData.g === 'Acid_Mix_Tank') x.visible = false; })));
   tray.place('tray', beadN(V.trayBeads), false);
   levels();
 }
@@ -282,7 +303,15 @@ function enterState(st, prev, m, first) {
   }
   if (st === 'DRIP' && !first) toast('💧 เริ่มหยด — เม็ดเจลเกิดทันทีที่หยดโดน NaOH');
   if (st === 'DRIP' || st === 'SET') { if (beadWhere !== 'chamber') { beadWhere = 'chamber'; beads.place('chamber', beadN(m.sim_beads || runBeads), false); } }
-  if (st === 'DRAIN' && beadWhere !== 'basket') { beadWhere = 'basket'; beads.place('basket', beadN(runBeads), !first); if (!first) toast('🚿 ปล่อย NaOH ลงถังน้ำทิ้ง เม็ดไปค้างที่ตะกร้า'); }
+  if (st === 'DRAIN' && beadWhere !== 'basket') {
+    beadWhere = 'basket';
+    if (first) beads.place('basket', beadN(runBeads), false);
+    else {
+      const dur = Math.max(5000, Math.min(14000, (m.step_s || 60) / (m.speed || 1) * 1000));
+      beads.drain(beadN(runBeads), dur); drainAnim = { t0: performance.now(), dur: dur * 1.05 + 600, n0: L.chamber.userData.cur, w0: V.waste };
+      toast('🚿 เปิดวาล์ว — เม็ดไหลตามน้ำออกไปกองที่ตะกร้าล้าง น้ำ NaOH ลงถังน้ำทิ้ง');
+    }
+  }
   if (st === 'TILT' && beadWhere === 'basket') {
     beadWhere = 'tray'; beads.place('tray', beadN(runBeads), !first);
     setTimeout(() => { V.trayBeads += runBeads; runBeads = 0; tray.place('tray', beadN(V.trayBeads), false); beads.place('tray', 0, false); beadWhere = 'none'; levels(); saveV(); }, first ? 0 : 1900);
@@ -329,6 +358,13 @@ function animate(dt) {
   // liquids wobble a little while something is moving them
   L.acid.rotation.z = stir ? Math.sin(t * 6) * 0.01 : 0;
   L.chamber.rotation.x = o.ch > 0 ? Math.sin(t * 5) * 0.008 : 0;
+  // magnetic stir bars spin with the motor duty
+  stirA.rotation.y += dt * (o.top > 0 ? 4 + 14 * o.top / 255 : 0); stirC.rotation.y += dt * (o.ch > 0 ? 3 + 10 * o.ch / 255 : 0);
+  if (drainAnim) {   // the chamber empties while the beads run out
+    const k = Math.min(1, (performance.now() - drainAnim.t0) / drainAnim.dur);
+    L.chamber.userData.goal = drainAnim.n0 * (1 - k); L.waste.userData.goal = Math.min(1, drainAnim.w0 + drainAnim.n0 * 0.55 * k);
+    if (k >= 1) drainAnim = null;
+  }
   drops.tick(dt); powder.tick(dt); spray.tick(dt); swirl.tick(dt); beads.tick(t); tray.tick(t);
   if (labelsOn) labels(t);
 }
