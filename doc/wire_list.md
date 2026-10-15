@@ -60,23 +60,23 @@ Label both ends with the wire number. Gauge = practical chassis rating (×1.25) 
 | 54 | LAMPDRV.OUT1 | LAMPS.-G | load output | out | 0.04 | AWG26 | 0.13 | white | 600 | 0.006 |
 | 55 | LAMPDRV.OUT2 | LAMPS.-R | load output | out | 0.04 | AWG26 | 0.13 | white | 600 | 0.006 |
 | 56 | MEGA.D5 | MDD10A.PWM1 | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
-| 57 | MEGA.D22 | MDD10A.DIR1 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 57 | MEGA.D4 | MDD10A.DIR1 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
 | 58 | MEGA.D6 | MDD10A.PWM2 | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
-| 59 | MEGA.D23 | MDD10A.DIR2 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 59 | MEGA.D3 | MDD10A.DIR2 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
 | 60 | MEGA.D7 | MDD3A.M1A_in | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
-| 61 | MEGA.D24 | MDD3A.M1B_in | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 61 | MEGA.D14 | MDD3A.M1B_in | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
 | 62 | MEGA.D8 | MDD3A.M2A_in | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
-| 63 | MEGA.D25 | MDD3A.M2B_in | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 63 | MEGA.D15 | MDD3A.M2B_in | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
 | 64 | MEGA.D9 | MOS.SIG | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
 | 65 | MEGA.D11 | MOS2.SIG | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
-| 66 | MEGA.D26 | RELAY.IN | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
-| 67 | MEGA.D10 | SERVO.SIG | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
+| 66 | MEGA.D40 | RELAY.IN | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 67 | MEGA.D12 | SERVO.SIG | PWM | pwm |  | AWG26 | 0.13 | PWM | 250 |  |
 | 68 | PH.Po | MEGA.A0 | analog | ana |  | AWG26 | 0.13 | analog | 250 |  |
-| 69 | BTN.START | MEGA.D30 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
-| 70 | BTN.STOP | MEGA.D31 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
-| 71 | ESTOP.NC2a | MEGA.D32 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
-| 72 | MEGA.D33 | LAMPDRV.IN1 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
-| 73 | MEGA.D34 | LAMPDRV.IN2 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 69 | BTN.START | MEGA.D42 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 70 | BTN.STOP | MEGA.D44 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 71 | ESTOP.NC2a | MEGA.D46 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 72 | MEGA.D48 | LAMPDRV.IN1 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
+| 73 | MEGA.D50 | LAMPDRV.IN2 | digital | dig |  | AWG26 | 0.13 | digital | 250 |  |
 | 74 | MEGA.TX1 | DIV.in | UART/I2C | comm |  | AWG26 | 0.13 | UART/I2C | 250 |  |
 | 75 | DIV.out | ESP.RX | UART/I2C | comm |  | AWG24 | 0.2 | UART/I2C | 700 |  |
 | 76 | ESP.TX | MEGA.RX1 | UART/I2C | comm |  | AWG24 | 0.2 | UART/I2C | 700 |  |

@@ -283,3 +283,35 @@ $('periSend').onclick = () => { if (!S || !S.p) return; const ml = +$('periMl').
   connect(); drawAll();
   const h = location.hash.slice(1); if (h) { const b = document.querySelector(`#tabs button[data-t="${h}"]`); if (b) b.click(); }
 })();
+
+// ------------------------------------------------------------------ documents: BOM table from 09_bom/bom.csv
+function parseCSV(t) {
+  const rows = [], re = /("([^"]|"")*"|[^,\r\n]*)(,|\r?\n|$)/g; let row = [], m;
+  t = t.replace(/^\ufeff/, '');
+  while ((m = re.exec(t)) && m[0] !== '') {
+    row.push(m[1].startsWith('"') ? m[1].slice(1, -1).replace(/""/g, '"') : m[1]);
+    if (m[3] !== ',') { rows.push(row); row = []; }
+  }
+  return rows;
+}
+(async () => {
+  try {
+    const r = await fetch('/doc/bom.csv'); if (!r.ok) return;
+    const [head, ...rows] = parseCSV(await r.text()); const H = (k) => head.indexOf(k);
+    const data = rows.filter((x) => x.length > 5 && x[H('Item')]);
+    const buy = data.filter((x) => x[H('Status')] !== 'have'), total = buy.reduce((a, x) => a + (+x[H('Total THB')] || 0), 0);
+    $('bomTotal').textContent = `ต้องซื้อ ≈ ${total.toLocaleString()} บาท · ${data.length} รายการ`;
+    const groups = [...new Set(data.map((x) => x[H('Group')]))]; let cur = 'ทั้งหมด';
+    const draw = () => {
+      const d = cur === 'ทั้งหมด' ? data : data.filter((x) => x[H('Group')] === cur);
+      $('bomTbl').innerHTML = '<tr><th>รายการ</th><th>สเปก</th><th>จำนวน</th><th>รวม (บาท)</th><th>ซื้อ</th></tr>' +
+        d.map((x) => `<tr><td>${x[H('Item')]}</td><td class="spec">${x[H('Spec')]}</td><td>${x[H('Qty')]}</td><td>${(+x[H('Total THB')] || 0).toLocaleString()}</td>` +
+          `<td>${x[H('Status')] === 'have' ? '<span class="pill">มีแล้ว ✓</span>' : x[H('Shopee')] ? `<a href="${x[H('Shopee')]}" target="_blank">Shopee</a>` : ''}</td></tr>`).join('') +
+        `<tr class="sum"><td colspan="3">ต้องซื้อ${cur === 'ทั้งหมด' ? '' : ' (' + cur + ')'}</td><td>${d.filter((x) => x[H('Status')] !== 'have').reduce((a, x) => a + (+x[H('Total THB')] || 0), 0).toLocaleString()}</td><td></td></tr>`;
+      $('bomFilter').innerHTML = ['ทั้งหมด', ...groups].map((g) => `<button class="mini ${g === cur ? 'on' : 'ghost'}" data-g="${g}">${g}</button>`).join('');
+      $('bomFilter').querySelectorAll('button').forEach((b) => b.onclick = () => { cur = b.dataset.g; draw(); });
+    };
+    draw();
+  } catch (e) {}
+})();
+

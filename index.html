@@ -204,7 +204,36 @@
 
 <!-- ============================================================ documents -->
 <section class="tab" id="t-doc">
-  <div class="card" style="margin-bottom:12px"><h3>ภาพเครื่อง</h3><img src="doc/render_iso.png" style="width:100%;max-width:900px;background:#fff;border-radius:6px" alt="render"></div>
+  <div class="card news" style="margin-bottom:16px"><h3>✨ อัปเดตล่าสุด · v8.9 (15 ต.ค. 2026)</h3>
+    <div class="newsgrid">
+      <div><b>⚫ ชุดป้อนไบโอชาร์แยก</b><span>ถังเล็ก 22 g + สกรู Ø12 + มอเตอร์ N20 · ตั้ง % ไบโอชาร์ 0–3 % บนหน้าจอ ไม่ต้องผสมผงเอง</span></div>
+      <div><b>🟩 บอร์ด shield Mega</b><span>ปริ้นหน้าเดียว ทำเองได้ · ขั้วต่อ JST ล็อก 8 ชุด · ไม่ต้องเดินจัมเปอร์</span></div>
+      <div><b>📌 ย้ายขา Mega</b><span>ให้เดินลายหน้าเดียวได้ · เฟิร์มแวร์ + ผังสายไฟอัปเดตแล้ว (ตารางด้านล่าง)</span></div>
+      <div><b>🧊 3 มิติ</b><span>แท่งกวนหมุน · เม็ดไหลออกทีละเม็ดตอนเปิดวาล์ว · ถังไบโอชาร์</span></div>
+      <div><b>💰 งบประมาณ</b><span id="bomTotal">—</span></div>
+    </div></div>
+  <div class="grid" style="margin-bottom:16px">
+    <div class="card"><h3>ภาพเครื่อง</h3><img src="doc/render_iso.png" class="docimg" alt="render"></div>
+    <div class="card"><h3>ชุดป้อนไบโอชาร์ (v8.9)</h3><img src="doc/bio_feeder.png" class="docimg" alt="biochar feeder"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><h3>บอร์ด shield สำหรับ Mega <a class="b ghost" href="doc/pcb_copper_1to1.pdf" target="_blank" style="text-decoration:none;margin-left:8px">⬇ ลายปริ้น 1:1 (PDF)</a></h3>
+    <div class="grid">
+      <figure class="docfig"><img src="doc/pcb_top.png" class="docimg" alt="pcb top"><figcaption>ด้านอุปกรณ์</figcaption></figure>
+      <figure class="docfig"><img src="doc/pcb_copper.png" class="docimg" alt="pcb copper"><figcaption>ลายทองแดง (มองจากด้านบน)</figcaption></figure>
+    </div>
+    <div class="tblwrap" style="margin-top:10px"><table class="doctbl"><tr><th>ขั้วต่อ</th><th>ไปที่</th><th>pin 1 → pin สุดท้าย</th></tr>
+      <tr><td>J10 · 4P</td><td>MDD10A</td><td>D6 PWM2 · D5 PWM1 · D4 DIR1 · D3 DIR2</td></tr>
+      <tr><td>J11 · 5P</td><td>MDD3A</td><td>GND · D8 M2A · D7 M1A · D14 M1B · D15 M2B</td></tr>
+      <tr><td>J12 · 3P</td><td>MOSFET ×2</td><td>D11 ไบโอชาร์ · D9 กวนถังขึ้นรูป · GND</td></tr>
+      <tr><td>J14 · 2P</td><td>เซอร์โว</td><td>GND · D12</td></tr>
+      <tr><td>J13 · 3P</td><td>รีเลย์วาล์ว</td><td>D40 · GND · 5V</td></tr>
+      <tr><td>J15 · 3P</td><td>หัววัด pH</td><td>5V · GND · A0</td></tr>
+      <tr><td>J16 · 6P</td><td>แผงหน้า</td><td>D42 START · D44 STOP · D46 E-stop · D48 ไฟ START · D50 ไฟ STOP · GND</td></tr>
+      <tr><td>J17 · 3P</td><td>จอ ESP32</td><td>TX 3.3 V (แบ่งแรงดัน 10k/20k) · RX1 · GND</td></tr>
+      <tr><td>J18</td><td>ไฟ 5V จาก BUCK5</td><td>+ · −</td></tr></table></div></div>
+  <div class="card" style="margin-bottom:16px"><h3>ใบสั่งซื้อ (BOM) <a class="b ghost" href="doc/bom.csv" download style="text-decoration:none;margin-left:8px">⬇ CSV</a></h3>
+    <div class="row" id="bomFilter"></div>
+    <div class="tblwrap"><table class="doctbl" id="bomTbl"></table></div></div>
   <div class="card"><h3>แผนผังสายไฟ</h3><img src="doc/wiring.svg" style="width:100%;background:#fff;border-radius:6px" alt="wiring"></div>
   <div class="grid" style="margin-top:12px">
     <div class="card"><h3>ผลตรวจระบบไฟฟ้า</h3><pre class="log" id="docE" style="max-height:360px"></pre></div>

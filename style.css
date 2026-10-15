@@ -164,3 +164,19 @@ details.card[open] summary { margin-bottom: 8px; }
 }
 .grid > *, .split > *, .m3wrap > * { min-width: 0; }   /* canvases must not widen the grid on phones */
 html, body { overflow-x: hidden; }
+
+/* documents tab */
+.docimg { width: 100%; background: #fff; border-radius: 14px; display: block; }
+.docfig { margin: 0; } .docfig figcaption { font-size: 12.5px; color: var(--muted); text-align: center; margin-top: 6px; }
+.doctbl td, .doctbl th { white-space: normal; text-align: left; vertical-align: top; }
+.doctbl td:nth-child(3), .doctbl td:nth-child(4) { white-space: nowrap; }
+#bomTbl td:nth-child(3), #bomTbl td:nth-child(4) { text-align: right; }
+.doctbl .spec { color: var(--muted); font-size: 12.5px; max-width: 420px; }
+.doctbl tr.sum td { font-weight: 700; border-top: 2px solid var(--line); }
+.doctbl a { color: var(--accent); }
+.news { background: linear-gradient(135deg, color-mix(in srgb, var(--grape) 10%, var(--panel)), color-mix(in srgb, var(--accent) 10%, var(--panel))); }
+.newsgrid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.newsgrid div { background: var(--panel); border-radius: 14px; padding: 10px 14px; display: flex; flex-direction: column; gap: 3px; transition: transform .3s var(--spring); }
+.newsgrid div:hover { transform: translateY(-3px) rotate(-.5deg); }
+.newsgrid span { color: var(--muted); font-size: 13px; }
+#bomFilter { gap: 6px; }
