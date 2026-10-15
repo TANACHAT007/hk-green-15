@@ -316,3 +316,6 @@ body.kiosk .h3hud { left: 40px; top: 36px; transform: scale(1.25); transform-ori
 body.kiosk #m3dLabels span { font-size: 15px; }
 
 .sens { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; } .sens small { color: var(--muted); font-size: 12px; margin-right: 2px; }
+
+.langchip { display: none; border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 12px; padding: 7px 10px; border-radius: 999px; background: var(--panel); color: var(--text); box-shadow: var(--shadow); }
+@media (max-width: 760px) { .langchip { display: inline-block; } }

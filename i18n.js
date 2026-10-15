@@ -161,7 +161,7 @@
   function set(l) {
     lang = l; window.LANG = l; document.documentElement.lang = l;
     try { localStorage.setItem('hk15_lang', l); } catch (e) {}
-    const b = document.getElementById('langBtn'); if (b) b.textContent = l === 'en' ? 'ไทย' : 'EN';
+    for (const id of ['langBtn', 'langChip']) { const b = document.getElementById(id); if (b) b.textContent = l === 'en' ? 'ไทย' : 'EN'; }
     if (l === 'en') { busy = true; fixNode(document.body); busy = false; mo.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title', 'placeholder'] }); }
     else if (document.documentElement.dataset.wasEn) { mo.disconnect(); location.reload(); }   // the app keeps rewriting text: a reload is the clean way back to Thai
     if (l === 'en') document.documentElement.dataset.wasEn = '1';
@@ -172,6 +172,10 @@
     if (th && !document.getElementById('langBtn')) {
       const b = document.createElement('button'); b.id = 'langBtn'; b.className = th.className; b.title = 'ภาษา / Language';
       b.onclick = () => set(lang === 'en' ? 'th' : 'en'); th.after(b);
+    }
+    const dock = document.getElementById('dock');          // phones: the sidebar is hidden, so a small chip in the top bar too
+    if (dock && !document.getElementById('langChip')) {
+      const c = document.createElement('button'); c.id = 'langChip'; c.className = 'langchip'; c.onclick = () => set(lang === 'en' ? 'th' : 'en'); dock.prepend(c);
     }
     let l = new URLSearchParams(location.search).get('lang'); try { l = l || localStorage.getItem('hk15_lang'); } catch (e) {}
     set(l === 'en' ? 'en' : 'th');
