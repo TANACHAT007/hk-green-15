@@ -1,8 +1,8 @@
 # HK-Green-15 — electrical check
 
-✅ 44 · ⚠️ 0 · ❌ 0
+✅ 47 · ⚠️ 0 · ❌ 0
 
-- ✅ PSU +V 12 V 12.5 A vs loads run 4.26 A ×1.25 / peak 8.80 A
+- ✅ PSU +V 12 V 12.5 A vs loads run 4.27 A ×1.25 / peak 8.81 A
 - ✅ PERI: power is cut by the E-stop
 - ✅ AUGER: power is cut by the E-stop
 - ✅ TOPSTIR: power is cut by the E-stop
@@ -31,6 +31,9 @@
 - ✅ PH: on the common ground
 - ✅ LAMPDRV: on the common ground
 - ✅ BTN: on the common ground
+- ✅ LVA: on the common ground
+- ✅ LVW: on the common ground
+- ✅ LVX: on the common ground
 - ✅ F1: branch 3.82 A → fuse 7.5 A slow-blow; 8 wire(s) on its net upsized to ≥ 7.5 A
 - ✅ F2: branch 0.48 A → fuse 1 A fast
 - ✅ MDD10A: output MDD10A.M1A→PERI.+ 0.25 A vs rating 10 A
@@ -51,3 +54,4 @@
 - E-stop main contact breaks the 12 V motor bus (drivers, relay COM, servo buck); logic stays on so the Mega can report SAFE.
 - ESP32 TX (3.3 V) → Mega RX1 is read correctly as HIGH (V_IH of the ATmega2560 ≈ 3.0 V at 5 V — marginal but works; use a 74HCT125 buffer if the link is unreliable).
 - TOPSTIR is a brushless PC fan (internal driver): drive it one direction only and keep PWM duty >= ~50 % (it stalls below ~5-7 V).
+- Level sensors (XKC-Y25-NPN) stick on the outside of the tank wall: nothing touches acid or NaOH. Output pulls LOW when liquid is behind it.

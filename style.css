@@ -314,3 +314,5 @@ body.kiosk #m3dTour .tbody b { font-size: 26px; } body.kiosk #m3dTour .tbody p {
 body.kiosk #m3dTour .tnum { width: 70px; height: 70px; font-size: 18px; }
 body.kiosk .h3hud { left: 40px; top: 36px; transform: scale(1.25); transform-origin: left top; }
 body.kiosk #m3dLabels span { font-size: 15px; }
+
+.sens { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; } .sens small { color: var(--muted); font-size: 12px; margin-right: 2px; }

@@ -56,7 +56,7 @@ const key = (name) => { name = name || ''; return KEYS.find((k) => name.startsWi
 const V = { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0, trayBeads: 0 };
 try { Object.assign(V, JSON.parse(localStorage.getItem('hk15_3d') || '{}')); } catch (e) {}
 const saveV = () => { try { localStorage.setItem('hk15_3d', JSON.stringify(V)); } catch (e) {} };
-const CAP = { hopperG: 140, acidMl: 500, bioG: 22 };
+const CAP = { hopperG: 140, acidMl: 500, bioG: 45 };   // biochar hopper ≈ 150 mL ≈ 45 g = 4 batches of 10.6 g
 let dosed = false, S = null, lastState = null, xray = true, labelsOn = true, runBeads = 0, beadWhere = 'none', phase0 = {};
 
 // ================================================================= scene
@@ -359,7 +359,7 @@ function enterState(st, prev, m, first) {
     const active = (x) => STATES.indexOf(x) > STATES.indexOf('IDLE') && STATES.indexOf(x) < STATES.indexOf('DONE');
     if ((prev === 'DOSE' || (!active(prev) && active(st) && st !== 'DOSE')) && !dosed) {   // DOSE seen or skipped by a fast run
       const h0 = prev === 'DOSE' ? phase0.hopper : V.hopperG, b0 = prev === 'DOSE' ? phase0.bio : V.bioG;   // skipped DOSE: nothing used yet
-      dosed = true; V.hopperG = Math.max(0, h0 - (m.p?.dose_g || 30)); V.bioG = Math.max(0, b0 - (m.p?.dose_g || 30) * (m.p?.biochar_pct ?? 2) / 100); }
+      dosed = true; V.hopperG = Math.max(0, h0 - (m.p?.dose_g || 30)); V.bioG = Math.max(0, b0 - ((m.p?.acid_ml ?? 500) + (m.p?.dose_g || 30)) * (m.p?.biochar_pct ?? 2) / 100); }
     if (prev === 'RINSE_SPRAY') { V.water = Math.max(0, phase0.water - 0.05); V.waste = Math.min(1, phase0.waste + 0.04); }
   }
   phase0 = { bio: V.bioG, hopper: V.hopperG, naoh: V.naoh, waste: V.waste, water: V.water };
@@ -367,7 +367,7 @@ function enterState(st, prev, m, first) {
   if (st === 'DOSE' && !first) {
     const miss = [];
     if (V.hopperG < (m.p?.dose_g || 30)) { miss.push('ไคโตซาน'); V.hopperG = CAP.hopperG; }
-    if (V.bioG < (m.p?.dose_g || 30) * (m.p?.biochar_pct ?? 2) / 100) { miss.push('ไบโอชาร์'); V.bioG = CAP.bioG; }
+    if (V.bioG < ((m.p?.acid_ml ?? 500) + (m.p?.dose_g || 30)) * (m.p?.biochar_pct ?? 2) / 100) { miss.push('ไบโอชาร์'); V.bioG = CAP.bioG; }
     if (V.acidMl < 450) miss.push('น้ำกรด');
     if (V.naoh < 0.5) { miss.push('NaOH'); V.naoh = 1; }
     if (V.water < 0.5) { miss.push('น้ำล้าง'); V.water = 1; }
@@ -507,7 +507,7 @@ function select(e) {
 const on = (id, f) => { const el = $(id); if (el) el.addEventListener('click', (e) => { pop(el); f(e); }); };
 const fill = (k, v, msg) => () => { V[k] = v; levels(); saveV(); toast(msg); };
 on('fillHopper', fill('hopperG', CAP.hopperG, '🥄 เติมผงไคโตซานจากด้านบนเครื่องแล้ว (140 g พอ ~4 รอบ)'));
-on('fillBio', fill('bioG', CAP.bioG, '⚫ เติมไบโอชาร์แล้ว (พอ ~35 รอบที่ 2 %)'));
+on('fillBio', fill('bioG', CAP.bioG, '⚫ เติมไบโอชาร์แล้ว (45 g พอ 4 รอบ ที่ 2 % ≈ 10.6 g/รอบ)'));
 on('fillAcid', fill('acidMl', CAP.acidMl, '🧴 เติมกรดอะซิติก 1 M 500 mL แล้ว'));
 on('fillNaoh', fill('naoh', 1, '🧤 เติม NaOH 2 M แล้ว — ใส่แว่นกับถุงมือทุกครั้งนะ'));
 on('fillWater', fill('water', 1, '🚰 เติมน้ำสะอาดลงถังน้ำล้างแล้ว'));
@@ -528,12 +528,12 @@ on('m3dAll', () => { Object.entries(groups).forEach(([k, Gp]) => { Gp.on = true;
 // ================================================================= guided simulation tour: scripted status + camera + captions
 // One button plays the whole batch in ~1 minute: every step shows only its key action with a short explanation.
 // Live status from the machine / simulator is ignored while the tour runs and the operator's levels are restored after.
-const TP = { dose_g: 30, biochar_pct: 2, servo_home: 10, servo_dump: 120, ph_target: 7.5 };
+const TP = { dose_g: 30, biochar_pct: 2, acid_ml: 500, servo_home: 10, servo_dump: 120, ph_target: 7.5 };
 const TOUR = [
   { v: 'intro', ms: 6500, st: 'IDLE', t: 'HK-Green-15', d: 'เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ ครบจบในเครื่องเดียว: ผสม → หยดขึ้นรูป → แช่ → ล้าง → เทลงถาดตาก', spin: 1 },
   { v: 'feed', ms: 6000, st: 'IDLE', t: 'เติมวัตถุดิบ 5 อย่าง', d: 'ผงไคโตซาน · ไบโอชาร์ · กรดอะซิติก 1 M · NaOH 2 M · น้ำล้าง แล้วกด START ที่จอหรือปุ่มหน้าเครื่อง', fill: 1 },
-  { v: 'feed', ms: 7000, st: 'DOSE', t: '① ป้อนผงตามสูตร', d: 'สกรูป้อน 2 ชุดชั่งผงลงถังกรด: ไคโตซาน 30 g + ไบโอชาร์ 2 % ขณะพัดลมใต้ถังหมุนแม่เหล็กกวน',
-    out: { auger: 255, bio: 255, top: 200 }, f: (k) => ({ sim_powder_g: 30 * k, sim_biochar_g: 0.6 * k, sim_acid_ml: 500, sim_dissolved: 0 }) },
+  { v: 'feed', ms: 7000, st: 'DOSE', t: '① ป้อนผงตามสูตร', d: 'สกรูป้อน 2 ชุดชั่งผงลงถังกรด: ไคโตซาน 30 g + ไบโอชาร์ 10.6 g (2 % ของน้ำหนักกรด + ไคโตซาน) ขณะพัดลมใต้ถังหมุนแม่เหล็กกวน',
+    out: { auger: 255, bio: 255, top: 200 }, f: (k) => ({ sim_powder_g: 30 * k, sim_biochar_g: 10.6 * k, sim_acid_ml: 500, sim_dissolved: 0 }) },
   { v: 'feed', ms: 6000, st: 'DISSOLVE', t: '② กวนละลาย', d: 'กวนต่อเนื่องราว 2 ชั่วโมงจนผงละลายเป็นเนื้อเดียวสีเข้ม (ในทัวร์เร่งให้ดู)',
     out: { top: 200 }, f: (k) => ({ sim_powder_g: 30, sim_acid_ml: 500, sim_dissolved: k }) },
   { v: 'drip', ms: 9000, st: 'DRIP', t: '③ หยดเป็นเม็ด', d: 'ปั๊มรีดท่อดันสารละลายผ่านเข็ม 12 หัว หยดลง NaOH 2 M — แต่ละหยดแข็งตัวเป็นเม็ดเจลทันที',
@@ -610,7 +610,23 @@ function tourEnd() {
 window.hkTour = tourStart;
 
 on('m3dTourBtn', () => (tourI < 0 ? tourStart() : tourEnd()));
-window.onRig3d = (m) => { if (tourI >= 0) { tourSaved && (tourSaved.S = m); return; } S = m; if (fx) update(m); };
+// level sensors in simulation: what the operator filled here is what the three XKC-Y25 sensors would see
+let lvlSent = '';
+const ALARM_TH = { 1: '🧴 กรดในถังผสมไม่พอ — เติม 500 mL ก่อนกดเริ่ม', 2: '🚰 น้ำล้างใกล้หมด — เครื่องรอให้เติมน้ำ', 3: '🗑️ ถังน้ำทิ้งเต็ม — เครื่องรอให้เททิ้งก่อนปล่อยน้ำ' };
+let lastAlarm = 0;
+function simLevels(m) {
+  if (!(m.sim || m.firmware === 'qemu') || !window.cmd) return;
+  const run = !['IDLE', 'DONE', 'SAFE'].includes(m.state) && m.sim_acid_ml !== undefined;
+  const v = [+((run ? m.sim_acid_ml : V.acidMl) >= 60), +(V.water > 0.15), +(V.waste >= 0.85)], k = v.join();
+  if (k !== lvlSent) { lvlSent = k; window.cmd({ cmd: 'sim', op: 'lvl', val: v }); }
+}
+window.onRig3d = (m) => {
+  if (tourI >= 0) { tourSaved && (tourSaved.S = m); return; }
+  simLevels(m);
+  if (m.alarm && m.alarm !== lastAlarm && started) toast(ALARM_TH[m.alarm] || 'แจ้งเตือน');
+  lastAlarm = m.alarm || 0;
+  S = m; if (fx) update(m);
+};
 document.querySelector('#tabs button[data-t="m3d"]').addEventListener('click', () => { if (!started) init(); else size(); });
 if (location.hash.startsWith('#m3d')) init();
 if (/[?&]kiosk=1/.test(location.search)) document.body.classList.add('kiosk');   // full-screen 3D (video capture)

@@ -9,7 +9,8 @@ const DESC = { IDLE: 'รอกดเริ่ม', DOSE: 'สกรูป้อ
   TILT: 'เซอร์โวเทถาดลงถาดตาก', TILT_BACK: 'ถาดกลับตำแหน่งเดิม', DONE: 'ครบรอบ — นำเม็ดไปตาก', SAFE: 'อุปกรณ์ทุกตัวหยุด — แก้ปัญหาแล้วกดรีเซ็ต' };
 const OUTS = [['peri', 'ปั๊มหยด (MDD10A ch1)', 255], ['auger', 'สกรูป้อนไคโตซาน (MDD10A ch2)', 255], ['bio', 'สกรูป้อนไบโอชาร์ (MOSFET #2)', 255], ['top', 'พัดลมกวนถังกรด (MDD3A M1)', 255],
   ['ch', 'มอเตอร์กวนห้องก่อเจล (MOSFET)', 255], ['rinse', 'ปั๊มสเปรย์ล้าง (MDD3A M2)', 255], ['valve', 'วาล์ว 1" (รีเลย์)', 1], ['servo', 'เซอร์โวเทถาด (องศา)', 180]];
-const RECIPE = [['dose_g', 'ไคโตซาน', 'g'], ['biochar_pct', 'ไบโอชาร์ (% ของไคโตซาน)', '0–3 %'], ['auger_g_per_rev', 'สกรูไคโตซาน', 'g/รอบ'], ['bio_g_per_rev', 'สกรูไบโอชาร์', 'g/รอบ'], ['dissolve_min', 'เวลากวนละลาย', 'นาที'],
+const bioDose = (P) => ((P.acid_ml ?? 500) + (P.dose_g ?? 30)) * (P.biochar_pct ?? 2) / 100;   // biochar g per batch: % of acid + chitosan
+const RECIPE = [['dose_g', 'ไคโตซาน', 'g'], ['biochar_pct', 'ไบโอชาร์ (% ของน้ำหนักกรด + ไคโตซาน)', '0–3 %'], ['auger_g_per_rev', 'สกรูไคโตซาน', 'g/รอบ'], ['bio_g_per_rev', 'สกรูไบโอชาร์', 'g/รอบ'], ['dissolve_min', 'เวลากวนละลาย', 'นาที'],
   ['drip_min', 'เวลาหยด', 'นาที'], ['peri_duty', 'PWM ปั๊มหยด', '0–255'], ['set_min', 'เวลาแช่ NaOH', 'นาที'],
   ['top_stir_duty', 'PWM พัดลมกวน', '128–255'], ['chamber_stir_duty', 'PWM กวนห้องก่อเจล', '0–255'], ['ph_target', 'pH หยุดล้าง', 'pH'], ['rinse_max', 'ล้างสูงสุด', 'รอบ']];
 let S = null, MODE = 'none', HIST = [], BATCHES = [], INFO = {}, lastRun = null, runT0 = null, cal = {};
@@ -45,7 +46,7 @@ $('outs').innerHTML = OUTS.map(([k, n]) => `<div class="eq" id="eq_${k}"><i clas
 // ------------------------------------------------------------------ estimates
 function etaS(m) {
   const P = m.p || {}, idx = STEPS.indexOf(m.state); if (idx < 1 || m.state === 'DONE') return 0;
-  const dose = Math.max(P.dose_g / P.auger_g_per_rev / 30 * 60, P.dose_g * (P.biochar_pct || 0) / 100 / (P.bio_g_per_rev || 0.09) / 30 * 60), rinseLeft = Math.max(1, 7 - (m.rinse || 0));
+  const dose = Math.max(P.dose_g / P.auger_g_per_rev / 30 * 60, bioDose(P) / (P.bio_g_per_rev || 0.09) / 30 * 60), rinseLeft = Math.max(1, 7 - (m.rinse || 0));
   const len = { DOSE: dose, DISSOLVE: P.dissolve_min * 60, DRIP: P.drip_min * 60, SET: P.set_min * 60, DRAIN: 60,
     RINSE_SPRAY: 0, RINSE_WAIT: 0, TILT: 5, TILT_BACK: 2 };
   let t = m.left_s;
@@ -75,7 +76,7 @@ function onRig(m) {
   OUTS.forEach(([k, , max]) => { const v = m.out ? m.out[k] : 0;
     $('ob_' + k).style.width = (100 * v / max) + '%'; $('ov_' + k).textContent = k === 'valve' ? (v ? 'เปิด' : 'ปิด') : k === 'servo' ? v + '°' : Math.round(100 * v / 255) + '%'; });
   if (m.sim) {
-    $('powder').textContent = fmt(m.sim_powder_g, 1) + ' / ' + fmt(m.p.dose_g, 1) + ' g · ไบโอชาร์ ' + fmt(m.sim_biochar_g, 2) + ' / ' + fmt(m.p.dose_g * (m.p.biochar_pct || 0) / 100, 2) + ' g'; $('diss').textContent = fmt(100 * m.sim_dissolved, 0) + ' %';
+    $('powder').textContent = fmt(m.sim_powder_g, 1) + ' / ' + fmt(m.p.dose_g, 1) + ' g · ไบโอชาร์ ' + fmt(m.sim_biochar_g, 2) + ' / ' + fmt(bioDose(m.p), 2) + ' g'; $('diss').textContent = fmt(100 * m.sim_dissolved, 0) + ' %';
     $('acid').textContent = fmt(m.sim_acid_ml, 0) + ' mL'; $('dripped').textContent = fmt(m.sim_dripped_ml, 0) + ' mL';
     $('flow').textContent = fmt(m.sim_flow_mlpm, 2) + ' mL/min';
     const pn = m.sim_flow_mlpm / (INFO.needles || 12); $('perNeedle').textContent = fmt(pn, 2) + ' mL/min ' + (pn > 1.5 ? '⚠ เป็นสาย' : '✔ เป็นหยด');
@@ -100,7 +101,7 @@ function onRig(m) {
 
 // ------------------------------------------------------------------ app shell: ring, dock button, next step, toasts
 function totalS(P) {
-  const dose = Math.max(P.dose_g / P.auger_g_per_rev / 30 * 60, P.dose_g * (P.biochar_pct || 0) / 100 / (P.bio_g_per_rev || 0.09) / 30 * 60);
+  const dose = Math.max(P.dose_g / P.auger_g_per_rev / 30 * 60, bioDose(P) / (P.bio_g_per_rev || 0.09) / 30 * 60);
   return dose + (P.dissolve_min + P.drip_min + P.set_min) * 60 + 60 + 7 * 60 + 7;
 }
 function gtoast(msg) { const t = $('gtoast'); t.textContent = msg; t.classList.remove('on'); void t.offsetWidth; t.classList.add('on');
@@ -124,19 +125,25 @@ function shell(m) {
   OUTS.forEach(([k]) => { const v = m.out ? m.out[k] : 0, on = k === 'servo' ? Math.abs(v - (P.servo_home ?? 10)) > 5 : v > 0;
     $('eq_' + k).classList.toggle('on', !!on); });
   // what to do next
-  const V = readV(), need = P.dose_g || 30, bioNeed = need * (P.biochar_pct ?? 2) / 100, chk = [
+  const V = readV(), need = P.dose_g || 30, bioNeed = bioDose(P), chk = [
     ['ผงไคโตซาน', (V.hopperG || 0) >= need], ['ไบโอชาร์', (V.bioG || 0) >= bioNeed], ['กรด 1 M 500 mL', (V.acidMl || 0) >= 450],
     ['NaOH 2 M', (V.naoh || 0) >= 0.5], ['น้ำล้าง', (V.water || 0) >= 0.5], ['ถังน้ำทิ้งไม่เต็ม', (V.waste || 0) < 0.85]];
   const NEXT = { IDLE: 'เตรียมวัตถุดิบให้ครบ แล้วกด ▶ เริ่มรอบผลิต', DOSE: 'กำลังป้อนผง — ไม่ต้องทำอะไร', DISSOLVE: 'กวนให้ละลาย ~2 ชม. — รอได้เลย',
     DRIP: 'กำลังหยดเป็นเม็ด — ดูว่าหยดเป็นเม็ด ไม่เป็นสาย', SET: 'แช่ NaOH 6 ชม. — รอได้เลย', DRAIN: 'ปล่อยน้ำ NaOH ลงถังทิ้ง',
     RINSE_SPRAY: 'กำลังล้าง — รอ pH ลงถึงเป้า', RINSE_WAIT: 'รอน้ำสะเด็ดแล้ววัด pH', TILT: 'เทเม็ดลงถาดตาก', TILT_BACK: 'ถาดกลับที่เดิม',
     DONE: 'เก็บเม็ดจากถาดตาก แล้วบันทึกผลในแท็บผลทดลอง', SAFE: m.estop ? 'ดึงปุ่ม E-stop ขึ้น แล้วกดรีเซ็ต' : 'แก้ปัญหาให้เรียบร้อย แล้วกด ↺ รีเซ็ต' };
-  $('nextTxt').textContent = NEXT[st] || '—';
+  const ALARM = { 1: '🧴 กรดในถังผสมไม่พอ — เติมกรด 500 mL แล้วกดเริ่มใหม่', 2: '🚰 น้ำล้างใกล้หมด — เติมน้ำ เครื่องจะล้างต่อเอง', 3: '🗑️ ถังน้ำทิ้งเต็ม — เททิ้ง เครื่องจะปล่อยน้ำต่อเอง' };
+  $('nextTxt').textContent = m.alarm ? ALARM[m.alarm] : (NEXT[st] || '—');
+  const lv = m.lvl || [1, 1, 0], sens = [['กรด', lv[0]], ['น้ำล้าง', lv[1]], ['น้ำทิ้ง', !lv[2]]];
+  let se = $('sensRow'); if (!se) { se = document.createElement('div'); se.id = 'sensRow'; se.className = 'sens'; $('checklist2').after(se); }
+  se.innerHTML = '<small>เซนเซอร์ระดับ</small>' + sens.map(([n, ok]) => `<span class="ck ${ok ? 'ok' : 'no'}">${ok ? '✓' : '!'} ${n}${n === 'น้ำทิ้ง' ? (ok ? ' ไม่เต็ม' : ' เต็ม') : (ok ? '' : ' ต่ำ')}</span>`).join('');
+  if (m.alarm && m.alarm !== shell.alarm) gtoast(ALARM[m.alarm]);
+  shell.alarm = m.alarm || 0;
   const showChk = st === 'IDLE' || st === 'DONE';
   $('checklist2').innerHTML = showChk ? chk.map(([n, ok]) => `<span class="ck ${ok ? 'ok' : 'no'}">${ok ? '✓' : '!'} ${n}</span>`).join('') +
     (chk.every((x) => x[1]) ? '' : '<button class="mini" id="fillAll2">✨ เติมครบทุกอย่าง</button>') : '';
   const f2 = $('fillAll2'); if (f2) f2.onclick = () => { const f = $('fillAll'); if (f) f.click(); gtoast('✨ เติมวัตถุดิบครบแล้ว'); setTimeout(() => shell(S), 50); };
-  $('nextCard').classList.toggle('warn', showChk && !chk.every((x) => x[1]));
+  $('nextCard').classList.toggle('warn', !!m.alarm || (showChk && !chk.every((x) => x[1])));
   if (lastSt && st !== lastSt) gtoast((TH[st] || st) + (st === 'DONE' ? ' 🎉' : ''));
   lastSt = st;
 }

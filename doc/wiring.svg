@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2040" height="1494" font-family="Segoe UI, Arial" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" width="2040" height="1830" font-family="Segoe UI, Arial" font-size="12">
 <rect width="100%" height="100%" fill="white"/>
 <text x="40" y="40" font-size="22" font-weight="bold">HK-Green-15 — wiring diagram</text>
 <path d="M270,128 H289 V240 H270" fill="none" stroke="#8B4513" stroke-width="3.2"/>
@@ -37,122 +37,140 @@
 <text x="708" y="574.0" font-size="10" fill="#d62728">17</text>
 <path d="M670,752 H691 V128 H840" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
 <text x="694" y="438.0" font-size="10" fill="#ff7f0e">18</text>
-<path d="M670,752 H698 V656 H840" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
-<text x="701" y="702.0" font-size="10" fill="#ff7f0e">19</text>
+<path d="M670,752 H698 V704 H840" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
+<text x="701" y="726.0" font-size="10" fill="#ff7f0e">19</text>
 <path d="M670,752 H733 V864 H1240" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
 <text x="736" y="806.0" font-size="10" fill="#ff7f0e">20</text>
 <path d="M670,752 H740 V1008 H1240" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
 <text x="743" y="878.0" font-size="10" fill="#ff7f0e">21</text>
+<path d="M670,752 H747 V1392 H1240" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
+<text x="750" y="1070.0" font-size="10" fill="#ff7f0e">22</text>
+<path d="M670,752 H754 V1504 H1240" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
+<text x="757" y="1126.0" font-size="10" fill="#ff7f0e">23</text>
+<path d="M670,752 H761 V1616 H1240" fill="none" stroke="#ff7f0e" stroke-width="1.8"/>
+<text x="764" y="1182.0" font-size="10" fill="#ff7f0e">24</text>
 <path d="M670,880 H712 V800 H1640" fill="none" stroke="#e377c2" stroke-width="1.8"/>
-<text x="715" y="838.0" font-size="10" fill="#e377c2">22</text>
+<text x="715" y="838.0" font-size="10" fill="#e377c2">25</text>
 <path d="M440,448 H305 V304 H270" fill="none" stroke="#111111" stroke-width="2.5"/>
-<text x="308" y="374.0" font-size="10" fill="#111111">23</text>
-<path d="M670,464 H747 V144 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="750" y="302.0" font-size="10" fill="#111111">24</text>
-<path d="M670,480 H754 V368 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="757" y="422.0" font-size="10" fill="#111111">25</text>
-<path d="M670,496 H761 V592 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="764" y="542.0" font-size="10" fill="#111111">26</text>
-<path d="M670,512 H768 V736 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="771" y="622.0" font-size="10" fill="#111111">27</text>
+<text x="308" y="374.0" font-size="10" fill="#111111">26</text>
+<path d="M670,464 H768 V144 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="771" y="302.0" font-size="10" fill="#111111">27</text>
+<path d="M670,480 H775 V368 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="778" y="422.0" font-size="10" fill="#111111">28</text>
+<path d="M670,496 H782 V592 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="785" y="542.0" font-size="10" fill="#111111">29</text>
+<path d="M670,512 H789 V736 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="792" y="622.0" font-size="10" fill="#111111">30</text>
 <path d="M670,528 H710 V736 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="713" y="630.0" font-size="10" fill="#111111">28</text>
+<text x="713" y="630.0" font-size="10" fill="#111111">31</text>
 <path d="M670,544 H717 V864 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="720" y="702.0" font-size="10" fill="#111111">29</text>
+<text x="720" y="702.0" font-size="10" fill="#111111">32</text>
 <path d="M670,560 H705 V144 H840" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="708" y="350.0" font-size="10" fill="#111111">30</text>
-<path d="M670,576 H712 V672 H840" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="715" y="622.0" font-size="10" fill="#111111">31</text>
-<path d="M670,592 H775 V880 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="778" y="734.0" font-size="10" fill="#111111">32</text>
-<path d="M670,608 H782 V1024 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="785" y="814.0" font-size="10" fill="#111111">33</text>
-<path d="M670,624 H789 V1136 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="792" y="878.0" font-size="10" fill="#111111">34</text>
+<text x="708" y="350.0" font-size="10" fill="#111111">33</text>
+<path d="M670,576 H712 V720 H840" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="715" y="646.0" font-size="10" fill="#111111">34</text>
+<path d="M670,592 H796 V880 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="799" y="734.0" font-size="10" fill="#111111">35</text>
+<path d="M670,608 H803 V1024 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="806" y="814.0" font-size="10" fill="#111111">36</text>
+<path d="M670,624 H810 V1136 H1240" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="813" y="878.0" font-size="10" fill="#111111">37</text>
 <path d="M670,640 H719 V928 H1640" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="722" y="782.0" font-size="10" fill="#111111">35</text>
+<text x="722" y="782.0" font-size="10" fill="#111111">38</text>
 <path d="M670,896 H726 V816 H1640" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="729" y="854.0" font-size="10" fill="#111111">36</text>
-<path d="M670,768 H719 V576 H840" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="722" y="670.0" font-size="10" fill="#111111">37</text>
+<text x="729" y="854.0" font-size="10" fill="#111111">39</text>
+<path d="M670,768 H719 V624 H840" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="722" y="694.0" font-size="10" fill="#111111">40</text>
 <path d="M1640,720 H733 V864 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="736" y="790.0" font-size="10" fill="#111111">38</text>
+<text x="736" y="790.0" font-size="10" fill="#111111">41</text>
 <path d="M670,368 H724 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="727" y="566.0" font-size="10" fill="#111111">39</text>
-<path d="M1240,1312 H796 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
-<text x="799" y="1038.0" font-size="10" fill="#111111">40</text>
+<text x="727" y="566.0" font-size="10" fill="#111111">42</text>
+<path d="M1240,1312 H817 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="820" y="1038.0" font-size="10" fill="#111111">43</text>
+<path d="M1240,1408 H824 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="827" y="1086.0" font-size="10" fill="#111111">44</text>
+<path d="M1240,1520 H831 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="834" y="1142.0" font-size="10" fill="#111111">45</text>
+<path d="M1240,1632 H838 V768 H670" fill="none" stroke="#111111" stroke-width="1.8"/>
+<text x="841" y="1198.0" font-size="10" fill="#111111">46</text>
 <path d="M1470,224 H1491 V128 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1494" y="174.0" font-size="10" fill="#7f7f7f">41</text>
+<text x="1494" y="174.0" font-size="10" fill="#7f7f7f">47</text>
 <path d="M1470,240 H1498 V144 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1501" y="190.0" font-size="10" fill="#7f7f7f">42</text>
+<text x="1501" y="190.0" font-size="10" fill="#7f7f7f">48</text>
 <path d="M1470,256 H1505 V224 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1508" y="238.0" font-size="10" fill="#7f7f7f">43</text>
+<text x="1508" y="238.0" font-size="10" fill="#7f7f7f">49</text>
 <path d="M1470,272 H1512 V240 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1515" y="254.0" font-size="10" fill="#7f7f7f">44</text>
+<text x="1515" y="254.0" font-size="10" fill="#7f7f7f">50</text>
 <path d="M1470,448 H1519 V320 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1522" y="382.0" font-size="10" fill="#7f7f7f">45</text>
+<text x="1522" y="382.0" font-size="10" fill="#7f7f7f">51</text>
 <path d="M1470,464 H1526 V336 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1529" y="398.0" font-size="10" fill="#7f7f7f">46</text>
+<text x="1529" y="398.0" font-size="10" fill="#7f7f7f">52</text>
 <path d="M1470,480 H1533 V416 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1536" y="446.0" font-size="10" fill="#7f7f7f">47</text>
+<text x="1536" y="446.0" font-size="10" fill="#7f7f7f">53</text>
 <path d="M1470,496 H1540 V432 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1543" y="462.0" font-size="10" fill="#7f7f7f">48</text>
+<text x="1543" y="462.0" font-size="10" fill="#7f7f7f">54</text>
 <path d="M1470,624 H1547 V512 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1550" y="566.0" font-size="10" fill="#7f7f7f">49</text>
+<text x="1550" y="566.0" font-size="10" fill="#7f7f7f">55</text>
 <path d="M1470,640 H1554 V528 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1557" y="582.0" font-size="10" fill="#7f7f7f">50</text>
+<text x="1557" y="582.0" font-size="10" fill="#7f7f7f">56</text>
 <path d="M1470,768 H1561 V608 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1564" y="686.0" font-size="10" fill="#7f7f7f">51</text>
+<text x="1564" y="686.0" font-size="10" fill="#7f7f7f">57</text>
 <path d="M1470,784 H1568 V624 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1571" y="702.0" font-size="10" fill="#7f7f7f">52</text>
+<text x="1571" y="702.0" font-size="10" fill="#7f7f7f">58</text>
 <path d="M1470,928 H1575 V704 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1578" y="814.0" font-size="10" fill="#7f7f7f">53</text>
+<text x="1578" y="814.0" font-size="10" fill="#7f7f7f">59</text>
 <path d="M1470,1184 H1582 V1040 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1585" y="1110.0" font-size="10" fill="#7f7f7f">54</text>
+<text x="1585" y="1110.0" font-size="10" fill="#7f7f7f">60</text>
 <path d="M1470,1200 H1589 V1056 H1640" fill="none" stroke="#7f7f7f" stroke-width="1.8"/>
-<text x="1592" y="1126.0" font-size="10" fill="#7f7f7f">55</text>
+<text x="1592" y="1126.0" font-size="10" fill="#7f7f7f">61</text>
 <path d="M1070,160 H1091 V160 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1094" y="158.0" font-size="10" fill="#d4b000">56</text>
+<text x="1094" y="158.0" font-size="10" fill="#d4b000">62</text>
 <path d="M1070,176 H1098 V176 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1101" y="174.0" font-size="10" fill="#1f77b4">57</text>
+<text x="1101" y="174.0" font-size="10" fill="#1f77b4">63</text>
 <path d="M1070,192 H1105 V192 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1108" y="190.0" font-size="10" fill="#d4b000">58</text>
+<text x="1108" y="190.0" font-size="10" fill="#d4b000">64</text>
 <path d="M1070,208 H1112 V208 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1115" y="206.0" font-size="10" fill="#1f77b4">59</text>
+<text x="1115" y="206.0" font-size="10" fill="#1f77b4">65</text>
 <path d="M1070,224 H1119 V384 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1122" y="302.0" font-size="10" fill="#d4b000">60</text>
+<text x="1122" y="302.0" font-size="10" fill="#d4b000">66</text>
 <path d="M1070,240 H1126 V400 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1129" y="318.0" font-size="10" fill="#1f77b4">61</text>
+<text x="1129" y="318.0" font-size="10" fill="#1f77b4">67</text>
 <path d="M1070,256 H1133 V416 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1136" y="334.0" font-size="10" fill="#d4b000">62</text>
+<text x="1136" y="334.0" font-size="10" fill="#d4b000">68</text>
 <path d="M1070,272 H1140 V432 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1143" y="350.0" font-size="10" fill="#1f77b4">63</text>
+<text x="1143" y="350.0" font-size="10" fill="#1f77b4">69</text>
 <path d="M1070,288 H1147 V608 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1150" y="446.0" font-size="10" fill="#d4b000">64</text>
+<text x="1150" y="446.0" font-size="10" fill="#d4b000">70</text>
 <path d="M1070,304 H1154 V752 H1240" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1157" y="526.0" font-size="10" fill="#d4b000">65</text>
+<text x="1157" y="526.0" font-size="10" fill="#d4b000">71</text>
 <path d="M1070,320 H1161 V896 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1164" y="606.0" font-size="10" fill="#1f77b4">66</text>
+<text x="1164" y="606.0" font-size="10" fill="#1f77b4">72</text>
 <path d="M1070,336 H1091 V832 H1640" fill="none" stroke="#d4b000" stroke-width="1.4"/>
-<text x="1094" y="582.0" font-size="10" fill="#d4b000">67</text>
+<text x="1094" y="582.0" font-size="10" fill="#d4b000">73</text>
 <path d="M1240,1040 H1168 V352 H1070" fill="none" stroke="#2ca02c" stroke-width="1.4"/>
-<text x="1171" y="694.0" font-size="10" fill="#2ca02c">68</text>
+<text x="1171" y="694.0" font-size="10" fill="#2ca02c">74</text>
 <path d="M1240,1280 H1175 V368 H1070" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1178" y="822.0" font-size="10" fill="#1f77b4">69</text>
+<text x="1178" y="822.0" font-size="10" fill="#1f77b4">75</text>
 <path d="M1240,1296 H1182 V384 H1070" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1185" y="838.0" font-size="10" fill="#1f77b4">70</text>
+<text x="1185" y="838.0" font-size="10" fill="#1f77b4">76</text>
 <path d="M670,352 H726 V400 H840" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="729" y="374.0" font-size="10" fill="#1f77b4">71</text>
+<text x="729" y="374.0" font-size="10" fill="#1f77b4">77</text>
 <path d="M1070,416 H1189 V1152 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1192" y="782.0" font-size="10" fill="#1f77b4">72</text>
+<text x="1192" y="782.0" font-size="10" fill="#1f77b4">78</text>
 <path d="M1070,432 H1196 V1168 H1240" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
-<text x="1199" y="798.0" font-size="10" fill="#1f77b4">73</text>
-<path d="M1070,448 H1089 V544 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
-<text x="1092" y="494.0" font-size="10" fill="#7b2d8e">74</text>
-<path d="M1070,560 H1096 V688 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
-<text x="1099" y="622.0" font-size="10" fill="#7b2d8e">75</text>
-<path d="M1070,704 H1103 V464 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
-<text x="1106" y="582.0" font-size="10" fill="#7b2d8e">76</text>
+<text x="1199" y="798.0" font-size="10" fill="#1f77b4">79</text>
+<path d="M1240,1424 H1203 V480 H1070" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
+<text x="1206" y="950.0" font-size="10" fill="#1f77b4">80</text>
+<path d="M1240,1536 H1210 V496 H1070" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
+<text x="1213" y="1014.0" font-size="10" fill="#1f77b4">81</text>
+<path d="M1240,1648 H1217 V512 H1070" fill="none" stroke="#1f77b4" stroke-width="1.4"/>
+<text x="1220" y="1078.0" font-size="10" fill="#1f77b4">82</text>
+<path d="M1070,448 H1089 V592 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
+<text x="1092" y="518.0" font-size="10" fill="#7b2d8e">83</text>
+<path d="M1070,608 H1096 V736 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
+<text x="1099" y="670.0" font-size="10" fill="#7b2d8e">84</text>
+<path d="M1070,752 H1103 V464 H1070" fill="none" stroke="#7b2d8e" stroke-width="1.4" stroke-dasharray="4,2"/>
+<text x="1106" y="606.0" font-size="10" fill="#7b2d8e">85</text>
 <rect x="40" y="90" width="230" height="82" rx="8" fill="#f5f5f5" stroke="#333"/>
 <text x="48" y="106" font-weight="bold">IEC</text>
 <text x="48" y="119" font-size="10" fill="#555">IEC C14 inlet, fuse 2 A T + switch</text>
@@ -251,7 +269,7 @@
 <circle cx="440" cy="880" r="2.2" fill="#333"/><circle cx="670" cy="880" r="2.2" fill="#333"/>
 <text x="555.0" y="900" text-anchor="middle" font-size="11">OUT-</text>
 <circle cx="440" cy="896" r="2.2" fill="#333"/><circle cx="670" cy="896" r="2.2" fill="#333"/>
-<rect x="840" y="90" width="230" height="386" rx="8" fill="#e3f2fd" stroke="#333"/>
+<rect x="840" y="90" width="230" height="434" rx="8" fill="#e3f2fd" stroke="#333"/>
 <text x="848" y="106" font-weight="bold">MEGA</text>
 <text x="848" y="119" font-size="10" fill="#555">Arduino Mega 2560</text>
 <text x="955.0" y="132" text-anchor="middle" font-size="11">5V</text>
@@ -298,26 +316,32 @@
 <circle cx="840" cy="448" r="2.2" fill="#333"/><circle cx="1070" cy="448" r="2.2" fill="#333"/>
 <text x="955.0" y="468" text-anchor="middle" font-size="11">RX1</text>
 <circle cx="840" cy="464" r="2.2" fill="#333"/><circle cx="1070" cy="464" r="2.2" fill="#333"/>
-<rect x="840" y="506" width="230" height="82" rx="8" fill="#f5f5f5" stroke="#333"/>
-<text x="848" y="522" font-weight="bold">DIV</text>
-<text x="848" y="535" font-size="10" fill="#555">10 k / 20 k divider (5 V → 3.3 V)</text>
-<text x="955.0" y="548" text-anchor="middle" font-size="11">in</text>
-<circle cx="840" cy="544" r="2.2" fill="#333"/><circle cx="1070" cy="544" r="2.2" fill="#333"/>
-<text x="955.0" y="564" text-anchor="middle" font-size="11">out</text>
-<circle cx="840" cy="560" r="2.2" fill="#333"/><circle cx="1070" cy="560" r="2.2" fill="#333"/>
-<text x="955.0" y="580" text-anchor="middle" font-size="11">GND</text>
-<circle cx="840" cy="576" r="2.2" fill="#333"/><circle cx="1070" cy="576" r="2.2" fill="#333"/>
-<rect x="840" y="618" width="230" height="98" rx="8" fill="#e3f2fd" stroke="#333"/>
-<text x="848" y="634" font-weight="bold">ESP</text>
-<text x="848" y="647" font-size="10" fill="#555">Waveshare ESP32-S3-Touch-LCD-7</text>
-<text x="955.0" y="660" text-anchor="middle" font-size="11">5V</text>
-<circle cx="840" cy="656" r="2.2" fill="#333"/><circle cx="1070" cy="656" r="2.2" fill="#333"/>
-<text x="955.0" y="676" text-anchor="middle" font-size="11">GND</text>
-<circle cx="840" cy="672" r="2.2" fill="#333"/><circle cx="1070" cy="672" r="2.2" fill="#333"/>
-<text x="955.0" y="692" text-anchor="middle" font-size="11">RX</text>
-<circle cx="840" cy="688" r="2.2" fill="#333"/><circle cx="1070" cy="688" r="2.2" fill="#333"/>
-<text x="955.0" y="708" text-anchor="middle" font-size="11">TX</text>
+<text x="955.0" y="484" text-anchor="middle" font-size="11">D34</text>
+<circle cx="840" cy="480" r="2.2" fill="#333"/><circle cx="1070" cy="480" r="2.2" fill="#333"/>
+<text x="955.0" y="500" text-anchor="middle" font-size="11">D36</text>
+<circle cx="840" cy="496" r="2.2" fill="#333"/><circle cx="1070" cy="496" r="2.2" fill="#333"/>
+<text x="955.0" y="516" text-anchor="middle" font-size="11">D38</text>
+<circle cx="840" cy="512" r="2.2" fill="#333"/><circle cx="1070" cy="512" r="2.2" fill="#333"/>
+<rect x="840" y="554" width="230" height="82" rx="8" fill="#f5f5f5" stroke="#333"/>
+<text x="848" y="570" font-weight="bold">DIV</text>
+<text x="848" y="583" font-size="10" fill="#555">10 k / 20 k divider (5 V → 3.3 V)</text>
+<text x="955.0" y="596" text-anchor="middle" font-size="11">in</text>
+<circle cx="840" cy="592" r="2.2" fill="#333"/><circle cx="1070" cy="592" r="2.2" fill="#333"/>
+<text x="955.0" y="612" text-anchor="middle" font-size="11">out</text>
+<circle cx="840" cy="608" r="2.2" fill="#333"/><circle cx="1070" cy="608" r="2.2" fill="#333"/>
+<text x="955.0" y="628" text-anchor="middle" font-size="11">GND</text>
+<circle cx="840" cy="624" r="2.2" fill="#333"/><circle cx="1070" cy="624" r="2.2" fill="#333"/>
+<rect x="840" y="666" width="230" height="98" rx="8" fill="#e3f2fd" stroke="#333"/>
+<text x="848" y="682" font-weight="bold">ESP</text>
+<text x="848" y="695" font-size="10" fill="#555">Waveshare ESP32-S3-Touch-LCD-7</text>
+<text x="955.0" y="708" text-anchor="middle" font-size="11">5V</text>
 <circle cx="840" cy="704" r="2.2" fill="#333"/><circle cx="1070" cy="704" r="2.2" fill="#333"/>
+<text x="955.0" y="724" text-anchor="middle" font-size="11">GND</text>
+<circle cx="840" cy="720" r="2.2" fill="#333"/><circle cx="1070" cy="720" r="2.2" fill="#333"/>
+<text x="955.0" y="740" text-anchor="middle" font-size="11">RX</text>
+<circle cx="840" cy="736" r="2.2" fill="#333"/><circle cx="1070" cy="736" r="2.2" fill="#333"/>
+<text x="955.0" y="756" text-anchor="middle" font-size="11">TX</text>
+<circle cx="840" cy="752" r="2.2" fill="#333"/><circle cx="1070" cy="752" r="2.2" fill="#333"/>
 <rect x="1240" y="90" width="230" height="194" rx="8" fill="#ede7f6" stroke="#333"/>
 <text x="1248" y="106" font-weight="bold">MDD10A</text>
 <text x="1248" y="119" font-size="10" fill="#555">Cytron MDD10A (flyback built in)</text>
@@ -436,6 +460,33 @@
 <circle cx="1240" cy="1296" r="2.2" fill="#333"/><circle cx="1470" cy="1296" r="2.2" fill="#333"/>
 <text x="1355.0" y="1316" text-anchor="middle" font-size="11">COM</text>
 <circle cx="1240" cy="1312" r="2.2" fill="#333"/><circle cx="1470" cy="1312" r="2.2" fill="#333"/>
+<rect x="1240" y="1354" width="230" height="82" rx="8" fill="#e8f5e9" stroke="#333"/>
+<text x="1248" y="1370" font-weight="bold">LVA</text>
+<text x="1248" y="1383" font-size="10" fill="#555">XKC-Y25-NPN level sensor, acid tank ≈60 </text>
+<text x="1355.0" y="1396" text-anchor="middle" font-size="11">V+</text>
+<circle cx="1240" cy="1392" r="2.2" fill="#333"/><circle cx="1470" cy="1392" r="2.2" fill="#333"/>
+<text x="1355.0" y="1412" text-anchor="middle" font-size="11">GND</text>
+<circle cx="1240" cy="1408" r="2.2" fill="#333"/><circle cx="1470" cy="1408" r="2.2" fill="#333"/>
+<text x="1355.0" y="1428" text-anchor="middle" font-size="11">OUT</text>
+<circle cx="1240" cy="1424" r="2.2" fill="#333"/><circle cx="1470" cy="1424" r="2.2" fill="#333"/>
+<rect x="1240" y="1466" width="230" height="82" rx="8" fill="#e8f5e9" stroke="#333"/>
+<text x="1248" y="1482" font-weight="bold">LVW</text>
+<text x="1248" y="1495" font-size="10" fill="#555">XKC-Y25-NPN level sensor, rinse-water ta</text>
+<text x="1355.0" y="1508" text-anchor="middle" font-size="11">V+</text>
+<circle cx="1240" cy="1504" r="2.2" fill="#333"/><circle cx="1470" cy="1504" r="2.2" fill="#333"/>
+<text x="1355.0" y="1524" text-anchor="middle" font-size="11">GND</text>
+<circle cx="1240" cy="1520" r="2.2" fill="#333"/><circle cx="1470" cy="1520" r="2.2" fill="#333"/>
+<text x="1355.0" y="1540" text-anchor="middle" font-size="11">OUT</text>
+<circle cx="1240" cy="1536" r="2.2" fill="#333"/><circle cx="1470" cy="1536" r="2.2" fill="#333"/>
+<rect x="1240" y="1578" width="230" height="82" rx="8" fill="#e8f5e9" stroke="#333"/>
+<text x="1248" y="1594" font-weight="bold">LVX</text>
+<text x="1248" y="1607" font-size="10" fill="#555">XKC-Y25-NPN level sensor, waste tank ≈85</text>
+<text x="1355.0" y="1620" text-anchor="middle" font-size="11">V+</text>
+<circle cx="1240" cy="1616" r="2.2" fill="#333"/><circle cx="1470" cy="1616" r="2.2" fill="#333"/>
+<text x="1355.0" y="1636" text-anchor="middle" font-size="11">GND</text>
+<circle cx="1240" cy="1632" r="2.2" fill="#333"/><circle cx="1470" cy="1632" r="2.2" fill="#333"/>
+<text x="1355.0" y="1652" text-anchor="middle" font-size="11">OUT</text>
+<circle cx="1240" cy="1648" r="2.2" fill="#333"/><circle cx="1470" cy="1648" r="2.2" fill="#333"/>
 <rect x="1640" y="90" width="230" height="66" rx="8" fill="#f1f8e9" stroke="#333"/>
 <text x="1648" y="106" font-weight="bold">PERI</text>
 <text x="1648" y="119" font-size="10" fill="#555">peristaltic drip pump 12 V</text>
@@ -512,17 +563,17 @@
 <circle cx="1640" cy="1040" r="2.2" fill="#333"/><circle cx="1870" cy="1040" r="2.2" fill="#333"/>
 <text x="1755.0" y="1060" text-anchor="middle" font-size="11">-R</text>
 <circle cx="1640" cy="1056" r="2.2" fill="#333"/><circle cx="1870" cy="1056" r="2.2" fill="#333"/>
-<line x1="40" y1="1384" x2="70" y2="1384" stroke="#8B4513" stroke-width="3"/><text x="76" y="1388">AC L</text>
-<line x1="190" y1="1384" x2="220" y2="1384" stroke="#1f5fbf" stroke-width="3"/><text x="226" y="1388">AC N</text>
-<line x1="340" y1="1384" x2="370" y2="1384" stroke="#6aa84f" stroke-width="3" stroke-dasharray="6,3"/><text x="376" y="1388">PE</text>
-<line x1="490" y1="1384" x2="520" y2="1384" stroke="#d62728" stroke-width="3"/><text x="526" y="1388">+12 V</text>
-<line x1="640" y1="1384" x2="670" y2="1384" stroke="#ff7f0e" stroke-width="3"/><text x="676" y="1388">+5 V</text>
-<line x1="790" y1="1384" x2="820" y2="1384" stroke="#e377c2" stroke-width="3"/><text x="826" y="1388">+6 V</text>
-<line x1="940" y1="1384" x2="970" y2="1384" stroke="#9467bd" stroke-width="3"/><text x="976" y="1388">+3.3 V</text>
-<line x1="40" y1="1406" x2="70" y2="1406" stroke="#111111" stroke-width="3"/><text x="76" y="1410">GND</text>
-<line x1="190" y1="1406" x2="220" y2="1406" stroke="#d4b000" stroke-width="3"/><text x="226" y="1410">PWM</text>
-<line x1="340" y1="1406" x2="370" y2="1406" stroke="#1f77b4" stroke-width="3"/><text x="376" y="1410">digital</text>
-<line x1="490" y1="1406" x2="520" y2="1406" stroke="#2ca02c" stroke-width="3"/><text x="526" y="1410">analog</text>
-<line x1="640" y1="1406" x2="670" y2="1406" stroke="#7b2d8e" stroke-width="3" stroke-dasharray="4,2"/><text x="676" y="1410">UART/I2C</text>
-<line x1="790" y1="1406" x2="820" y2="1406" stroke="#7f7f7f" stroke-width="3"/><text x="826" y="1410">load output</text>
+<line x1="40" y1="1720" x2="70" y2="1720" stroke="#8B4513" stroke-width="3"/><text x="76" y="1724">AC L</text>
+<line x1="190" y1="1720" x2="220" y2="1720" stroke="#1f5fbf" stroke-width="3"/><text x="226" y="1724">AC N</text>
+<line x1="340" y1="1720" x2="370" y2="1720" stroke="#6aa84f" stroke-width="3" stroke-dasharray="6,3"/><text x="376" y="1724">PE</text>
+<line x1="490" y1="1720" x2="520" y2="1720" stroke="#d62728" stroke-width="3"/><text x="526" y="1724">+12 V</text>
+<line x1="640" y1="1720" x2="670" y2="1720" stroke="#ff7f0e" stroke-width="3"/><text x="676" y="1724">+5 V</text>
+<line x1="790" y1="1720" x2="820" y2="1720" stroke="#e377c2" stroke-width="3"/><text x="826" y="1724">+6 V</text>
+<line x1="940" y1="1720" x2="970" y2="1720" stroke="#9467bd" stroke-width="3"/><text x="976" y="1724">+3.3 V</text>
+<line x1="40" y1="1742" x2="70" y2="1742" stroke="#111111" stroke-width="3"/><text x="76" y="1746">GND</text>
+<line x1="190" y1="1742" x2="220" y2="1742" stroke="#d4b000" stroke-width="3"/><text x="226" y="1746">PWM</text>
+<line x1="340" y1="1742" x2="370" y2="1742" stroke="#1f77b4" stroke-width="3"/><text x="376" y="1746">digital</text>
+<line x1="490" y1="1742" x2="520" y2="1742" stroke="#2ca02c" stroke-width="3"/><text x="526" y="1746">analog</text>
+<line x1="640" y1="1742" x2="670" y2="1742" stroke="#7b2d8e" stroke-width="3" stroke-dasharray="4,2"/><text x="676" y="1746">UART/I2C</text>
+<line x1="790" y1="1742" x2="820" y2="1742" stroke="#7f7f7f" stroke-width="3"/><text x="826" y="1746">load output</text>
 </svg>

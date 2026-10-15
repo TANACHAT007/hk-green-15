@@ -98,6 +98,8 @@ h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.2; margin: 6px 0 12px; 
 .simbox p { margin: 2px 0 0; opacity: .8; }
 .simbox .btn { margin-left: auto; }
 
+.vid { position: relative; border-radius: var(--r); overflow: hidden; box-shadow: 0 30px 70px rgba(30, 25, 80, .22); background: #16152b; }
+.vid video { width: 100%; display: block; aspect-ratio: 16/9; }
 /* gallery */
 .gal { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
 .g { position: relative; border-radius: 22px; overflow: hidden; background: var(--panel); box-shadow: var(--shadow); cursor: zoom-in; grid-column: span 2; aspect-ratio: 16/10; }
@@ -159,7 +161,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 <body>
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#"><span class="logo">🫧</span>HK-Green-15</a>
-  <div class="links"><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#gallery">แกลเลอรี</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a></div>
+  <div class="links"><a href="#video">วิดีโอ</a><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#gallery">แกลเลอรี</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a></div>
   <a class="btn dark sm" href="app.html">เปิดแดชบอร์ด →</a>
 </div></nav>
 
@@ -185,19 +187,25 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   <div class="stat"><b>12</b><small>เข็มหยดพร้อมกัน</small></div>
   <div class="stat"><b>≈ 9 ชม.</b><small>ต่อรอบ อัตโนมัติ</small></div>
   <div class="stat"><b>4 รอบ</b><small>ถังผงเติมครั้งเดียว</small></div>
-  <div class="stat"><b>≈ 12.6k</b><small>บาท ค่าวัสดุทั้งเครื่อง</small></div>
+  <div class="stat"><b>≈ 12.9k</b><small>บาท ค่าวัสดุทั้งเครื่อง</small></div>
 </div></div></header>
+
+<section id="video"><div class="wrap">
+  <div class="kicker reveal">วิดีโอแนะนำ</div>
+  <h2 class="reveal">รู้จัก HK-Green-15 ใน 2 นาที</h2>
+  <div class="vid reveal"><video controls playsinline preload="none" poster="img/video_poster.jpg" src="img/intro.mp4"></video></div>
+</div></section>
 
 <section id="feat"><div class="wrap">
   <div class="kicker reveal">จุดเด่น</div>
   <h2 class="reveal">ออกแบบให้ทำงานแทนคน ตั้งแต่ผงจนเป็นเม็ด</h2>
-  <p class="sub reveal">ทุกขั้นตอนในสูตรของทีม (ไคโตซาน 6 % ในกรดอะซิติก 1 M + ไบโอชาร์ 2 % หยดลง NaOH 2 M) ถูกแปลงเป็นงานของเครื่อง</p>
+  <p class="sub reveal">ทุกขั้นตอนในสูตรของทีม (ไคโตซาน 6 % ในกรดอะซิติก 1 M + ไบโอชาร์ 2 % ของน้ำหนักกรดรวมไคโตซาน หยดลง NaOH 2 M) ถูกแปลงเป็นงานของเครื่อง</p>
   <div class="feats">
-    <div class="feat reveal"><div class="ic" style="background:#fff3d6">🥄</div><b>ชั่งผงด้วยสกรู 2 ชุด</b><p>สกรูใหญ่ป้อนไคโตซาน สกรูจิ๋วมอเตอร์ N20 ป้อนไบโอชาร์ทีละ 0.09 g/รอบ ตามเปอร์เซ็นต์ที่ตั้งไว้</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#fff3d6">🥄</div><b>ชั่งผงด้วยสกรู 2 ชุด</b><p>สกรูใหญ่ป้อนไคโตซาน สกรูมอเตอร์ N20 ป้อนไบโอชาร์ 2 % ของน้ำหนักกรด + ไคโตซาน (≈ 10.6 g ต่อรอบ)</p></div>
     <div class="feat reveal"><div class="ic" style="background:#e3f6ff">🌀</div><b>กวนด้วยแม่เหล็ก</b><p>ไม่มีแกนทะลุถัง ไม่รั่ว ล้างง่าย พัดลม 12 V หมุนแม่เหล็กใต้ถังผสมและถังขึ้นรูป</p></div>
     <div class="feat reveal"><div class="ic" style="background:#ffe6f2">💧</div><b>หยดพร้อมกัน 12 เข็ม</b><p>ปั๊มรีดท่อคุมอัตราไหล ~1 mL/นาที/เข็ม ให้หยดเป็นเม็ด ไม่เป็นสาย</p></div>
     <div class="feat reveal"><div class="ic" style="background:#e4fbef">🧪</div><b>ล้างจนเป็นกลางเอง</b><p>สเปรย์ล้าง รอสะเด็ด วัด pH น้ำที่ออก ทำซ้ำจนถึงเป้า ไม่ต้องยืนเช็กกระดาษ pH</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#efe8ff">🛑</div><b>ปลอดภัยไว้ก่อน</b><p>E-stop ตัดไฟมอเตอร์ทั้งหมดด้วยฮาร์ดแวร์ ชิ้นงานพิมพ์ทุกชิ้นยึดด้วยสกรูจริง โครงอลูมิเนียม 2020</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#efe8ff">🛑</div><b>ปลอดภัยไว้ก่อน</b><p>E-stop ตัดไฟมอเตอร์ด้วยฮาร์ดแวร์ · เซนเซอร์ระดับ 3 จุดติดนอกถัง: กรดไม่พอไม่ยอมเริ่ม น้ำล้างหมดหรือถังน้ำทิ้งเต็มเครื่องจะรอ</p></div>
     <div class="feat reveal"><div class="ic" style="background:#fff0e0">📱</div><b>สั่งงานได้หลายทาง</b><p>จอสัมผัส 7″ ภาษาไทยหน้าเครื่อง เว็บแดชบอร์ด และปุ่ม START/STOP บนแผงหน้า</p></div>
   </div>
 </div></section>
@@ -252,10 +260,10 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
     <div><span>หน้าจอ</span><b>ESP32-S3 7″ จอสัมผัส 800×480</b></div>
     <div><span>ไฟเลี้ยง</span><b>220 VAC → 12 V (Mean Well LRS-150)</b></div>
     <div><span>ตัวขับมอเตอร์</span><b>Cytron MDD10A + MDD3A + MOSFET</b></div>
-    <div><span>ปริมาณต่อรอบ</span><b>สารละลาย 500 mL · ไคโตซาน 30 g</b></div>
-    <div><span>ถังผง</span><b>≈ 140 g (4 รอบ) · ไบโอชาร์ 22 g</b></div>
+    <div><span>ปริมาณต่อรอบ</span><b>กรด 500 mL · ไคโตซาน 30 g · ไบโอชาร์ 10.6 g</b></div>
+    <div><span>ถังผง</span><b>ไคโตซาน ≈ 140 g · ไบโอชาร์ ≈ 45 g (4 รอบ)</b></div>
     <div><span>ชิ้นงานพิมพ์ 3 มิติ</span><b>39 ชิ้น PETG ≈ 1.5 kg</b></div>
-    <div><span>ค่าวัสดุ</span><b>≈ 12,566 บาท</b></div>
+    <div><span>ค่าวัสดุ</span><b>≈ 12,926 บาท</b></div>
   </div>
 </div></section>
 
