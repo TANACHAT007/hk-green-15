@@ -331,7 +331,7 @@ $('periSend').onclick = () => { if (!S || !S.p) return; const ml = +$('periMl').
   $('bMode').textContent = MODE === 'sim' ? 'โหมดจำลอง (ไม่มีฮาร์ดแวร์)' : 'เชื่อมต่อ Arduino Mega (USB)';
   $('bMode').className = 'badge ' + (MODE === 'sim' ? 'warn' : 'ok');
   if (MODE !== 'sim') { document.querySelectorAll('.sim').forEach((e) => e.style.display = 'none'); }
-  else $('simOnlyNote').textContent = 'ค่าปริมาณมาจากตัวจำลอง (เครื่องจริงไม่มีเซนเซอร์ระดับ) · ขนาดเม็ดจากปริมาตรหยด 0.02 mL × หด 0.8';
+  else $('simOnlyNote').textContent = 'ค่าปริมาณมาจากตัวจำลอง (เครื่องจริงรู้แค่ 3 จุดจากเซนเซอร์ระดับ) · ขนาดเม็ดจากปริมาตรหยด 0.02 mL × หด 0.8';
   for (const [id, url] of [['docE', '/doc/electrical_check.md'], ['docF', '/doc/feasibility.md']]) {
     try { const r = await fetch(url); $(id).textContent = r.ok ? await r.text() : 'ไม่พบไฟล์'; } catch (e) {}
   }
