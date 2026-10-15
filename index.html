@@ -157,6 +157,35 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   .simbox { flex-direction: column; align-items: flex-start; } .simbox .btn { margin-left: 0; }
   .chip { display: none; }
 }
+/* phones: compact, no long scrolling */
+@media (max-width: 700px) {
+  .brand { white-space: nowrap; font-size: 16px; } .logo { width: 32px; height: 32px; font-size: 17px; }
+  nav .wrap { height: 58px; gap: 8px; } nav .btn.sm { padding: 8px 12px; font-size: 13px; }
+  .hero { padding: 26px 0 10px; } h1 { margin: 12px 0 10px; } .lead { font-size: 16px; margin-bottom: 20px; }
+  .shot { margin: 6px -16px 0; } .shot img.hero-img { animation: none; }
+  .stats { gap: 10px; margin-top: 14px; } .stat { padding: 12px 14px; border-radius: 18px; } .stat b { font-size: 20px; } .stat small { font-size: 12.5px; }
+  section { padding: 44px 0 6px; } .sub { font-size: 15px; margin-bottom: 20px; }
+  .feats { gap: 10px; }
+  .feat { display: grid; grid-template-columns: 44px 1fr; gap: 0 14px; padding: 16px; border-radius: 20px; }
+  .feat .ic { width: 44px; height: 44px; border-radius: 14px; font-size: 22px; margin: 0; grid-row: span 2; }
+  .feat b { font-size: 16.5px; margin: 0; } .feat p { font-size: 14px; }
+  .steps { grid-template-columns: 1fr; gap: 0; }
+  .step { display: grid; grid-template-columns: 48px 1fr auto; gap: 0 14px; align-items: center; text-align: left; padding: 8px 0; position: relative; }
+  .step:not(:last-child)::after { content: ""; position: absolute; left: 23px; top: 52px; bottom: -8px; width: 3px; border-radius: 2px; background: var(--line); }
+  .step .dot { width: 48px; height: 48px; margin: 0; font-size: 22px; border-radius: 16px; grid-row: span 2; }
+  .step b { font-size: 16px; } .step small { grid-column: 2; margin: 0; }
+  .step .t { grid-column: 3; grid-row: 1 / span 2; margin: 0; }
+  .simbox { padding: 20px; }
+  .gal { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 -16px; padding: 0 16px 8px; scrollbar-width: none; }
+  .gal::-webkit-scrollbar { display: none; }
+  .g, .g.big, .g.big:first-child { flex: 0 0 86%; scroll-snap-align: center; aspect-ratio: 16/10; }
+  .g img { object-fit: contain; background: #fff; }
+  .disp { gap: 46px; } .device { padding: 10px; border-radius: 20px; }
+  .specs div { flex-direction: column; gap: 2px; padding: 10px 0; } .specs div b { text-align: left; }
+  .more { gap: 10px; }
+  .card { display: grid; grid-template-columns: 40px 1fr; gap: 0 12px; padding: 16px; border-radius: 20px; }
+  .card .ic { font-size: 26px; grid-row: span 3; } .card b { margin: 0; font-size: 17px; } .card p { margin: 2px 0 6px; font-size: 14px; }
+}
 @media (max-width: 420px) { .wrap { padding: 0 16px; } .ctas .btn { width: 100%; justify-content: center; } }
 </style>
 </head>
