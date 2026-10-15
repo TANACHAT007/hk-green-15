@@ -57,7 +57,7 @@ const V = { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0, trayBea
 try { Object.assign(V, JSON.parse(localStorage.getItem('hk15_3d') || '{}')); } catch (e) {}
 const saveV = () => { try { localStorage.setItem('hk15_3d', JSON.stringify(V)); } catch (e) {} };
 const CAP = { hopperG: 140, acidMl: 500, bioG: 22 };
-let S = null, lastState = null, xray = true, labelsOn = true, runBeads = 0, beadWhere = 'none', phase0 = {};
+let dosed = false, S = null, lastState = null, xray = true, labelsOn = true, runBeads = 0, beadWhere = 'none', phase0 = {};
 
 // ================================================================= scene
 function init() {
@@ -152,12 +152,12 @@ class Particles {   // pooled falling particles (drops, powder, spray)
   constructor(n, r, color, opts = {}) {
     this.m = new THREE.InstancedMesh(new THREE.SphereGeometry(r, 10, 8), new THREE.MeshStandardMaterial({ color, roughness: 0.2, transparent: !!opts.op, opacity: opts.op || 1 }), n);
     this.p = Array.from({ length: n }, () => ({ live: false, x: 0, y: 0, z: 0, vz: 0, floor: 0 })); this.m.count = n; this.m.frustumCulled = false;
-    this.d = new THREE.Object3D(); this.g = opts.g ?? 900; fx.add(this.m);
+    this.d = new THREE.Object3D(); this.g = opts.g ?? 900; this.onLand = opts.onLand; fx.add(this.m);
   }
   spawn(x, y, z, floor, vz = 0) { const q = this.p.find((q) => !q.live); if (q) Object.assign(q, { live: true, x, y, z, vz, floor }); }
   tick(dt) {
     this.p.forEach((q, i) => {
-      if (q.live && this.g) { q.vz -= this.g * dt; q.z += q.vz * dt; if (q.z <= q.floor) q.live = false; }
+      if (q.live && this.g) { q.vz -= this.g * dt; q.z += q.vz * dt; if (q.z <= q.floor) { q.live = false; if (this.onLand) this.onLand(q.x, q.y, q.floor); } }
       this.d.position.copy(q.live ? P(q.x, q.y, q.z) : new THREE.Vector3(0, -9999, 0)); this.d.updateMatrix(); this.m.setMatrixAt(i, this.d.matrix);
     });
     this.m.instanceMatrix.needsUpdate = true;
@@ -167,7 +167,7 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
   constructor(n, color) {
     this.m = new THREE.InstancedMesh(new THREE.SphereGeometry(2.6, 12, 10), new THREE.MeshPhysicalMaterial({ color, roughness: 0.2, clearcoat: 1 }), n);
     this.n = n; this.m.count = 0; this.m.frustumCulled = false; this.d = new THREE.Object3D(); fx.add(this.m);
-    this.from = []; this.to = []; this.t0 = 0; this.dur = 1;
+    this.from = []; this.to = []; this.t0 = 0; this.dur = 1; this.where = 'none'; this.swirl = 0; this.ph = new Float32Array(n);
   }
   spots(where, n) {
     const out = [], rnd = mulberry(where.length * 7 + 3);
@@ -180,11 +180,11 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
   place(where, n, animate) {
     n = Math.min(this.n, n); const to = this.spots(where, n);
     this.from = animate && this.to.length ? to.map((_, i) => this.to[i % this.to.length].clone()) : to.map((v) => v.clone());
-    this.to = to; this.m.count = n; this.t0 = performance.now(); this.dur = animate ? 1800 : 1; this.flow = false;
+    this.to = to; this.m.count = n; this.t0 = performance.now(); this.dur = animate ? 1800 : 1; this.flow = false; this.where = where;
   }
   drain(n, dur) {   // valve open: beads leave one after another, through the outlet pipe, and drop into the basket
     n = Math.min(this.n, n); this.from = this.spots('chamber', n); this.to = this.spots('basket', n); this.m.count = n;
-    this.t0 = performance.now(); this.dur = dur; this.flow = true;
+    this.t0 = performance.now(); this.dur = dur; this.flow = true; this.where = 'basket';
   }
   flowPos(i, now) {
     const n = this.m.count, delay = (i / Math.max(1, n)) * this.dur * 0.8, k = Math.max(0, Math.min(1, (now - this.t0 - delay) / (this.dur * 0.2 + 600)));
@@ -193,22 +193,78 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
     if (k < 0.7) return this.d.position.lerpVectors(port, end, (k - 0.25) / 0.45);
     const f = (k - 0.7) / 0.3; this.d.position.lerpVectors(end, b, f); return this.d.position;
   }
-  tick(t) {
+  tick(t, dt = 0.016) {
     const now = performance.now(), k = Math.min(1, (now - this.t0) / this.dur), e = 1 - (1 - k) ** 3;
+    const sw = this.where === 'chamber' && k >= 1 ? this.swirl : 0, C0 = P(G.chamber.x, G.chamber.y, G.chamber.z0);
     if (this.flow && now - this.t0 > this.dur * 1.05 + 600) this.flow = false;
     for (let i = 0; i < this.m.count; i++) {
       if (this.flow) { this.flowPos(i, now); this.d.updateMatrix(); this.m.setMatrixAt(i, this.d.matrix); continue; }
       this.d.position.lerpVectors(this.from[i], this.to[i], e);
       if (k < 1) this.d.position.y += Math.sin(k * Math.PI) * 60;                       // hop across
-      else this.d.position.y += Math.abs(Math.sin(t * 3 + i)) * 0.8;                     // little jiggle
+      else if (sw > 0.01) {                                                               // swept round by the stirrer
+        const dx = this.to[i].x - C0.x, dz = this.to[i].z - C0.z, r = Math.hypot(dx, dz), rr = r / G.chamber.r;
+        this.ph[i] += dt * sw * (4.5 - 3 * rr);                                            // inner beads turn faster
+        const a = Math.atan2(dz, dx) + this.ph[i];
+        this.d.position.x = C0.x + r * Math.cos(a); this.d.position.z = C0.z + r * Math.sin(a);
+        this.d.position.y += sw * (4 + 22 * (1 - rr)) * (0.5 + 0.5 * Math.sin(t * 2.3 + i * 1.7));   // lifted in the vortex
+      } else this.d.position.y += Math.abs(Math.sin(t * 3 + i)) * 0.8;                   // little jiggle
       this.d.updateMatrix(); this.m.setMatrixAt(i, this.d.matrix);
     }
     this.m.instanceMatrix.needsUpdate = true;
   }
 }
+// liquid surface that dips into a vortex while the stirrer runs (radial dip + spiral ripples, rotating)
+function vortex(spec, liq) {
+  const g = new THREE.RingGeometry(0.01, spec.r - 0.5, 64, 14), mat = liq.clone();
+  mat.opacity = Math.min(0.9, liq.opacity + 0.15); mat.side = THREE.DoubleSide;
+  const m = new THREE.Mesh(g, mat); m.rotation.x = -Math.PI / 2; m.renderOrder = 3; m.visible = false; fx.add(m);
+  const streak = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ map: spiralTex(), transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }));
+  streak.renderOrder = 4; streak.position.z = 0.3; m.add(streak);              // white spiral streaks riding on the surface
+  const base = g.attributes.position.array.slice();
+  m.userData = { s: 0, goal: 0, spec, liq, base,
+    tick(t, dt, level) {
+      const u = m.userData; u.s += (u.goal - u.s) * Math.min(1, dt * 1.5);               // spin up / down smoothly
+      m.visible = level > 0.02 && u.s > 0.02; if (!m.visible) return;
+      streak.material.opacity = 0.75 * u.s;
+      mat.color.copy(liq.color);
+      const pos = g.attributes.position.array, R = spec.r, depth = Math.min(spec.h * level * 0.6, R * 0.32) * u.s;
+      for (let i = 0; i < pos.length; i += 3) {
+        const x = base[i], y = base[i + 1], rr = Math.min(1, Math.hypot(x, y) / R), a = Math.atan2(y, x);
+        pos[i + 2] = -depth * (1 - rr) ** 2 + u.s * 0.9 * rr * Math.sin(5 * a + rr * 9 - t * 6 * u.s);
+      }
+      g.attributes.position.needsUpdate = true; g.computeVertexNormals();
+      m.rotation.z += dt * u.s * 2.5;
+      m.position.copy(P(spec.x, spec.y, spec.z0 + spec.h * level + 0.3));
+    } };
+  return m;
+}
+function spiralTex() {   // 4 curved arms fading to the rim; RingGeometry UVs are planar so it maps straight on
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+  g.translate(128, 128); g.lineCap = 'round';
+  for (let arm = 0; arm < 4; arm++) for (let k = 0; k < 60; k++) {
+    const t = k / 60, r = 8 + t * 118, a = arm * Math.PI / 2 + t * 4.2;
+    g.strokeStyle = `rgba(70,140,185,${0.85 * (1 - t) * Math.min(1, t * 6)})`; g.lineWidth = 2 + 5 * (1 - t);
+    g.beginPath(); g.arc(0, 0, r, a, a + 0.22); g.stroke();
+  }
+  const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx;
+}
+// expanding rings where a drop or powder lands on the liquid
+class Ripples {
+  constructor(n) {
+    this.items = Array.from({ length: n }, () => {
+      const m = new THREE.Mesh(new THREE.RingGeometry(0.85, 1, 32), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }));
+      m.rotation.x = -Math.PI / 2; m.visible = false; m.renderOrder = 4; fx.add(m); return { m, t: 1, k: 1 };
+    });
+  }
+  add(x, y, z, k) { const r = this.items.find((r) => r.t >= 1) || this.items[0]; r.t = 0; r.k = k; r.m.position.copy(P(x, y, z + 0.5)); r.m.visible = true; }
+  tick(dt) {
+    this.items.forEach((r) => { if (r.t >= 1) { r.m.visible = false; return; }
+      r.t = Math.min(1, r.t + dt / 0.9); const s = 1 + 9 * r.k * r.t; r.m.scale.set(s, s, s); r.m.material.opacity = 0.55 * (1 - r.t); });
+  }
+}
 function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
-let L = {}, bioP, drops, powder, spray, swirl, beads, tray, phMat, stirA, stirC, drainAnim = null;
+let L = {}, vortA, vortC, ripples, bioP, drops, powder, spray, swirl, beads, tray, phMat, stirA, stirC, drainAnim = null;
 function buildFx() {
   fx = new THREE.Group(); scene.add(fx);
   L.acid = cyl(G.acid, liquidMat(0xf3f0e2, 0.45));                       // 1 M acetic acid: clear
@@ -228,6 +284,10 @@ function buildFx() {
   const bar = (s) => { const g = new THREE.Group(), m = new THREE.Mesh(new THREE.CapsuleGeometry(4, s.len - 8, 6, 12), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.3, clearcoat: 1 }));
     m.rotation.z = Math.PI / 2; g.add(m); g.position.copy(P(s.x, s.y, s.z)); fx.add(g); return g; };
   stirA = bar(G.stirAcid); stirC = bar(G.stirCh);
+  vortA = vortex(G.acid, L.acid.material); vortC = vortex(G.chamber, L.chamber.material);
+  ripples = new Ripples(24);
+  drops.onLand = (x, y, z) => ripples.add(x, y, z, 1);
+  powder.onLand = bioP.onLand = (x, y, z) => ripples.add(x, y, z, 0.6);
   Object.values(groups).forEach((Gp) => Gp.objs.forEach((o) => o.traverse((x) => {   // hide the static stir bar from the CAD model
     if (!x.isMesh) return; const s = new THREE.Box3().setFromObject(x).getSize(new THREE.Vector3()), d = [s.x, s.y, s.z].sort((a, b) => a - b);
     if (d[2] > 34 && d[2] < 46 && d[1] < 10 && d[0] < 10 && x.userData.g === 'Acid_Mix_Tank') x.visible = false; })));
@@ -263,10 +323,10 @@ function update(m, first) {
   const st = m.state, o = m.out || {}, p = m.p || {};
   if (st !== lastState) { enterState(st, lastState, m, first || lastState === null); lastState = st; }
   const prog = m.step_s ? 1 - (m.left_s || 0) / m.step_s : 0;
-  if (['DOSE', 'DISSOLVE', 'DRIP'].includes(st) && m.sim_acid_ml !== undefined) V.acidMl = m.sim_acid_ml;
+  if (STATES.indexOf(st) >= STATES.indexOf('DOSE') && STATES.indexOf(st) <= STATES.indexOf('TILT_BACK') && m.sim_acid_ml !== undefined) V.acidMl = m.sim_acid_ml;
   if (st === 'DOSE' && m.sim_powder_g !== undefined) V.hopperG = Math.max(0, phase0.hopper - m.sim_powder_g);
   if (st === 'DOSE' && m.sim_biochar_g !== undefined) V.bioG = Math.max(0, phase0.bio - m.sim_biochar_g);
-  if (st === 'DRAIN') { V.naoh = phase0.naoh * (1 - prog); V.waste = Math.min(1, phase0.waste + phase0.naoh * 0.55 * prog); }
+
   if (st === 'RINSE_SPRAY') { V.water = Math.max(0, phase0.water - 0.05 * prog); V.waste = Math.min(1, phase0.waste + 0.04 * prog); }
   if (['DRIP', 'SET'].includes(st)) { runBeads = m.sim_beads || runBeads; if (beadWhere === 'chamber' && beadN(runBeads) !== beads.m.count) beads.place('chamber', beadN(runBeads), false); }
   // acid colour: clear acid -> dark chitosan/biochar dope as the powder dissolves
@@ -289,9 +349,12 @@ function enterState(st, prev, m, first) {
     runBeads = m.sim_beads || 0;
     if (after('SET') && STATES.indexOf(st) < STATES.indexOf('TILT')) { beadWhere = 'basket'; beads.place('basket', beadN(runBeads), false); }
   }
+  if (['IDLE', 'DONE'].includes(prev) && !['IDLE', 'DONE', 'SAFE'].includes(st)) dosed = false;   // a new batch started
   if (!first && phase0.hopper !== undefined) {   // finish the step we left: at high speed it may have had no status in between
-    if (prev === 'DOSE') { V.hopperG = Math.max(0, phase0.hopper - (m.p?.dose_g || 30)); V.bioG = Math.max(0, phase0.bio - (m.p?.dose_g || 30) * (m.p?.biochar_pct ?? 2) / 100); }
-    if (prev === 'DRAIN') { V.waste = Math.min(1, phase0.waste + phase0.naoh * 0.55); V.naoh = 0; }
+    const active = (x) => STATES.indexOf(x) > STATES.indexOf('IDLE') && STATES.indexOf(x) < STATES.indexOf('DONE');
+    if ((prev === 'DOSE' || (!active(prev) && active(st) && st !== 'DOSE')) && !dosed) {   // DOSE seen or skipped by a fast run
+      const h0 = prev === 'DOSE' ? phase0.hopper : V.hopperG, b0 = prev === 'DOSE' ? phase0.bio : V.bioG;   // skipped DOSE: nothing used yet
+      dosed = true; V.hopperG = Math.max(0, h0 - (m.p?.dose_g || 30)); V.bioG = Math.max(0, b0 - (m.p?.dose_g || 30) * (m.p?.biochar_pct ?? 2) / 100); }
     if (prev === 'RINSE_SPRAY') { V.water = Math.max(0, phase0.water - 0.05); V.waste = Math.min(1, phase0.waste + 0.04); }
   }
   phase0 = { bio: V.bioG, hopper: V.hopperG, naoh: V.naoh, waste: V.waste, water: V.water };
@@ -305,29 +368,16 @@ function enterState(st, prev, m, first) {
     if (V.water < 0.5) { miss.push('น้ำล้าง'); V.water = 1; }
     phase0.hopper = V.hopperG; phase0.bio = V.bioG;
     toast(miss.length ? '🙈 ลืมเติม ' + miss.join(', ') + ' — ตัวจำลองเติมให้แล้ว แต่เครื่องจริงต้องเติมก่อนกด START นะ' : '🚀 เริ่มแล้ว! ป้อนผงลงถังกรด');
-    runBeads = 0; beadWhere = 'none'; beads.place('chamber', 0, false);
+    runBeads = 0; beadWhere = 'none'; beads.place('chamber', 0, false); dosed = false;
   }
   if (st === 'DRIP' && !first) toast('💧 เริ่มหยด — เม็ดเจลเกิดทันทีที่หยดโดน NaOH');
   if (st === 'DRIP' || st === 'SET') { if (beadWhere !== 'chamber') { beadWhere = 'chamber'; beads.place('chamber', beadN(m.sim_beads || runBeads), false); } }
-  if (st === 'DRAIN' && beadWhere !== 'basket') {
-    beadWhere = 'basket';
-    if (first) beads.place('basket', beadN(runBeads), false);
-    else {
-      const dur = Math.max(5000, Math.min(14000, (m.step_s || 60) / (m.speed || 1) * 1000));
-      beads.drain(beadN(runBeads), dur); drainAnim = { t0: performance.now(), dur: dur * 1.05 + 600, n0: L.chamber.userData.cur, w0: V.waste };
-      toast('🚿 เปิดวาล์ว — เม็ดไหลตามน้ำออกไปกองที่ตะกร้าล้าง น้ำ NaOH ลงถังน้ำทิ้ง');
-    }
-  }
-  if (st === 'TILT' && (beadWhere === 'basket' || beadWhere === 'chamber' || runBeads > 0)) {
-    const wait = drainAnim ? Math.max(0, drainAnim.t0 + drainAnim.dur - performance.now()) : 0;
-    beadWhere = 'tray';
-    setTimeout(() => {
-      if (!runBeads && !beads.m.count) return;
-      if (!beads.m.count) beads.place('basket', beadN(runBeads), false);
-      beads.place('tray', beadN(runBeads), !first);
-      toast('↘️ เทตะกร้า — เม็ดเจลไหลลงถาดตาก');
-      setTimeout(() => { V.trayBeads += runBeads; runBeads = 0; tray.place('tray', beadN(V.trayBeads), false); beads.place('tray', 0, false); beadWhere = 'none'; levels(); saveV(); }, first ? 0 : 1900);
-    }, first ? 0 : wait);
+  // States can be shorter than one status message at high speed (×600: TILT lasts ~8 ms), so each move also runs
+  // when a LATER state shows up first: drain on DRAIN or any rinse state, tip onto the tray on TILT/TILT_BACK/DONE.
+  if ((st === 'DRAIN' || st.startsWith('RINSE')) && beadWhere === 'chamber') doDrain(m, first);
+  if (['TILT', 'TILT_BACK', 'DONE'].includes(st) && (beadWhere === 'chamber' || beadWhere === 'basket')) {
+    if (beadWhere === 'chamber') doDrain(m, first);
+    doTilt(first);
   }
   if (st === 'IDLE' && (prev === 'SAFE' || prev === 'TEST') && !first) {   // reset after a stop: the operator empties the machine
     runBeads = 0; beadWhere = 'none'; drainAnim = null; beads.place('chamber', 0, false);
@@ -336,6 +386,23 @@ function enterState(st, prev, m, first) {
   if (st === 'DONE' && !first) { toast('🎉 เสร็จแล้ว! เม็ดเจลอยู่บนถาดตาก'); confetti(); }
   if (st === 'SAFE' && !first) toast('🛑 หยุดฉุกเฉิน — อุปกรณ์ทุกตัวหยุด');
   saveV();
+}
+function doDrain(m, first) {
+  beadWhere = 'basket';
+  if (first) { beads.place('basket', beadN(runBeads), false); return; }
+  const dur = Math.max(5000, Math.min(14000, (m.step_s || 60) / (m.speed || 1) * 1000));
+  beads.drain(beadN(runBeads), dur); drainAnim = { t0: performance.now(), dur: dur * 1.05 + 600, n0: L.chamber.userData.cur, w0: V.waste };
+  V.waste = Math.min(1, V.waste + V.naoh * 0.55); V.naoh = 0; phase0.waste = V.waste; phase0.naoh = 0; saveV();
+  toast('🚿 เปิดวาล์ว — เม็ดไหลตามน้ำออกไปกองที่ตะกร้าล้าง น้ำ NaOH ลงถังน้ำทิ้ง');
+}
+function doTilt(first) {
+  beadWhere = 'tray';
+  const n = runBeads, wait = drainAnim ? Math.max(0, drainAnim.t0 + drainAnim.dur - performance.now()) + 400 : 0;
+  setTimeout(() => {
+    if (!first) { beads.place('tray', beadN(n), true); toast('↘️ เทตะกร้า — เม็ดเจลไหลลงถาดตาก'); }
+    setTimeout(() => { V.trayBeads += n; if (runBeads === n) runBeads = 0; tray.place('tray', beadN(V.trayBeads), false);
+      beads.place('tray', 0, false); beadWhere = 'none'; levels(); saveV(); }, first ? 0 : 1900);
+  }, first ? 0 : wait);
 }
 function hud(m) {
   $('h3State').textContent = STATE_TH[m.state] || m.state;
@@ -374,8 +441,10 @@ function animate(dt) {
     Object.assign(q, { live: true, x: G.acid.x + r * Math.cos(a), y: G.acid.y + r * Math.sin(a), z: G.acid.z0 + 4 + (i * 13 % 100) / 100 * Math.max(4, lv - 8), vz: 0, floor: -1 });
   });
   // liquids wobble a little while something is moving them
-  L.acid.rotation.z = stir ? Math.sin(t * 6) * 0.01 : 0;
-  L.chamber.rotation.x = o.ch > 0 ? Math.sin(t * 5) * 0.008 : 0;
+  vortA.userData.goal = o.top > 0 && L.acid.userData.cur > 0.05 ? 0.45 + 0.55 * o.top / 255 : 0;
+  vortC.userData.goal = o.ch > 0 && L.chamber.userData.cur > 0.05 ? 0.4 + 0.6 * o.ch / 255 : 0;
+  vortA.userData.tick(t, dt, L.acid.userData.cur); vortC.userData.tick(t, dt, L.chamber.userData.cur);
+  beads.swirl = vortC.userData.s; ripples.tick(dt);
   // magnetic stir bars spin with the motor duty
   stirA.rotation.y += dt * (o.top > 0 ? 4 + 14 * o.top / 255 : 0); stirC.rotation.y += dt * (o.ch > 0 ? 3 + 10 * o.ch / 255 : 0);
   if (drainAnim) {   // the chamber empties while the beads run out
@@ -383,7 +452,7 @@ function animate(dt) {
     L.chamber.userData.goal = drainAnim.n0 * (1 - k); L.waste.userData.goal = Math.min(1, drainAnim.w0 + drainAnim.n0 * 0.55 * k);
     if (k >= 1) drainAnim = null;
   }
-  drops.tick(dt); powder.tick(dt); bioP.tick(dt); spray.tick(dt); swirl.tick(dt); beads.tick(t); tray.tick(t);
+  drops.tick(dt); powder.tick(dt); bioP.tick(dt); spray.tick(dt); swirl.tick(dt); beads.tick(t, dt); tray.tick(t, dt);
   if (labelsOn) labels(t);
 }
 const LABELS = [['⚫ ไบโอชาร์', G.bioHop.x, G.bioHop.y - 40, G.bioHop.z0 + 20, 'Biochar_Feeder'], ['🥄 ไคโตซาน', G.hopper.x, G.hopper.y, G.hopper.z0 + G.hopper.h + 20, 'Powder_Hopper_Auger'],
