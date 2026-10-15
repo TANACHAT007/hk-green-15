@@ -85,6 +85,8 @@ function init() {
       c.traverse((o) => { if (!o.isMesh) return;
         const m = o.material = o.material.clone(); m.side = THREE.DoubleSide; o.userData.g = k;
         if (m.roughness !== undefined) { m.roughness = Math.max(0.35, m.roughness); m.envMapIntensity = 0.9; }
+        if (k === 'Frame_2020' || k === 'Bracket_2020_corner_20x20x17') { m.metalness = 0.85; m.roughness = 0.38; m.color && m.color.lerp(new THREE.Color(0xc9ccd0), 0.5); }
+        if (k === 'Plates_PP') { m.metalness = 0; m.roughness = 0.85; }
         if (k === 'Acrylic_Enclosure_Top') Object.assign(m, { transparent: true, opacity: 0.18, depthWrite: false });
         m.userData.op = m.opacity; Gp.mats.push(m); });
     }
@@ -178,7 +180,7 @@ class Beads {       // gel beads that hop chamber -> basket -> drying tray
   place(where, n, animate) {
     n = Math.min(this.n, n); const to = this.spots(where, n);
     this.from = animate && this.to.length ? to.map((_, i) => this.to[i % this.to.length].clone()) : to.map((v) => v.clone());
-    this.to = to; this.m.count = n; this.t0 = performance.now(); this.dur = animate ? 1800 : 1;
+    this.to = to; this.m.count = n; this.t0 = performance.now(); this.dur = animate ? 1800 : 1; this.flow = false;
   }
   drain(n, dur) {   // valve open: beads leave one after another, through the outlet pipe, and drop into the basket
     n = Math.min(this.n, n); this.from = this.spots('chamber', n); this.to = this.spots('basket', n); this.m.count = n;
@@ -209,20 +211,20 @@ function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Ma
 let L = {}, bioP, drops, powder, spray, swirl, beads, tray, phMat, stirA, stirC, drainAnim = null;
 function buildFx() {
   fx = new THREE.Group(); scene.add(fx);
-  L.acid = cyl(G.acid, liquidMat(0x7cd4ff, 0.72));
-  L.chamber = cyl(G.chamber, liquidMat(0xb9a8ff, 0.5));
-  L.hopper = cyl(G.hopper, new THREE.MeshStandardMaterial({ color: 0xd9c7a3, roughness: 1 }));          // chitosan: pale
+  L.acid = cyl(G.acid, liquidMat(0xf3f0e2, 0.45));                       // 1 M acetic acid: clear
+  L.chamber = cyl(G.chamber, liquidMat(0xe6f1f2, 0.32));                 // 2 M NaOH: clear, slightly blue
+  L.hopper = cyl(G.hopper, new THREE.MeshStandardMaterial({ color: 0xece3cc, roughness: 1 }));          // chitosan flakes: off-white
   L.bio = cyl(G.bioHop, new THREE.MeshStandardMaterial({ color: 0x1f1c1a, roughness: 1 }));            // biochar: black
-  L.water = box(G.water, liquidMat(0x3fa9ff, 0.62));
-  L.waste = box(G.waste, liquidMat(0xc6e36b, 0.6));
-  phMat = liquidMat(0x4cc38a, 0.38);
+  L.water = box(G.water, liquidMat(0xd9eef6, 0.38));                    // clean water
+  L.waste = box(G.waste, liquidMat(0xcfc9a8, 0.55));                    // cloudy alkaline waste
+  phMat = liquidMat(0x4cc38a, 0.18);
   L.ph = new THREE.Mesh(new THREE.BoxGeometry(G.basket.x1 - G.basket.x0, 3, G.basket.y1 - G.basket.y0), phMat);
   L.ph.position.copy(P((G.basket.x0 + G.basket.x1) / 2, (G.basket.y0 + G.basket.y1) / 2, G.basket.z)); L.ph.visible = false; fx.add(L.ph);
-  drops = new Particles(80, 1.9, 0x3b2f22);
-  powder = new Particles(90, 1.3, 0xd9c7a3); bioP = new Particles(60, 1.1, 0x1f1c1a);
-  spray = new Particles(220, 1.2, 0x7cc8ff, { op: 0.75, g: 1400 });
-  swirl = new Particles(60, 1.5, 0x3a2e24, { g: 0 });
-  beads = new Beads(420, 0x4a3524); tray = new Beads(420, 0x7a5a3a);
+  drops = new Particles(80, 1.9, 0x2b2824);                              // chitosan + biochar dope
+  powder = new Particles(90, 1.3, 0xece3cc); bioP = new Particles(60, 1.1, 0x161514);
+  spray = new Particles(220, 1.0, 0xe8f6ff, { op: 0.55, g: 1400 });
+  swirl = new Particles(60, 1.5, 0x2e2a26, { g: 0 });
+  beads = new Beads(420, 0x262320); tray = new Beads(420, 0x34302b);    // wet gel beads: glossy black-brown; drying: duller
   const bar = (s) => { const g = new THREE.Group(), m = new THREE.Mesh(new THREE.CapsuleGeometry(4, s.len - 8, 6, 12), new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.3, clearcoat: 1 }));
     m.rotation.z = Math.PI / 2; g.add(m); g.position.copy(P(s.x, s.y, s.z)); fx.add(g); return g; };
   stirA = bar(G.stirAcid); stirC = bar(G.stirCh);
@@ -269,13 +271,13 @@ function update(m, first) {
   if (['DRIP', 'SET'].includes(st)) { runBeads = m.sim_beads || runBeads; if (beadWhere === 'chamber' && beadN(runBeads) !== beads.m.count) beads.place('chamber', beadN(runBeads), false); }
   // acid colour: clear acid -> dark chitosan/biochar dope as the powder dissolves
   const solids = Math.min(1, (m.sim_powder_g || 0) / (p.dose_g || 30)) * (0.25 + 0.75 * (m.sim_dissolved || 0));
-  L.acid.material.color.set(0x7cd4ff).lerp(new THREE.Color(0x2c2722), ['DOSE', 'DISSOLVE', 'DRIP'].includes(st) ? solids : 0);
-  L.acid.material.opacity = 0.72 + 0.23 * solids;
+  L.acid.material.color.set(0xf3f0e2).lerp(new THREE.Color(0x24211e), ['DOSE', 'DISSOLVE', 'DRIP'].includes(st) ? solids : 0);
+  L.acid.material.opacity = 0.45 + 0.5 * solids;
   L.ph.visible = st.startsWith('RINSE'); phMat.color.copy(PH_COL(m.ph || 7));
   levels(); hud(m);
   const live = new Set(); Object.entries(OUT_MAP).forEach(([out, ks]) => { if (o[out] > 0) ks.forEach((k) => live.add(k)); });
   if (p.servo_home !== undefined && o.servo !== undefined && Math.abs(o.servo - p.servo_home) > 5) live.add('Rinsing_Zone');
-  Object.keys(groups).forEach((k) => glow(k, live.has(k) ? 0x5b21b6 : 0));
+  Object.keys(groups).forEach((k) => glow(k, live.has(k) ? 0x0a2a1a : 0));   // subtle: real parts don't glow
   liveSet = live;
 }
 let liveSet = new Set();
@@ -316,9 +318,20 @@ function enterState(st, prev, m, first) {
       toast('🚿 เปิดวาล์ว — เม็ดไหลตามน้ำออกไปกองที่ตะกร้าล้าง น้ำ NaOH ลงถังน้ำทิ้ง');
     }
   }
-  if (st === 'TILT' && beadWhere === 'basket') {
-    beadWhere = 'tray'; beads.place('tray', beadN(runBeads), !first);
-    setTimeout(() => { V.trayBeads += runBeads; runBeads = 0; tray.place('tray', beadN(V.trayBeads), false); beads.place('tray', 0, false); beadWhere = 'none'; levels(); saveV(); }, first ? 0 : 1900);
+  if (st === 'TILT' && (beadWhere === 'basket' || beadWhere === 'chamber' || runBeads > 0)) {
+    const wait = drainAnim ? Math.max(0, drainAnim.t0 + drainAnim.dur - performance.now()) : 0;
+    beadWhere = 'tray';
+    setTimeout(() => {
+      if (!runBeads && !beads.m.count) return;
+      if (!beads.m.count) beads.place('basket', beadN(runBeads), false);
+      beads.place('tray', beadN(runBeads), !first);
+      toast('↘️ เทตะกร้า — เม็ดเจลไหลลงถาดตาก');
+      setTimeout(() => { V.trayBeads += runBeads; runBeads = 0; tray.place('tray', beadN(V.trayBeads), false); beads.place('tray', 0, false); beadWhere = 'none'; levels(); saveV(); }, first ? 0 : 1900);
+    }, first ? 0 : wait);
+  }
+  if (st === 'IDLE' && (prev === 'SAFE' || prev === 'TEST') && !first) {   // reset after a stop: the operator empties the machine
+    runBeads = 0; beadWhere = 'none'; drainAnim = null; beads.place('chamber', 0, false);
+    toast('🔄 รีเซ็ตแล้ว — ล้างถังและเทเม็ดที่ค้างออก พร้อมเริ่มรอบใหม่');
   }
   if (st === 'DONE' && !first) { toast('🎉 เสร็จแล้ว! เม็ดเจลอยู่บนถาดตาก'); confetti(); }
   if (st === 'SAFE' && !first) toast('🛑 หยุดฉุกเฉิน — อุปกรณ์ทุกตัวหยุด');
@@ -329,7 +342,7 @@ function hud(m) {
   $('h3State').className = 'h3state ' + (m.state === 'SAFE' ? 'bad' : ['IDLE', 'DONE'].includes(m.state) ? '' : 'run');
   $('h3Left').textContent = m.left_s ? 'เหลือ ' + fmtT(m.left_s) : '';
   $('h3Ph').textContent = (m.ph ?? 7).toFixed(2); $('h3PhDot').style.background = '#' + PH_COL(m.ph || 7).getHexString();
-  $('h3Beads').textContent = (m.sim_beads || 0).toLocaleString();
+  $('h3Beads').textContent = (m.state === 'IDLE' && beadWhere === 'none' ? 0 : (m.sim_beads || 0)).toLocaleString();
   $('h3Speed').textContent = m.sim ? '×' + (m.speed || 1) : '';
   document.querySelectorAll('[data-spd3]').forEach((b) => b.classList.toggle('on', +b.dataset.spd3 === m.speed));
   $('m3dStart').disabled = !['IDLE', 'DONE'].includes(m.state);

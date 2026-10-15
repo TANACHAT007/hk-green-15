@@ -104,7 +104,7 @@ canvas { width: 100%; display: block; background: transparent; border-radius: 12
 #m3dLabels { position: absolute; inset: 0; pointer-events: none; }
 #m3dLabels span { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
   background: color-mix(in srgb, var(--panel) 85%, transparent); color: var(--text); box-shadow: var(--shadow); backdrop-filter: blur(6px); }
-#m3dLabels span.act { background: var(--grape); color: #fff; }
+#m3dLabels span.act { background: var(--accent); color: #fff; }
 .h3hud { position: absolute; left: 14px; top: 14px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; max-width: calc(100% - 28px); pointer-events: none; }
 .h3state { font-weight: 700; font-size: 15px; padding: 6px 14px; border-radius: 999px; background: var(--panel); box-shadow: var(--shadow); }
 .h3state.run { background: linear-gradient(135deg, var(--grape), var(--pink)); color: #fff; }
