@@ -276,3 +276,41 @@ body[data-state="SAFE"] .ring .rfg { stroke: var(--bad); }
 }
 .spdchips.sim { background: var(--panel2); }
 .steps.card { scrollbar-width: none; } .steps.card::-webkit-scrollbar { display: none; }
+
+/* guided simulation tour (3D) */
+.tourbtn { position: absolute; right: 64px; top: 14px; z-index: 3; border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px 9px 10px; border-radius: 999px; color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--sky)); box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 40%, transparent); transition: transform .3s var(--spring); }
+.tourbtn small { font-weight: 500; font-size: 12px; opacity: .9; }
+.tourbtn .tplay { width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--accent); display: grid; place-items: center; font-size: 12px; animation: tpulse 1.8s infinite; }
+@keyframes tpulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.7); } 70% { box-shadow: 0 0 0 12px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+.tourbtn:hover { transform: translateY(-2px) scale(1.03); }
+.tourbtn.on { background: var(--text); box-shadow: var(--shadow); } .tourbtn.on small { display: none; } .tourbtn.on .tplay { animation: none; }
+.tourbtn.on .tplay::before { content: "✕"; } .tourbtn.on .tplay { font-size: 0; } .tourbtn.on .tplay::before { font-size: 12px; color: var(--text); }
+#m3d.touring .h3views, #m3d.touring .h3hud .h3sub { display: none; }
+#m3dTour { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 3; display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 22px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent); backdrop-filter: blur(12px); box-shadow: var(--shadow);
+  transform: translateY(140%); opacity: 0; transition: transform .5s var(--spring), opacity .3s; pointer-events: none; }
+#m3dTour.on { transform: none; opacity: 1; pointer-events: auto; }
+#m3dTour .tnum { flex: none; width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center; font-weight: 700; font-family: var(--mono); font-size: 14px;
+  color: #fff; background: linear-gradient(135deg, var(--grape), var(--pink)); }
+#m3dTour .tbody { flex: 1; min-width: 0; }
+#m3dTour .tbody b { font-size: 18px; display: block; }
+#m3dTour .tbody p { margin: 2px 0 8px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+#m3dTour .tbar { height: 6px; border-radius: 3px; background: var(--panel2); overflow: hidden; }
+#m3dTour .tbar i { display: block; height: 100%; width: 0; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--sky)); }
+#m3dTour .tbtn { flex: none; display: flex; gap: 4px; }
+#m3dTour .tbtn button { width: 38px; height: 38px; border-radius: 50%; border: 0; cursor: pointer; background: var(--panel2); color: var(--text); font-size: 14px; transition: transform .25s var(--spring); }
+#m3dTour .tbtn button:hover { transform: translateY(-2px); }
+@media (max-width: 700px) { .tourbtn { top: auto; bottom: 64px; right: 14px; } #m3d.touring .tourbtn { bottom: auto; top: 60px; } #m3dTour { flex-wrap: wrap; padding: 12px; } #m3dTour .tnum { width: 40px; height: 40px; border-radius: 14px; }
+  #m3dTour .tbody b { font-size: 16px; } #m3dTour .tbody p { font-size: 13px; } .tourbtn small { display: none; } }
+
+/* kiosk: the 3D view alone, full screen (used to record the intro video) */
+body.kiosk #m3d { position: fixed; inset: 0; height: 100vh !important; z-index: 100; border-radius: 0; }
+body.kiosk .tourbtn, body.kiosk .h3tools, body.kiosk .h3views, body.kiosk #m3dTour .tbtn { display: none !important; }
+body.kiosk #m3dTour { left: 50%; right: auto; width: min(980px, 80vw); transform: translateX(-50%); bottom: 40px; padding: 20px 26px; }
+body.kiosk #m3dTour.on { transform: translateX(-50%); }
+body.kiosk #m3dTour .tbody b { font-size: 26px; } body.kiosk #m3dTour .tbody p { font-size: 19px; }
+body.kiosk #m3dTour .tnum { width: 70px; height: 70px; font-size: 18px; }
+body.kiosk .h3hud { left: 40px; top: 36px; transform: scale(1.25); transform-origin: left top; }
+body.kiosk #m3dLabels span { font-size: 15px; }

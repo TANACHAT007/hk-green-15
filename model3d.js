@@ -115,17 +115,22 @@ const VIEWS = {
   mix: { t: [150, 225, 770], d: [0.7, 0.75, -1.0], k: 0.3 },     // from behind: the front panel hides the tanks
   chamber: { t: [170, 170, 470], d: [0.9, 0.45, 1.25], k: 0.45 },
   rinse: { t: [560, 170, 240], d: [0.7, 0.75, 1.2], k: 0.5 },
+  // guided tour only
+  intro: { t: [430, 170, 450], d: [-0.55, 0.42, 1.25], k: 0.9 },
+  feed: { t: [150, 210, 800], d: [0.45, 0.8, -1.0], k: 0.36 },
+  drip: { t: [185, 165, 480], d: [1.2, 0.28, 0.45], k: 0.5 },          // from the right: the front panel hides the chamber
+  tray: { t: [640, 170, 250], d: [1.0, 0.8, 0.9], k: 0.5 },
 };
 let tween = null;
-function view(name, now) {
+function view(name, now, ms) {
   const v = VIEWS[name], t = P(...v.t), r = 2100 * v.k;
   const pos = t.clone().add(new THREE.Vector3(...v.d).normalize().multiplyScalar(r));
   document.querySelectorAll('[data-view]').forEach((b) => b.classList.toggle('on', b.dataset.view === name));
   if (now) { controls.target.copy(t); camera.position.copy(pos); controls.update(); return; }
-  tween = { t0: performance.now(), a: [controls.target.clone(), camera.position.clone()], b: [t, pos] };
+  tween = { t0: performance.now(), a: [controls.target.clone(), camera.position.clone()], b: [t, pos], ms: ms || 900 };
 }
 function stepTween() {
-  if (!tween) return; const k = Math.min(1, (performance.now() - tween.t0) / 900), e = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+  if (!tween) return; const k = Math.min(1, (performance.now() - tween.t0) / (tween.ms || 900)), e = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
   controls.target.lerpVectors(tween.a[0], tween.b[0], e); camera.position.lerpVectors(tween.a[1], tween.b[1], e);
   if (k >= 1) tween = null;
 }
@@ -467,7 +472,7 @@ function labels(t) {
     el.classList.toggle('act', !!act);
     el.style.display = v.z < 1 ? '' : 'none'; el.style.transform = `translate(${(v.x + 1) / 2 * w}px, ${(1 - v.y) / 2 * h + bob}px) translate(-50%, -50%)`; });
 }
-function loop() { requestAnimationFrame(loop); const dt = Math.min(0.05, clock.getDelta()); stepTween(); controls.update(); animate(dt); renderer.render(scene, camera); }
+function loop() { requestAnimationFrame(loop); const dt = Math.min(0.05, clock.getDelta()); stepTween(); controls.update(); tourTick(false); animate(dt); renderer.render(scene, camera); }
 
 // ================================================================= parts list, picking
 function buildList() {
@@ -519,6 +524,94 @@ on('m3dLbl', () => { labelsOn = !labelsOn; $('m3dLabels').style.display = labels
 on('m3dSpin', () => { controls.autoRotate = !controls.autoRotate; $('m3dSpin').classList.toggle('on', controls.autoRotate); });
 on('m3dAll', () => { Object.entries(groups).forEach(([k, Gp]) => { Gp.on = true; Gp.objs.forEach((o) => o.visible = !(xray && SHELL.includes(k))); }); list.querySelectorAll('input').forEach((i) => i.checked = true); });
 
-window.onRig3d = (m) => { S = m; if (fx) update(m); };
+
+// ================================================================= guided simulation tour: scripted status + camera + captions
+// One button plays the whole batch in ~1 minute: every step shows only its key action with a short explanation.
+// Live status from the machine / simulator is ignored while the tour runs and the operator's levels are restored after.
+const TP = { dose_g: 30, biochar_pct: 2, servo_home: 10, servo_dump: 120, ph_target: 7.5 };
+const TOUR = [
+  { v: 'intro', ms: 6500, st: 'IDLE', t: 'HK-Green-15', d: 'เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ ครบจบในเครื่องเดียว: ผสม → หยดขึ้นรูป → แช่ → ล้าง → เทลงถาดตาก', spin: 1 },
+  { v: 'feed', ms: 6000, st: 'IDLE', t: 'เติมวัตถุดิบ 5 อย่าง', d: 'ผงไคโตซาน · ไบโอชาร์ · กรดอะซิติก 1 M · NaOH 2 M · น้ำล้าง แล้วกด START ที่จอหรือปุ่มหน้าเครื่อง', fill: 1 },
+  { v: 'feed', ms: 7000, st: 'DOSE', t: '① ป้อนผงตามสูตร', d: 'สกรูป้อน 2 ชุดชั่งผงลงถังกรด: ไคโตซาน 30 g + ไบโอชาร์ 2 % ขณะพัดลมใต้ถังหมุนแม่เหล็กกวน',
+    out: { auger: 255, bio: 255, top: 200 }, f: (k) => ({ sim_powder_g: 30 * k, sim_biochar_g: 0.6 * k, sim_acid_ml: 500, sim_dissolved: 0 }) },
+  { v: 'feed', ms: 6000, st: 'DISSOLVE', t: '② กวนละลาย', d: 'กวนต่อเนื่องราว 2 ชั่วโมงจนผงละลายเป็นเนื้อเดียวสีเข้ม (ในทัวร์เร่งให้ดู)',
+    out: { top: 200 }, f: (k) => ({ sim_powder_g: 30, sim_acid_ml: 500, sim_dissolved: k }) },
+  { v: 'drip', ms: 9000, st: 'DRIP', t: '③ หยดเป็นเม็ด', d: 'ปั๊มรีดท่อดันสารละลายผ่านเข็ม 12 หัว หยดลง NaOH 2 M — แต่ละหยดแข็งตัวเป็นเม็ดเจลทันที',
+    out: { peri: 140, top: 128, ch: 90 }, f: (k) => ({ sim_powder_g: 30, sim_dissolved: 1, sim_acid_ml: 500 * (1 - 0.8 * k), sim_beads: Math.round(6000 * k), ph: 13 }) },
+  { v: 'chamber', ms: 5000, st: 'SET', t: '④ แช่ให้เม็ดแข็งแรง', d: 'แช่ใน NaOH 6 ชั่วโมงให้เกิดการเชื่อมขวาง กวนเบา ๆ ไม่ให้เม็ดติดกัน',
+    out: { ch: 45 }, f: () => ({ sim_beads: 6000, sim_acid_ml: 100, ph: 13 }) },
+  { v: 'rinse', ms: 7000, st: 'DRAIN', t: '⑤ ปล่อยน้ำ', d: 'เปิดวาล์ว 1 นิ้ว เม็ดไหลตามน้ำไปกองในตะกร้าล้าง ส่วนน้ำ NaOH ลงถังน้ำทิ้งด้านล่าง',
+    out: { valve: 1 }, f: () => ({ sim_beads: 6000, step_s: 5, speed: 1, ph: 12.6 }) },
+  { v: 'rinse', ms: 9000, st: 'RINSE', t: '⑥ ล้างจนเป็นกลาง', d: 'สเปรย์น้ำล้าง → รอสะเด็ด → วัด pH น้ำที่ออกมา ทำซ้ำอัตโนมัติจน pH ≤ 7.5',
+    f: (k) => { const n = Math.min(3, Math.floor(k * 4)), w = (k * 4) % 1 > 0.55; return { state: w ? 'RINSE_WAIT' : 'RINSE_SPRAY', out: w ? { valve: 1 } : { rinse: 255, valve: 1 }, rinse: n, sim_beads: 6000, ph: 12.6 - 5.3 * k }; } },
+  { v: 'tray', ms: 6500, st: 'TILT', t: '⑦ เทลงถาดตาก', d: 'เซอร์โวพลิกตะกร้า เม็ดเจลที่ล้างแล้วไหลลงถาดตาก แล้วตะกร้ากลับที่เดิม',
+    out: { servo: 120 }, f: () => ({ sim_beads: 6000, ph: 7.3 }) },
+  { v: 'intro', ms: 7000, st: 'DONE', t: 'เสร็จ 1 รอบ 🎉', d: 'ราว 9 ชั่วโมงโดยไม่ต้องเฝ้า ได้เม็ดหลายพันเม็ด · ดูค่าจริงและสั่งงานได้จากจอ 7 นิ้วหรือเว็บนี้', spin: 1, f: () => ({ sim_beads: 6000, ph: 7.3 }) },
+];
+let tourI = -1, tourT0 = 0, tourSaved = null, tourLast = 0, tourPaused = false;
+function tourUI() {
+  let el = $('m3dTour'); if (el) return el;
+  el = document.createElement('div'); el.id = 'm3dTour';
+  el.innerHTML = '<div class="tnum"></div><div class="tbody"><b></b><p></p><div class="tbar"><i></i></div></div><div class="tbtn"><button data-a="prev" title="ย้อน">⏮</button><button data-a="pause" title="หยุดชั่วคราว">⏸</button><button data-a="next" title="ถัดไป">⏭</button><button data-a="close" title="ปิดทัวร์">✕</button></div>';
+  host.appendChild(el);
+  el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { pop(b); const a = b.dataset.a;
+    if (a === 'close') tourEnd(); else if (a === 'next') tourGo(tourI + 1); else if (a === 'prev') tourGo(Math.max(0, tourI - 1));
+    else { tourPaused = !tourPaused; b.textContent = tourPaused ? '▶' : '⏸'; if (!tourPaused) tourT0 = performance.now() - tourPaused_k * TOUR[tourI].ms; } }));
+  return el;
+}
+let tourPaused_k = 0;
+function tourStart() {
+  if (!started) init();
+  if (!fx) { setTimeout(tourStart, 300); return; }
+  if (tourI < 0) tourSaved = { V: { ...V }, S };
+  Object.assign(V, { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0.1, trayBeads: 0 });
+  tray.place('tray', 0, false); beads.place('chamber', 0, false); beadWhere = 'none'; runBeads = 0; drainAnim = null; dosed = false;
+  lastState = null; xray = true; applyXray();
+  host.classList.add('touring'); tourUI().classList.add('on'); $('m3dTourBtn').classList.add('on');
+  tourGo(0);
+}
+function tourGo(i) {
+  if (i >= TOUR.length) { tourEnd(); return; }
+  tourI = i; tourT0 = performance.now(); tourPaused = false; const s = TOUR[i], el = tourUI();
+  el.querySelector('.tnum').textContent = (i + 1) + '/' + TOUR.length;
+  el.querySelector('b').textContent = s.t; el.querySelector('p').textContent = s.d;
+  el.querySelector('[data-a="pause"]').textContent = '⏸';
+  pop(el.querySelector('.tbody'));
+  view(s.v, false, 1800); controls.autoRotate = !!s.spin; controls.autoRotateSpeed = 0.5;
+  if (s.fill) toast('✨ เติมวัตถุดิบ');
+  tourTick(true);
+}
+function tourTick(force) {
+  if (tourI < 0) return;
+  const s = TOUR[tourI], now = performance.now();
+  if (tourPaused) { tourT0 = now - tourPaused_k * s.ms; return; }
+  const k = Math.min(1, (now - tourT0) / s.ms); tourPaused_k = k;
+  $('m3dTour').querySelector('.tbar i').style.width = (100 * k).toFixed(1) + '%';
+  if (s.fill) { const e = Math.min(1, k * 1.4); Object.assign(V, { hopperG: CAP.hopperG * e, bioG: CAP.bioG * e, acidMl: CAP.acidMl * e, naoh: e, water: e }); levels(); }
+  if (force || now - tourLast > 100) {
+    tourLast = now;
+    const x = s.f ? s.f(k) : {};
+    const m = { state: s.st, out: { servo: 10, ...(s.out || {}) }, p: TP, step_s: 100, left_s: Math.round(100 * (1 - k)), ph: 7, rinse: 0, speed: 1, ...x };
+    if (x.out) m.out = { servo: 10, ...x.out };
+    update(m, false);
+  }
+  if (k >= 1) tourGo(tourI + 1);
+}
+function tourEnd() {
+  if (tourI < 0) return;
+  tourI = -1; controls.autoRotate = false; host.classList.remove('touring');
+  const el = $('m3dTour'); if (el) el.classList.remove('on'); $('m3dTourBtn').classList.remove('on');
+  if (tourSaved) Object.assign(V, tourSaved.V);
+  beads.place('chamber', 0, false); tray.place('tray', beadN(V.trayBeads), false); beadWhere = 'none'; runBeads = 0; drainAnim = null;
+  lastState = null; levels(); view('all', false, 1200);
+  if (tourSaved && tourSaved.S) update(tourSaved.S, true);
+  tourSaved = null; toast('👋 จบทัวร์ — ลองกด START เดินเครื่องเองได้เลย');
+}
+window.hkTour = tourStart;
+
+on('m3dTourBtn', () => (tourI < 0 ? tourStart() : tourEnd()));
+window.onRig3d = (m) => { if (tourI >= 0) { tourSaved && (tourSaved.S = m); return; } S = m; if (fx) update(m); };
 document.querySelector('#tabs button[data-t="m3d"]').addEventListener('click', () => { if (!started) init(); else size(); });
 if (location.hash.startsWith('#m3d')) init();
+if (/[?&]kiosk=1/.test(location.search)) document.body.classList.add('kiosk');   // full-screen 3D (video capture)
+if (/[?&]tour=1/.test(location.search) || location.hash === '#tour') { const b = document.querySelector('#tabs button[data-t="m3d"]'); if (b) b.click(); setTimeout(tourStart, 200); }

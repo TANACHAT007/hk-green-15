@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HK-Green-15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside id="side">
+  <a class="brand" href="index.html" title="หน้าแรก" style="color:inherit;text-decoration:none"><div class="logo">🫧</div><div><b>HK-Green-15</b><small>เครื่องผลิตเม็ดไฮโดรเจล</small></div></a>
+  <nav id="tabs"><button data-t="live" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>ภาพรวม</span></button><button data-t="run"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span>ควบคุม</span></button><button data-t="m3d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>3 มิติ</span></button><button data-t="batch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5M14 4v4h4"/></svg><span>ผลทดลอง</span></button><button data-t="test"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg><span>ทดสอบ</span></button><button data-t="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>สอบเทียบ</span></button><button data-t="doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/></svg><span>เอกสาร</span></button></nav>
+  <div class="sidefoot">
+    <span id="bMode" class="badge">—</span>
+    <span id="bLink" class="badge">ไม่มีข้อมูล</span>
+    <button class="b ghost" id="theme" title="สลับโหมดสว่าง/มืด">◐ ธีม</button>
+  </div>
+</aside>
+<div id="appmain">
+<header id="topbar">
+  <div class="tbtitle" id="tbTitle">ภาพรวม</div>
+  <div class="spacer"></div>
+  <span id="bSafety" class="badge">—</span>
+  <div id="dock">
+    <div class="spdchips sim" id="dockSpd"><button data-speed="1">×1</button><button data-speed="60">×60</button><button data-speed="600">×600</button></div>
+    <button class="b main" id="dockMain">▶ เริ่มรอบผลิต</button>
+  </div>
+</header>
+<main>
+<!-- ============================================================ live -->
+<section class="tab on" id="t-live">
+  <div class="hero card">
+    <div class="ring"><svg viewBox="0 0 120 120"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg" id="ringFg" cx="60" cy="60" r="52"/></svg>
+      <div class="ringtxt"><b id="ringPct">0%</b><small>ทั้งรอบ</small></div></div>
+    <div class="herobody">
+      <div class="herostate"><span class="state" id="stName">—</span></div>
+      <div class="note" id="stDesc">—</div>
+      <div class="bar"><i id="stBar"></i></div>
+      <div class="herokv"><div><small>เหลือในขั้นนี้</small><b id="stLeft">—</b></div><div><small>เสร็จทั้งรอบอีก</small><b id="eta">—</b></div><div><small>ล้างแล้ว</small><b id="rinseN">—</b></div></div>
+    </div>
+    <div class="nextcard" id="nextCard"><small>ต้องทำอะไรต่อ</small><b id="nextTxt">—</b><div id="checklist2"></div></div>
+  </div>
+  <div class="steps card" id="steps"></div>
+  <div class="kpis">
+    <div class="kpi"><small>pH น้ำล้าง</small><b><span id="ph">—</span></b><div class="phbar"><i id="phMark"></i></div><span class="kfoot">เป้า <b id="phT">—</b> · หัววัด <b id="phV">—</b></span></div>
+    <div class="kpi"><small>เม็ดเจล (ประมาณ)</small><b id="beads">—</b><span class="kfoot">ขนาด <b id="beadD">—</b></span></div>
+    <div class="kpi"><small>สารละลายในถังกรด</small><b id="acid">—</b><span class="kfoot">หยดแล้ว <b id="dripped">—</b> · ละลาย <b id="diss">—</b></span></div>
+    <div class="kpi"><small>อัตราหยด</small><b id="flow">—</b><span class="kfoot">ต่อเข็ม <b id="perNeedle">—</b></span></div>
+  </div>
+  <div class="card"><h3>อุปกรณ์</h3><div class="eqgrid" id="outs"></div>
+    <div class="note"><span id="powder">—</span> · <span id="simOnlyNote">ค่าปริมาณมาจากตัวจำลอง — เครื่องจริงไม่มีเซนเซอร์ระดับ</span></div></div>
+  <div class="split" style="margin-top:16px">
+    <div class="card"><h3>ผังการทำงาน</h3><canvas id="proc" height="330"></canvas></div>
+    <div class="card"><h3>pH ระหว่างล้าง</h3><canvas id="trend" height="230"></canvas>
+      <details class="logbox"><summary>บันทึกระบบ</summary><div class="log" id="log"></div></details></div>
+  </div>
+</section>
+
+<!-- ============================================================ run / recipe -->
+<section class="tab" id="t-run">
+  <div class="split">
+    <div class="card"><h3>สั่งงาน</h3>
+      <div class="row"><button class="b green" id="start">▶ เริ่มรอบผลิต</button><button class="b red" id="stop">■ หยุดฉุกเฉิน (SAFE)</button>
+        <button class="b ghost" id="reset">รีเซ็ตหลังหยุด (ดึง E-stop ขึ้นก่อน)</button></div>
+      <div class="note">เริ่มได้เมื่อสถานะ IDLE หรือ DONE · ปุ่มเขียวหน้าเครื่องทำงานเหมือนกัน · E-stop ตัดไฟ 12 V มอเตอร์ด้วยฮาร์ดแวร์</div>
+      <div class="card sim" style="margin-top:12px"><h3>ความเร็วตัวจำลอง</h3>
+        <div class="row"><button class="b ghost" data-speed="1">×1</button><button class="b ghost" data-speed="60">×60</button>
+          <button class="b ghost" data-speed="600">×600</button><button class="b ghost" data-speed="3600">×3600</button>
+          <button class="b ghost" id="skip">ข้ามขั้นนี้</button><span class="mono" id="spd">—</span></div>
+        <div class="row"><button class="b red" id="simEstop">กด E-stop</button><button class="b ghost" id="simEstopRel">ดึง E-stop ขึ้น</button></div>
+        <div class="note">×600 = 1 วินาทีจริงเท่ากับ 10 นาที (ทั้งรอบ ~9 ชม. ใช้ ~1 นาที)</div></div>
+    </div>
+    <div class="card"><h3>สูตร</h3>
+      <div class="row"><label class="f">ปริมาตรกรด (mL)<input type="number" id="vol" value="500" step="50"></label>
+        <label class="f">ไคโตซาน (% w/v)<input type="number" id="chi" value="6" step="0.5"></label>
+        <label class="f">ไบโอชาร์ (% w/w)<select id="bio"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></label>
+        <button class="b ghost" id="calcDose">คำนวณผง</button></div>
+      <div class="note" id="doseNote">—</div>
+      <table id="recipe" style="margin-top:8px"></table>
+      <div class="row" style="margin-top:8px"><button class="b" id="sendRecipe">ส่งสูตรทั้งหมด</button><span class="note" id="recipeChk"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ bench test -->
+<section class="tab" id="t-test">
+  <div class="split">
+    <div class="card"><h3>ทดสอบทีละตัว</h3>
+      <div id="testRows"></div>
+      <div class="row" style="margin-top:10px"><button class="b red" id="testOff">ปิดทั้งหมด</button></div>
+      <div class="note">ใช้ตรวจสายไฟ ทิศหมุน และค่า PWM ต่ำสุดที่มอเตอร์ยังหมุน ก่อนใส่สารเคมีจริง · พัดลมกวนถังกรดถูกบังคับ ≥ 128 (50 %)</div></div>
+    <div class="card"><h3>ก่อนเดินเครื่องครั้งแรก</h3>
+      <ol class="note" id="checklist">
+        <li>E-stop: กดแล้วมอเตอร์ทุกตัวหยุด, หน้าเว็บขึ้น E-STOP</li>
+        <li>ปั๊มหยด: หมุนทางที่ดูดจากถังกรดไปหัวเข็ม (กลับขั้วถ้าผิด)</li>
+        <li>สกรูป้อนผง: ผงไหลลงช่องตรงถังกรด ไม่ค้างในท่อ</li>
+        <li>พัดลมกวนถังกรด + มอเตอร์กวนห้องก่อเจล: แท่งกวนหมุนตาม ไม่กระโดด</li>
+        <li>วาล์ว 1": เปิด/ปิดได้ ไม่รั่ว (ทดสอบด้วยน้ำเปล่า)</li>
+        <li>ปั๊มสเปรย์: น้ำออกครบ 3 หัว ไม่กระเด็นออกนอกถาด</li>
+        <li>เซอร์โวเทถาด: 10° = ราบ, 120° = เทหมด ไม่ชนโครง</li>
+        <li>พัดลมกล่องไฟ: หมุนทันทีที่เปิดเครื่อง</li>
+      </ol></div>
+  </div>
+</section>
+
+<!-- ============================================================ batch logger -->
+<section class="tab" id="t-batch">
+  <div class="split">
+    <div class="card"><h3>บันทึกผลรอบนี้</h3>
+      <div class="row">
+        <label class="f">ไบโอชาร์ (%)<select id="bBio"><option>0</option><option>1</option><option selected>2</option><option>3</option></select></label>
+        <label class="f">ซ้ำครั้งที่<input type="number" id="bRep" value="1" min="1"></label>
+        <label class="f">จำนวนเม็ด (นับ/ประมาณ)<input type="number" id="bN" value="0"></label>
+        <label class="f">ขนาดเม็ดเฉลี่ย (mm)<input type="number" id="bD" value="0" step="0.1"></label>
+        <label class="f">SD ขนาด (mm)<input type="number" id="bDsd" value="0" step="0.05"></label></div>
+      <div class="row">
+        <label class="f">น้ำหนักเปียกที่ได้ (g)<input type="number" id="bWet" value="0" step="0.1"></label>
+        <label class="f">น้ำหนักแห้ง (g)<input type="number" id="bDry" value="0" step="0.01"></label>
+        <label class="f">น้ำหนักหลังแช่น้ำ 24 ชม. (g)<input type="number" id="bSw" value="0" step="0.01"></label>
+        <label class="f">pH สุดท้าย<input type="number" id="bPh" value="0" step="0.01"></label>
+        <label class="f">รอบล้าง<input type="number" id="bRin" value="0"></label></div>
+      <div class="row"><label class="f" style="flex:1">หมายเหตุ<input id="bNote" style="width:100%"></label></div>
+      <div class="row"><button class="b ghost" id="bFill">ดึงค่าจากรอบล่าสุดของเครื่อง</button><button class="b green" id="bSave">บันทึกผล</button>
+        <span class="note" id="bSwOut"></span></div>
+      <div class="note">การพองตัว (%) = (น้ำหนักหลังแช่ − น้ำหนักแห้ง) ÷ น้ำหนักแห้ง × 100 · งานวิจัยเดิม: ไบโอชาร์ 2 % ได้ 605 %</div>
+    </div>
+    <div class="card"><h3>สรุปตามสัดส่วนไบโอชาร์</h3><canvas id="swChart" height="230"></canvas>
+      <div class="tblwrap"><table id="sumTbl"></table></div></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>ผลทั้งหมด <a href="/api/batches.csv" class="b ghost" style="text-decoration:none;margin-left:8px">ดาวน์โหลด CSV</a></h3>
+    <div class="tblwrap"><table id="bTbl"></table></div></div>
+</section>
+
+<!-- ============================================================ calibration -->
+<section class="tab" id="t-cal">
+  <div class="grid">
+    <div class="card"><h3>หัววัด pH</h3>
+      <ol class="note"><li>จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"</li><li>ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"</li><li>กด "ส่งค่าสอบเทียบ"</li></ol>
+      <div class="row"><span class="mono" id="calV">V = —</span></div>
+      <div class="row"><button class="b ghost" id="cal7">จำค่า pH 7</button><span class="mono" id="v7">—</span></div>
+      <div class="row"><select id="buf2"><option value="4">pH 4.01</option><option value="10">pH 10.01</option></select><button class="b ghost" id="cal2">จำค่า</button><span class="mono" id="v2">—</span></div>
+      <div class="row"><button class="b" id="calSend">ส่งค่าสอบเทียบ</button><span class="mono" id="calRes">—</span></div></div>
+    <div class="card"><h3>สกรูป้อนผง</h3>
+      <ol class="note"><li>ใส่ผงในถังพัก วางถ้วยบนตาชั่งใต้ช่องออก</li><li>สั่งเดิน 60 วินาที (30 rpm = 30 รอบ)</li><li>ชั่งน้ำหนัก → ใส่ค่า → ระบบคำนวณ g/rev</li></ol>
+      <div class="row"><button class="b ghost" id="augRun">เดิน auger 60 s</button><span class="mono" id="augClk">—</span></div>
+      <div class="row"><label class="f">ผงที่ได้ (g)<input type="number" id="augG" value="0" step="0.1"></label><button class="b" id="augSend">ส่งค่า</button><span class="mono" id="augRes">—</span></div></div>
+    <div class="card"><h3>ปั๊มหยด</h3>
+      <ol class="note"><li>ใส่น้ำเปล่าในถังกรด วางกระบอกตวงใต้หัวเข็ม</li><li>เดินปั๊มที่ PWM ปัจจุบัน 60 วินาที แล้วตวง mL</li><li>ระบบคำนวณ PWM ใหม่ (สมมติอัตราไหลแปรผันตาม PWM − 30)</li></ol>
+      <div class="row"><button class="b ghost" id="periRun">เดินปั๊ม 60 s</button><span class="mono" id="periClk">—</span></div>
+      <div class="row"><label class="f">ตวงได้ (mL)<input type="number" id="periMl" value="0" step="0.5"></label><button class="b" id="periSend">คำนวณ + ส่ง</button><span class="mono" id="periRes">—</span></div>
+      <div class="note">น้ำเปล่าไหลเร็วกว่าสารละลายไคโตซาน 6 % ที่หนืด — ทวนซ้ำด้วยสารละลายจริงอีกครั้ง</div></div>
+    <div class="card"><h3>ข้อมูลย้อนหลัง</h3><a href="/api/history.csv" class="b ghost" style="text-decoration:none">ดาวน์โหลด CSV (1 ชม.)</a>
+      <div class="note" style="margin-top:8px">Mega ส่งสถานะทุก 0.5 วินาทีทาง USB (JSON ทีละบรรทัด)</div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 3D model -->
+<section class="tab" id="t-m3d">
+  <div class="m3wrap">
+    <div class="card m3view">
+      <div id="m3d">
+        <div id="m3dLabels"></div><div id="m3dFun"></div>
+        <div class="h3hud">
+          <span id="h3State" class="h3state">—</span><span id="h3Left" class="h3sub"></span>
+          <span class="h3chip"><i id="h3PhDot"></i>pH <b id="h3Ph">—</b></span>
+          <span class="h3chip">🟤 <b id="h3Beads">0</b> เม็ด</span><span class="h3chip" id="h3Speed"></span>
+        </div>
+        <div class="h3views">
+          <button data-view="all" class="on">ทั้งเครื่อง</button><button data-view="mix">ถังผสม</button>
+          <button data-view="chamber">ถังขึ้นรูป</button><button data-view="rinse">โซนล้าง</button>
+        </div>
+        <div class="h3tools">
+          <button id="m3dXray" class="on" title="มองทะลุถัง">👀</button><button id="m3dLbl" class="on" title="ป้ายชื่อ">🏷️</button><button id="m3dSpin" title="หมุนอัตโนมัติ">🔄</button>
+        </div>
+        <button id="m3dTourBtn" class="tourbtn"><span class="tplay">▶</span> Simulation <small>ดูการทำงานทั้งรอบใน 1 นาที</small></button>
+        <div id="m3dToast"></div>
+      </div>
+      <div class="m3bar"><span id="m3dInfo">—</span></div>
+    </div>
+    <div class="m3side">
+      <div class="card">
+        <h3>เติมวัตถุดิบ</h3>
+        <div class="lv" id="lvHopper"><span>🥄 ไคโตซาน</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillHopper">เติม</button></div>
+        <div class="lv" id="lvBio"><span>⚫ ไบโอชาร์</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillBio">เติม</button></div>
+        <div class="lv" id="lvAcid"><span>🧴 กรด 1 M</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillAcid">เติม</button></div>
+        <div class="lv" id="lvNaoh"><span>🫧 NaOH</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillNaoh">เติม</button></div>
+        <div class="lv" id="lvWater"><span>🚰 น้ำล้าง</span><div class="lvbar"><i></i></div><b>—</b><button class="mini" id="fillWater">เติม</button></div>
+        <div class="lv" id="lvWaste"><span>🗑️ น้ำทิ้ง</span><div class="lvbar"><i></i></div><b>—</b><button class="mini ghost" id="emptyWaste">เท</button></div>
+        <div class="lv" id="lvTray"><span>☀️ ถาดตาก</span><div class="lvbar"><i></i></div><b>—</b><button class="mini ghost" id="emptyTray">เก็บ</button></div>
+        <button class="b fun" id="fillAll">✨ เติมครบทุกอย่าง</button>
+      </div>
+      <div class="card">
+        <h3>เดินเครื่อง</h3>
+        <div class="row"><button class="b fun go" id="m3dStart">▶ START</button><button class="b fun stop" id="m3dStop">■ STOP</button><button class="b ghost" id="m3dReset">รีเซ็ต</button></div>
+        <div class="row spd"><span class="note" style="margin:0">ความเร็ว</span><button class="mini ghost" data-spd3="1">×1</button><button class="mini ghost" data-spd3="60">×60</button><button class="mini ghost" data-spd3="600">×600</button></div>
+      </div>
+      <details class="card"><summary><h3 style="display:inline">ชิ้นส่วน</h3></summary>
+        <div class="m3btns"><button class="mini ghost" id="m3dAll">แสดงทั้งหมด</button></div>
+        <div id="m3dParts"></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ documents -->
+<section class="tab" id="t-doc">
+  <div class="card news" style="margin-bottom:16px"><h3>✨ อัปเดตล่าสุด · v8.9 (15 ต.ค. 2026)</h3>
+    <div class="newsgrid">
+      <div><b>⚫ ชุดป้อนไบโอชาร์แยก</b><span>ถังเล็ก 22 g + สกรู Ø12 + มอเตอร์ N20 · ตั้ง % ไบโอชาร์ 0–3 % บนหน้าจอ ไม่ต้องผสมผงเอง</span></div>
+      <div><b>🟩 บอร์ด shield Mega</b><span>ปริ้นหน้าเดียว ทำเองได้ · ขั้วต่อ JST ล็อก 8 ชุด · ไม่ต้องเดินจัมเปอร์</span></div>
+      <div><b>📌 ย้ายขา Mega</b><span>ให้เดินลายหน้าเดียวได้ · เฟิร์มแวร์ + ผังสายไฟอัปเดตแล้ว (ตารางด้านล่าง)</span></div>
+      <div><b>🧊 3 มิติ</b><span>แท่งกวนหมุน · เม็ดไหลออกทีละเม็ดตอนเปิดวาล์ว · ถังไบโอชาร์</span></div>
+      <div><b>💰 งบประมาณ</b><span id="bomTotal">—</span></div>
+    </div></div>
+  <div class="grid" style="margin-bottom:16px">
+    <div class="card"><h3>ภาพเครื่อง</h3><img src="doc/render_iso.png" class="docimg" alt="render"></div>
+    <div class="card"><h3>ชุดป้อนไบโอชาร์ (v8.9)</h3><img src="doc/bio_feeder.png" class="docimg" alt="biochar feeder"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><h3>บอร์ด shield สำหรับ Mega <a class="b ghost" href="doc/pcb_copper_1to1.pdf" target="_blank" style="text-decoration:none;margin-left:8px">⬇ ลายปริ้น 1:1 (PDF)</a></h3>
+    <div class="grid">
+      <figure class="docfig"><img src="doc/pcb_top.png" class="docimg" alt="pcb top"><figcaption>ด้านอุปกรณ์</figcaption></figure>
+      <figure class="docfig"><img src="doc/pcb_copper.png" class="docimg" alt="pcb copper"><figcaption>ลายทองแดง (มองจากด้านบน)</figcaption></figure>
+    </div>
+    <div class="tblwrap" style="margin-top:10px"><table class="doctbl"><tr><th>ขั้วต่อ</th><th>ไปที่</th><th>pin 1 → pin สุดท้าย</th></tr>
+      <tr><td>J10 · 4P</td><td>MDD10A</td><td>D6 PWM2 · D5 PWM1 · D4 DIR1 · D3 DIR2</td></tr>
+      <tr><td>J11 · 5P</td><td>MDD3A</td><td>GND · D8 M2A · D7 M1A · D14 M1B · D15 M2B</td></tr>
+      <tr><td>J12 · 3P</td><td>MOSFET ×2</td><td>D11 ไบโอชาร์ · D9 กวนถังขึ้นรูป · GND</td></tr>
+      <tr><td>J14 · 2P</td><td>เซอร์โว</td><td>GND · D12</td></tr>
+      <tr><td>J13 · 3P</td><td>รีเลย์วาล์ว</td><td>D40 · GND · 5V</td></tr>
+      <tr><td>J15 · 3P</td><td>หัววัด pH</td><td>5V · GND · A0</td></tr>
+      <tr><td>J16 · 6P</td><td>แผงหน้า</td><td>D42 START · D44 STOP · D46 E-stop · D48 ไฟ START · D50 ไฟ STOP · GND</td></tr>
+      <tr><td>J17 · 3P</td><td>จอ ESP32</td><td>TX 3.3 V (แบ่งแรงดัน 10k/20k) · RX1 · GND</td></tr>
+      <tr><td>J18</td><td>ไฟ 5V จาก BUCK5</td><td>+ · −</td></tr></table></div></div>
+  <div class="card" style="margin-bottom:16px"><h3>ใบสั่งซื้อ (BOM) <a class="b ghost" href="doc/bom.csv" download style="text-decoration:none;margin-left:8px">⬇ CSV</a></h3>
+    <div class="row" id="bomFilter"></div>
+    <div class="tblwrap"><table class="doctbl" id="bomTbl"></table></div></div>
+  <div class="card"><h3>แผนผังสายไฟ</h3><img src="doc/wiring.svg" style="width:100%;background:#fff;border-radius:6px" alt="wiring"></div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card"><h3>ผลตรวจระบบไฟฟ้า</h3><pre class="log" id="docE" style="max-height:360px"></pre></div>
+    <div class="card"><h3>ผลคำนวณความเป็นไปได้</h3><pre class="log" id="docF" style="max-height:360px"></pre></div>
+  </div>
+</section>
+</main>
+</div>
+<div id="gtoast"></div>
+<script>window.HK_STATIC = !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);</script>
+<script src="static_mode.js"></script>
+<script src="app.js"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module" src="model3d.js"></script>
+</body>
+</html>
