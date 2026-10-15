@@ -31,7 +31,7 @@ const STATE_TH = { IDLE: '😴 พร้อม', DOSE: '🥄 ป้อนผง'
 const G = {
   acid: { x: 113, y: 225, r: 54, z0: 729, h: 76 },             // 500 mL acetic acid
   chamber: { x: 170, y: 170, r: 90, z0: 316, h: 190 },          // 2 M NaOH
-  hopper: { x: 252, y: 225, r: 38, z0: 842, h: 44 },
+  hopper: { x: 250, y: 225, r: 40, z0: 858, h: 78 },         // v8.9d tall hopper through the top cover
   bioHop: { x: 105, y: 108, r: 25, z0: 866, h: 25 }, bioOut: { x: 105, y: 185, z: 812 },
   needles: { x0: 118, x1: 214, y: [146, 176], z: 580 },
   augerOut: { x: 70, y: 225, z: 812 },
@@ -56,7 +56,7 @@ const key = (name) => { name = name || ''; return KEYS.find((k) => name.startsWi
 const V = { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0, trayBeads: 0 };
 try { Object.assign(V, JSON.parse(localStorage.getItem('hk15_3d') || '{}')); } catch (e) {}
 const saveV = () => { try { localStorage.setItem('hk15_3d', JSON.stringify(V)); } catch (e) {} };
-const CAP = { hopperG: 120, acidMl: 500, bioG: 22 };
+const CAP = { hopperG: 140, acidMl: 500, bioG: 22 };
 let S = null, lastState = null, xray = true, labelsOn = true, runBeads = 0, beadWhere = 'none', phase0 = {};
 
 // ================================================================= scene
@@ -432,7 +432,7 @@ function select(e) {
 // ================================================================= controls
 const on = (id, f) => { const el = $(id); if (el) el.addEventListener('click', (e) => { pop(el); f(e); }); };
 const fill = (k, v, msg) => () => { V[k] = v; levels(); saveV(); toast(msg); };
-on('fillHopper', fill('hopperG', CAP.hopperG, '🥄 เติมผงไคโตซานแล้ว (พอ ~4 รอบ)'));
+on('fillHopper', fill('hopperG', CAP.hopperG, '🥄 เติมผงไคโตซานจากด้านบนเครื่องแล้ว (140 g พอ ~4 รอบ)'));
 on('fillBio', fill('bioG', CAP.bioG, '⚫ เติมไบโอชาร์แล้ว (พอ ~35 รอบที่ 2 %)'));
 on('fillAcid', fill('acidMl', CAP.acidMl, '🧴 เติมกรดอะซิติก 1 M 500 mL แล้ว'));
 on('fillNaoh', fill('naoh', 1, '🧤 เติม NaOH 2 M แล้ว — ใส่แว่นกับถุงมือทุกครั้งนะ'));
