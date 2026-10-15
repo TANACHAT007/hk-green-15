@@ -530,23 +530,23 @@ on('m3dAll', () => { Object.entries(groups).forEach(([k, Gp]) => { Gp.on = true;
 // Live status from the machine / simulator is ignored while the tour runs and the operator's levels are restored after.
 const TP = { dose_g: 30, biochar_pct: 2, acid_ml: 500, servo_home: 10, servo_dump: 120, ph_target: 7.5 };
 const TOUR = [
-  { v: 'intro', ms: 6500, st: 'IDLE', t: 'HK-Green-15', d: 'เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ ครบจบในเครื่องเดียว: ผสม → หยดขึ้นรูป → แช่ → ล้าง → เทลงถาดตาก', spin: 1 },
-  { v: 'feed', ms: 6000, st: 'IDLE', t: 'เติมวัตถุดิบ 5 อย่าง', d: 'ผงไคโตซาน · ไบโอชาร์ · กรดอะซิติก 1 M · NaOH 2 M · น้ำล้าง แล้วกด START ที่จอหรือปุ่มหน้าเครื่อง', fill: 1 },
-  { v: 'feed', ms: 7000, st: 'DOSE', t: '① ป้อนผงตามสูตร', d: 'สกรูป้อน 2 ชุดชั่งผงลงถังกรด: ไคโตซาน 30 g + ไบโอชาร์ 10.6 g (2 % ของน้ำหนักกรด + ไคโตซาน) ขณะพัดลมใต้ถังหมุนแม่เหล็กกวน',
+  { v: 'intro', ms: 6500, st: 'IDLE', te: 'HK-Green-15', de: 'Automatic chitosan–biochar hydrogel bead machine: mix → drip → cure → rinse → tip onto the drying tray, all in one.', t: 'HK-Green-15', d: 'เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ ครบจบในเครื่องเดียว: ผสม → หยดขึ้นรูป → แช่ → ล้าง → เทลงถาดตาก', spin: 1 },
+  { v: 'feed', ms: 6000, st: 'IDLE', te: 'Fill 5 materials', de: 'Chitosan powder · biochar · 1 M acetic acid · 2 M NaOH · rinse water, then press START on the screen or the front panel.', t: 'เติมวัตถุดิบ 5 อย่าง', d: 'ผงไคโตซาน · ไบโอชาร์ · กรดอะซิติก 1 M · NaOH 2 M · น้ำล้าง แล้วกด START ที่จอหรือปุ่มหน้าเครื่อง', fill: 1 },
+  { v: 'feed', ms: 7000, st: 'DOSE', te: '① Dose the powders', de: 'Two augers dose into the acid tank: chitosan 30 g + biochar 10.6 g (2 % of acid + chitosan) while the magnetic stirrer turns.', t: '① ป้อนผงตามสูตร', d: 'สกรูป้อน 2 ชุดชั่งผงลงถังกรด: ไคโตซาน 30 g + ไบโอชาร์ 10.6 g (2 % ของน้ำหนักกรด + ไคโตซาน) ขณะพัดลมใต้ถังหมุนแม่เหล็กกวน',
     out: { auger: 255, bio: 255, top: 200 }, f: (k) => ({ sim_powder_g: 30 * k, sim_biochar_g: 10.6 * k, sim_acid_ml: 500, sim_dissolved: 0 }) },
-  { v: 'feed', ms: 6000, st: 'DISSOLVE', t: '② กวนละลาย', d: 'กวนต่อเนื่องราว 2 ชั่วโมงจนผงละลายเป็นเนื้อเดียวสีเข้ม (ในทัวร์เร่งให้ดู)',
+  { v: 'feed', ms: 6000, st: 'DISSOLVE', te: '② Dissolve', de: 'Stirred for about 2 hours until it is one dark, uniform solution (sped up here).', t: '② กวนละลาย', d: 'กวนต่อเนื่องราว 2 ชั่วโมงจนผงละลายเป็นเนื้อเดียวสีเข้ม (ในทัวร์เร่งให้ดู)',
     out: { top: 200 }, f: (k) => ({ sim_powder_g: 30, sim_acid_ml: 500, sim_dissolved: k }) },
-  { v: 'drip', ms: 9000, st: 'DRIP', t: '③ หยดเป็นเม็ด', d: 'ปั๊มรีดท่อดันสารละลายผ่านเข็ม 12 หัว หยดลง NaOH 2 M — แต่ละหยดแข็งตัวเป็นเม็ดเจลทันที',
+  { v: 'drip', ms: 9000, st: 'DRIP', te: '③ Drip into beads', de: 'A peristaltic pump pushes the solution through 12 needles into 2 M NaOH — every drop gels into a bead at once.', t: '③ หยดเป็นเม็ด', d: 'ปั๊มรีดท่อดันสารละลายผ่านเข็ม 12 หัว หยดลง NaOH 2 M — แต่ละหยดแข็งตัวเป็นเม็ดเจลทันที',
     out: { peri: 140, top: 128, ch: 90 }, f: (k) => ({ sim_powder_g: 30, sim_dissolved: 1, sim_acid_ml: 500 * (1 - 0.8 * k), sim_beads: Math.round(6000 * k), ph: 13 }) },
-  { v: 'chamber', ms: 5000, st: 'SET', t: '④ แช่ให้เม็ดแข็งแรง', d: 'แช่ใน NaOH 6 ชั่วโมงให้เกิดการเชื่อมขวาง กวนเบา ๆ ไม่ให้เม็ดติดกัน',
+  { v: 'chamber', ms: 5000, st: 'SET', te: '④ Cure', de: '6 hours in NaOH to cross-link, with gentle stirring so the beads do not stick together.', t: '④ แช่ให้เม็ดแข็งแรง', d: 'แช่ใน NaOH 6 ชั่วโมงให้เกิดการเชื่อมขวาง กวนเบา ๆ ไม่ให้เม็ดติดกัน',
     out: { ch: 45 }, f: () => ({ sim_beads: 6000, sim_acid_ml: 100, ph: 13 }) },
-  { v: 'rinse', ms: 7000, st: 'DRAIN', t: '⑤ ปล่อยน้ำ', d: 'เปิดวาล์ว 1 นิ้ว เม็ดไหลตามน้ำไปกองในตะกร้าล้าง ส่วนน้ำ NaOH ลงถังน้ำทิ้งด้านล่าง',
+  { v: 'rinse', ms: 7000, st: 'DRAIN', te: '⑤ Drain', de: 'The 1-inch valve opens: beads flow into the rinse basket, the NaOH goes to the waste tank below.', t: '⑤ ปล่อยน้ำ', d: 'เปิดวาล์ว 1 นิ้ว เม็ดไหลตามน้ำไปกองในตะกร้าล้าง ส่วนน้ำ NaOH ลงถังน้ำทิ้งด้านล่าง',
     out: { valve: 1 }, f: () => ({ sim_beads: 6000, step_s: 5, speed: 1, ph: 12.6 }) },
-  { v: 'rinse', ms: 9000, st: 'RINSE', t: '⑥ ล้างจนเป็นกลาง', d: 'สเปรย์น้ำล้าง → รอสะเด็ด → วัด pH น้ำที่ออกมา ทำซ้ำอัตโนมัติจน pH ≤ 7.5',
+  { v: 'rinse', ms: 9000, st: 'RINSE', te: '⑥ Rinse to neutral', de: 'Spray → drain → measure the runoff pH, repeated automatically until pH ≤ 7.5.', t: '⑥ ล้างจนเป็นกลาง', d: 'สเปรย์น้ำล้าง → รอสะเด็ด → วัด pH น้ำที่ออกมา ทำซ้ำอัตโนมัติจน pH ≤ 7.5',
     f: (k) => { const n = Math.min(3, Math.floor(k * 4)), w = (k * 4) % 1 > 0.55; return { state: w ? 'RINSE_WAIT' : 'RINSE_SPRAY', out: w ? { valve: 1 } : { rinse: 255, valve: 1 }, rinse: n, sim_beads: 6000, ph: 12.6 - 5.3 * k }; } },
-  { v: 'tray', ms: 6500, st: 'TILT', t: '⑦ เทลงถาดตาก', d: 'เซอร์โวพลิกตะกร้า เม็ดเจลที่ล้างแล้วไหลลงถาดตาก แล้วตะกร้ากลับที่เดิม',
+  { v: 'tray', ms: 6500, st: 'TILT', te: '⑦ Tip onto the tray', de: 'A servo tips the basket: the rinsed beads slide onto the drying tray, then the basket returns.', t: '⑦ เทลงถาดตาก', d: 'เซอร์โวพลิกตะกร้า เม็ดเจลที่ล้างแล้วไหลลงถาดตาก แล้วตะกร้ากลับที่เดิม',
     out: { servo: 120 }, f: () => ({ sim_beads: 6000, ph: 7.3 }) },
-  { v: 'intro', ms: 7000, st: 'DONE', t: 'เสร็จ 1 รอบ 🎉', d: 'ราว 9 ชั่วโมงโดยไม่ต้องเฝ้า ได้เม็ดหลายพันเม็ด · ดูค่าจริงและสั่งงานได้จากจอ 7 นิ้วหรือเว็บนี้', spin: 1, f: () => ({ sim_beads: 6000, ph: 7.3 }) },
+  { v: 'intro', ms: 7000, st: 'DONE', te: 'Batch done 🎉', de: 'About 9 hours, unattended — thousands of beads. Watch and control it from the 7″ screen or this website.', t: 'เสร็จ 1 รอบ 🎉', d: 'ราว 9 ชั่วโมงโดยไม่ต้องเฝ้า ได้เม็ดหลายพันเม็ด · ดูค่าจริงและสั่งงานได้จากจอ 7 นิ้วหรือเว็บนี้', spin: 1, f: () => ({ sim_beads: 6000, ph: 7.3 }) },
 ];
 let tourI = -1, tourT0 = 0, tourSaved = null, tourLast = 0, tourPaused = false;
 function tourUI() {
@@ -574,7 +574,8 @@ function tourGo(i) {
   if (i >= TOUR.length) { tourEnd(); return; }
   tourI = i; tourT0 = performance.now(); tourPaused = false; const s = TOUR[i], el = tourUI();
   el.querySelector('.tnum').textContent = (i + 1) + '/' + TOUR.length;
-  el.querySelector('b').textContent = s.t; el.querySelector('p').textContent = s.d;
+  const en = /[?&]lang=en/.test(location.search) || (() => { try { return localStorage.getItem('hk15_lang') === 'en'; } catch (e) { return false; } })();
+  el.querySelector('b').textContent = en ? s.te : s.t; el.querySelector('p').textContent = en ? s.de : s.d;
   el.querySelector('[data-a="pause"]').textContent = '⏸';
   pop(el.querySelector('.tbody'));
   view(s.v, false, 1800); controls.autoRotate = !!s.spin; controls.autoRotateSpeed = 0.5;
