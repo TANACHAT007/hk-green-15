@@ -18,6 +18,8 @@ let S = null, MODE = 'none', HIST = [], BATCHES = [], INFO = {}, lastRun = null,
 document.querySelectorAll('#tabs button').forEach((b) => b.onclick = () => {
   document.querySelectorAll('#tabs button').forEach((x) => x.classList.toggle('on', x === b));
   document.querySelectorAll('section.tab').forEach((s) => s.classList.toggle('on', s.id === 't-' + b.dataset.t));
+  $('tbTitle').textContent = b.querySelector('span') ? b.querySelector('span').textContent : b.textContent;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   drawAll();
 });
 function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('theme', t); } catch (e) {} }
@@ -36,7 +38,9 @@ async function cmd(o) {
 function log(m) { const el = $('log'); el.textContent = new Date().toLocaleTimeString() + '  ' + m + '\n' + el.textContent.slice(0, 5000); }
 
 $('steps').innerHTML = STEPS.slice(1).map((s) => `<span data-s="${s}">${TH[s]}</span>`).join('');
-$('outs').innerHTML = OUTS.map(([k, n]) => `<span>${n}</span><div class="bar"><i id="ob_${k}"></i></div><b id="ov_${k}">—</b>`).join('');
+const EQI = { peri: '💧', auger: '🥄', bio: '⚫', top: '🌀', ch: '🫧', rinse: '🚿', valve: '🚰', servo: '↘️' };
+$('outs').innerHTML = OUTS.map(([k, n]) => `<div class="eq" id="eq_${k}"><i class="ei">${EQI[k] || '⚙️'}</i><div class="et"><span>${n.replace(/ \(.*\)/, '')}</span><small>${(n.match(/\((.*)\)/) || ['', ''])[1]}</small>` +
+  `<div class="bar"><i id="ob_${k}"></i></div></div><b id="ov_${k}">—</b></div>`).join('');
 
 // ------------------------------------------------------------------ estimates
 function etaS(m) {
@@ -60,7 +64,7 @@ function onRig(m) {
     const i = STEPS.indexOf(e.dataset.s);
     e.className = st === 'SAFE' ? (i === 1 ? '' : '') : (i < idx || st === 'DONE' ? 'done' : i === idx ? 'now' : '');
   });
-  $('stName').textContent = st + ' · ' + (TH[st] || '');
+  $('stName').textContent = (TH[st] || st); $('stName').dataset.code = st;
   $('stDesc').textContent = DESC[st] || '';
   $('stBar').style.width = m.step_s ? (100 * (1 - m.left_s / m.step_s)) + '%' : (st === 'DONE' ? '100%' : '0');
   $('stLeft').textContent = m.step_s ? hms(m.left_s) : '—';
@@ -90,8 +94,53 @@ function onRig(m) {
   if (!recipeFilled && m.p) fillRecipe(m.p);
   drawAll();
   if (m.firmware === 'qemu') $('bMode').textContent = 'Mega เสมือน (เฟิร์มแวร์จริงใน QEMU)';
+  shell(m);
   if (window.onRig3d) window.onRig3d(m);
 }
+
+// ------------------------------------------------------------------ app shell: ring, dock button, next step, toasts
+function totalS(P) {
+  const dose = Math.max(P.dose_g / P.auger_g_per_rev / 30 * 60, P.dose_g * (P.biochar_pct || 0) / 100 / (P.bio_g_per_rev || 0.09) / 30 * 60);
+  return dose + (P.dissolve_min + P.drip_min + P.set_min) * 60 + 60 + 7 * 60 + 7;
+}
+function gtoast(msg) { const t = $('gtoast'); t.textContent = msg; t.classList.remove('on'); void t.offsetWidth; t.classList.add('on');
+  clearTimeout(gtoast.h); gtoast.h = setTimeout(() => t.classList.remove('on'), 3800); }
+let lastSt = null;
+function readV() { try { return JSON.parse(localStorage.getItem('hk15_3d') || '{}'); } catch (e) { return {}; } }
+function shell(m) {
+  const st = m.state, P = m.p || {}, run = !['IDLE', 'DONE', 'SAFE'].includes(st);
+  const pct = st === 'DONE' ? 1 : st === 'IDLE' || st === 'SAFE' ? 0 : Math.max(0, Math.min(1, 1 - etaS(m) / totalS(P)));
+  const c = 2 * Math.PI * 52; $('ringFg').style.strokeDasharray = c; $('ringFg').style.strokeDashoffset = c * (1 - pct);
+  $('ringPct').textContent = Math.round(pct * 100) + '%';
+  if (STEPS.indexOf(st) > 0 && STEPS.indexOf(st) < STEPS.indexOf('DRAIN')) $('rinseN').textContent = '0 / ' + (P.rinse_max ?? '—');
+  document.body.dataset.state = st;
+  // one main button that always does the right thing
+  const b = $('dockMain');
+  if (run) { b.textContent = '■ หยุด'; b.className = 'b main stop'; b.onclick = () => cmd({ cmd: 'stop' }); b.disabled = false; }
+  else if (st === 'SAFE') { b.textContent = m.estop ? 'ดึง E-stop ขึ้นก่อน' : '↺ รีเซ็ต'; b.className = 'b main reset'; b.disabled = !!m.estop; b.onclick = () => cmd({ cmd: 'reset' }); }
+  else { b.textContent = '▶ เริ่มรอบผลิต'; b.className = 'b main go'; b.disabled = false; b.onclick = () => cmd({ cmd: 'start' }); }
+  document.querySelectorAll('#dockSpd button').forEach((x) => x.classList.toggle('on', +x.dataset.speed === m.speed));
+  // equipment chips
+  OUTS.forEach(([k]) => { const v = m.out ? m.out[k] : 0, on = k === 'servo' ? Math.abs(v - (P.servo_home ?? 10)) > 5 : v > 0;
+    $('eq_' + k).classList.toggle('on', !!on); });
+  // what to do next
+  const V = readV(), need = P.dose_g || 30, bioNeed = need * (P.biochar_pct ?? 2) / 100, chk = [
+    ['ผงไคโตซาน', (V.hopperG || 0) >= need], ['ไบโอชาร์', (V.bioG || 0) >= bioNeed], ['กรด 1 M 500 mL', (V.acidMl || 0) >= 450],
+    ['NaOH 2 M', (V.naoh || 0) >= 0.5], ['น้ำล้าง', (V.water || 0) >= 0.5], ['ถังน้ำทิ้งไม่เต็ม', (V.waste || 0) < 0.85]];
+  const NEXT = { IDLE: 'เตรียมวัตถุดิบให้ครบ แล้วกด ▶ เริ่มรอบผลิต', DOSE: 'กำลังป้อนผง — ไม่ต้องทำอะไร', DISSOLVE: 'กวนให้ละลาย ~2 ชม. — รอได้เลย',
+    DRIP: 'กำลังหยดเป็นเม็ด — ดูว่าหยดเป็นเม็ด ไม่เป็นสาย', SET: 'แช่ NaOH 6 ชม. — รอได้เลย', DRAIN: 'ปล่อยน้ำ NaOH ลงถังทิ้ง',
+    RINSE_SPRAY: 'กำลังล้าง — รอ pH ลงถึงเป้า', RINSE_WAIT: 'รอน้ำสะเด็ดแล้ววัด pH', TILT: 'เทเม็ดลงถาดตาก', TILT_BACK: 'ถาดกลับที่เดิม',
+    DONE: 'เก็บเม็ดจากถาดตาก แล้วบันทึกผลในแท็บผลทดลอง', SAFE: m.estop ? 'ดึงปุ่ม E-stop ขึ้น แล้วกดรีเซ็ต' : 'แก้ปัญหาให้เรียบร้อย แล้วกด ↺ รีเซ็ต' };
+  $('nextTxt').textContent = NEXT[st] || '—';
+  const showChk = st === 'IDLE' || st === 'DONE';
+  $('checklist2').innerHTML = showChk ? chk.map(([n, ok]) => `<span class="ck ${ok ? 'ok' : 'no'}">${ok ? '✓' : '!'} ${n}</span>`).join('') +
+    (chk.every((x) => x[1]) ? '' : '<button class="mini" id="fillAll2">✨ เติมครบทุกอย่าง</button>') : '';
+  const f2 = $('fillAll2'); if (f2) f2.onclick = () => { const f = $('fillAll'); if (f) f.click(); gtoast('✨ เติมวัตถุดิบครบแล้ว'); setTimeout(() => shell(S), 50); };
+  $('nextCard').classList.toggle('warn', showChk && !chk.every((x) => x[1]));
+  if (lastSt && st !== lastSt) gtoast((TH[st] || st) + (st === 'DONE' ? ' 🎉' : ''));
+  lastSt = st;
+}
+document.querySelectorAll('#dockSpd button').forEach((x) => x.onclick = () => cmd({ cmd: 'sim', op: 'speed', val: +x.dataset.speed }));
 
 function connect() {
   const es = new EventSource('/events');

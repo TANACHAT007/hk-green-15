@@ -9,52 +9,52 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div>
-    <h1>HK-Green-15</h1>
-    <div class="sub">เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน-ไบโอชาร์อัตโนมัติ</div>
+<aside id="side">
+  <div class="brand"><div class="logo">🫧</div><div><b>HK-Green-15</b><small>เครื่องผลิตเม็ดไฮโดรเจล</small></div></div>
+  <nav id="tabs"><button data-t="live" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>ภาพรวม</span></button><button data-t="run"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span>ควบคุม</span></button><button data-t="m3d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>3 มิติ</span></button><button data-t="batch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5M14 4v4h4"/></svg><span>ผลทดลอง</span></button><button data-t="test"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg><span>ทดสอบ</span></button><button data-t="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>สอบเทียบ</span></button><button data-t="doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/></svg><span>เอกสาร</span></button></nav>
+  <div class="sidefoot">
+    <span id="bMode" class="badge">—</span>
+    <span id="bLink" class="badge">ไม่มีข้อมูล</span>
+    <button class="b ghost" id="theme" title="สลับโหมดสว่าง/มืด">◐ ธีม</button>
   </div>
+</aside>
+<div id="appmain">
+<header id="topbar">
+  <div class="tbtitle" id="tbTitle">ภาพรวม</div>
   <div class="spacer"></div>
-  <span id="bMode" class="badge">—</span>
-  <span id="bLink" class="badge">ไม่มีข้อมูล</span>
   <span id="bSafety" class="badge">—</span>
-  <button class="b ghost" id="theme" title="สลับโหมดสว่าง/มืด">◐</button>
+  <div id="dock">
+    <div class="spdchips sim" id="dockSpd"><button data-speed="1">×1</button><button data-speed="60">×60</button><button data-speed="600">×600</button></div>
+    <button class="b main" id="dockMain">▶ เริ่มรอบผลิต</button>
+  </div>
 </header>
-<nav id="tabs">
-  <button data-t="live" class="on">🏠 ภาพรวม</button>
-  <button data-t="run">🎮 ควบคุม</button>
-  <button data-t="test">🔧 ทดสอบ</button>
-  <button data-t="batch">📒 ผลทดลอง</button>
-  <button data-t="cal">🎯 สอบเทียบ</button>
-  <button data-t="m3d">🧊 3 มิติ</button>
-  <button data-t="doc">📄 เอกสาร</button>
-</nav>
 <main>
 <!-- ============================================================ live -->
 <section class="tab on" id="t-live">
-  <div class="card"><h3>ขั้นตอนตอนนี้</h3>
-    <div class="steps" id="steps"></div>
-    <div class="row" style="justify-content:space-between"><span class="state" id="stName">—</span>
-      <span class="note" id="stDesc">—</span></div>
-    <div class="bar"><i id="stBar"></i></div>
-    <div class="kv" style="margin-top:6px"><span>เหลือในขั้นนี้</span><b id="stLeft">—</b><span>เวลาที่เหลือทั้งรอบ (ประมาณ)</span><b id="eta">—</b></div>
+  <div class="hero card">
+    <div class="ring"><svg viewBox="0 0 120 120"><circle class="rbg" cx="60" cy="60" r="52"/><circle class="rfg" id="ringFg" cx="60" cy="60" r="52"/></svg>
+      <div class="ringtxt"><b id="ringPct">0%</b><small>ทั้งรอบ</small></div></div>
+    <div class="herobody">
+      <div class="herostate"><span class="state" id="stName">—</span></div>
+      <div class="note" id="stDesc">—</div>
+      <div class="bar"><i id="stBar"></i></div>
+      <div class="herokv"><div><small>เหลือในขั้นนี้</small><b id="stLeft">—</b></div><div><small>เสร็จทั้งรอบอีก</small><b id="eta">—</b></div><div><small>ล้างแล้ว</small><b id="rinseN">—</b></div></div>
+    </div>
+    <div class="nextcard" id="nextCard"><small>ต้องทำอะไรต่อ</small><b id="nextTxt">—</b><div id="checklist2"></div></div>
   </div>
-  <div class="grid" style="margin-top:12px">
-    <div class="card"><h3>pH น้ำล้าง</h3><div><span class="big" id="ph">—</span><span class="unit">pH</span></div>
-      <div class="phbar" style="margin:8px 0"><i id="phMark"></i></div>
-      <div class="kv"><span>เป้าหมายหยุดล้าง</span><b id="phT">—</b><span>รอบล้าง</span><b id="rinseN">—</b><span>แรงดันหัววัด</span><b id="phV">—</b></div></div>
-    <div class="card"><h3>สารละลายและเม็ดเจล</h3><div class="kv">
-      <span>ผงที่ป้อนแล้ว</span><b id="powder">—</b><span>ละลายแล้ว</span><b id="diss">—</b>
-      <span>สารละลายในถังกรด</span><b id="acid">—</b><span>หยดไปแล้ว</span><b id="dripped">—</b>
-      <span>อัตราไหลปั๊มหยด</span><b id="flow">—</b><span>ต่อเข็ม (เกณฑ์ ≤ 1.5 mL/min)</span><b id="perNeedle">—</b>
-      <span>จำนวนเม็ด (ประมาณ)</span><b id="beads">—</b><span>ขนาดเม็ด (แบบจำลอง)</span><b id="beadD">—</b></div>
-      <div class="note" id="simOnlyNote">ค่าปริมาณมาจากตัวจำลอง — เครื่องจริงไม่มีเซนเซอร์ระดับ</div></div>
-    <div class="card"><h3>อุปกรณ์</h3><div class="outs" id="outs"></div></div>
+  <div class="steps card" id="steps"></div>
+  <div class="kpis">
+    <div class="kpi"><small>pH น้ำล้าง</small><b><span id="ph">—</span></b><div class="phbar"><i id="phMark"></i></div><span class="kfoot">เป้า <b id="phT">—</b> · หัววัด <b id="phV">—</b></span></div>
+    <div class="kpi"><small>เม็ดเจล (ประมาณ)</small><b id="beads">—</b><span class="kfoot">ขนาด <b id="beadD">—</b></span></div>
+    <div class="kpi"><small>สารละลายในถังกรด</small><b id="acid">—</b><span class="kfoot">หยดแล้ว <b id="dripped">—</b> · ละลาย <b id="diss">—</b></span></div>
+    <div class="kpi"><small>อัตราหยด</small><b id="flow">—</b><span class="kfoot">ต่อเข็ม <b id="perNeedle">—</b></span></div>
   </div>
-  <div class="split" style="margin-top:12px">
+  <div class="card"><h3>อุปกรณ์</h3><div class="eqgrid" id="outs"></div>
+    <div class="note"><span id="powder">—</span> · <span id="simOnlyNote">ค่าปริมาณมาจากตัวจำลอง — เครื่องจริงไม่มีเซนเซอร์ระดับ</span></div></div>
+  <div class="split" style="margin-top:16px">
     <div class="card"><h3>ผังการทำงาน</h3><canvas id="proc" height="330"></canvas></div>
     <div class="card"><h3>pH ระหว่างล้าง</h3><canvas id="trend" height="230"></canvas>
-      <h3 style="margin-top:16px">บันทึก</h3><div class="log" id="log"></div></div>
+      <details class="logbox"><summary>บันทึกระบบ</summary><div class="log" id="log"></div></details></div>
   </div>
 </section>
 
@@ -241,6 +241,8 @@
   </div>
 </section>
 </main>
+</div>
+<div id="gtoast"></div>
 <script>window.HK_STATIC = !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);</script>
 <script src="static_mode.js"></script>
 <script src="app.js"></script>
