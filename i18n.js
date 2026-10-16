@@ -128,13 +128,16 @@
     // ---- materials / small words (last: shortest)
     '🥄 ไคโตซาน': '🥄 Chitosan', '⚫ ไบโอชาร์': '⚫ Biochar', 'ไคโตซาน': 'chitosan', 'ไบโอชาร์': 'biochar', 'น้ำล้าง': 'rinse water', 'น้ำทิ้ง': 'waste', 'กรด': 'acid', 'ถาดตาก': 'Drying tray',
     'ปั๊มหยด': 'Drip pump', 'วาล์ว 1"': '1" valve', 'เม็ด': 'beads', 'ขนาด': 'size', 'เป้า': 'target', 'หยดแล้ว': 'dripped', 'เหลือ ': 'left ', 'เสร็จ': 'Done', 'พร้อม': 'Ready',
-    'ชม.': 'h', 'นาที': 'min', 'วิ': 's', 'g/รอบ': 'g/rev', 'รอบ': 'batches', 'บาท': 'THB',
+    'ล้าง': 'Rinses', 'ชม.': 'h', 'นาที': 'min', 'วิ': 's', 'g/รอบ': 'g/rev', 'รอบ': 'batches', 'บาท': 'THB',
   };
   const KEYS = Object.keys(EN).sort((a, b) => b.length - a.length);
   const TH_RE = /[฀-๿]/;
   const orig = new WeakMap();
   let lang = 'th', busy = false;
-  const tr = (s) => { let o = s; for (const k of KEYS) if (o.includes(k)) o = o.split(k).join(EN[k]); return o; };
+  // a phrase is only replaced as a whole word: never inside a longer Thai word (no lookbehind: works on older iPhones)
+  const esc = (k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const RE = new RegExp('(^|[^\\u0e00-\\u0e7f])(' + KEYS.map(esc).join('|') + ')(?=[^\\u0e00-\\u0e7f]|$)', 'g');
+  const tr = (s) => { let o = s, prev; do { prev = o; o = o.replace(RE, (m, pre, k) => pre + EN[k]); } while (o !== prev && TH_RE.test(o)); return o; };
   function fixNode(n) {
     if (n.nodeType === 3) {
       const v = n.nodeValue;
