@@ -43,8 +43,8 @@ export function mount(host, onProgress) {
         const pa = g.attributes.position, n = pa.count, pos = new Float32Array(n * 3);
         for (let i = 0; i < n; i++) { pos[i * 3] = pa.getX(i); pos[i * 3 + 1] = pa.getY(i); pos[i * 3 + 2] = pa.getZ(i); }
         const ng = new THREE.BufferGeometry(); ng.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        ng.setIndex(g.index ? new THREE.BufferAttribute(Uint32Array.from({ length: g.index.count }, (_, i) => g.index.getX(i)), 1)
-                            : new THREE.BufferAttribute(Uint32Array.from({ length: n }, (_, i) => i), 1));
+        let idx; if (g.index) idx = Uint32Array.from(g.index.array); else { idx = new Uint32Array(n); for (let i = 0; i < n; i++) idx[i] = i; }
+        ng.setIndex(new THREE.BufferAttribute(idx, 1));
         ng.applyMatrix4(o.matrixWorld); ng.computeVertexNormals();
         if (!groups.has(key)) groups.set(key, { mt, list: [] }); groups.get(key).list.push(ng);
       });

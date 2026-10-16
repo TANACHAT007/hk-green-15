@@ -127,8 +127,8 @@
   const r = (x, n) => Math.round(x * 10 ** n) / 10 ** n;
   let last = performance.now(), tStat = 0;
   setInterval(() => {
-    const now = performance.now(), sim = (now - last) / 1000 * S.speed; last = now;
-    const n = Math.max(1, Math.trunc(sim / 2)); for (let i = 0; i < n; i++) step(sim / n);
+    const now = performance.now(), sim = Math.min(1, (now - last) / 1000) * S.speed; last = now;   // phone woke up after minutes: don't replay them all at once
+    const n = Math.min(400, Math.max(1, Math.trunc(sim / 2))); for (let i = 0; i < n; i++) step(sim / n);
     if (now - tStat < 500) return; tStat = now;
     if (SER) return;                                       // the real machine is talking
     const ph = S.ph + gauss(0.02), left = ['IDLE', 'DONE', 'SAFE'].includes(S.st) ? 0 : Math.max(0, S.len - (S.t - S.t_step)), p = {};

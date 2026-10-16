@@ -92,7 +92,8 @@ function init() {
         if (k === 'Acrylic_Enclosure_Top') Object.assign(m, { transparent: true, opacity: 0.18, depthWrite: false });
         m.userData.op = m.opacity; Gp.mats.push(m); });
     }
-    scene.add(model); screenUI(); buildFx(); mergeParts(); applyXray(); buildList(); view('all', true);
+    scene.add(model); screenUI(); buildFx(); applyXray(); buildList(); view('all', true);
+    mergeParts();                                   // in small slices: the page stays responsive on phones
     info.textContent = 'ลากเพื่อหมุน · เลื่อนล้อเพื่อซูม · คลิกขวาลากเพื่อเลื่อน · คลิกชิ้นส่วนเพื่อดูชื่อ';
     host.classList.add('ready');
     if (S) update(S, true);
@@ -104,30 +105,34 @@ function init() {
 }
 // ~600 CAD meshes are too many draw calls for a phone: merge them per component and material (component groups,
 // picking, x-ray and glow keep working because each component keeps its own merged meshes and materials).
-function mergeParts() {
+async function mergeParts() {
   model.updateMatrixWorld(true);
-  Object.entries(groups).forEach(([k, Gp]) => {
+  for (const [k, Gp] of Object.entries(groups)) {
+    await new Promise((r) => setTimeout(r, 0));
     const mats = [];
-    Gp.objs.forEach((c) => {
+    for (const c of Gp.objs) {
+      await new Promise((r) => setTimeout(r, 0));
       const inv = c.matrixWorld.clone().invert(), byMat = new Map();
       c.traverse((o) => {
         if (!o.isMesh || !o.visible) return; const mt = o.material, g = o.geometry, pa = g.attributes.position, n = pa.count;
         const key = [mt.color ? mt.color.getHex() : 0, mt.opacity.toFixed(2), mt.transparent, (mt.metalness || 0).toFixed(2), (mt.roughness || 0).toFixed(2)].join('|');
         const pos = new Float32Array(n * 3); for (let i = 0; i < n; i++) { pos[i * 3] = pa.getX(i); pos[i * 3 + 1] = pa.getY(i); pos[i * 3 + 2] = pa.getZ(i); }
         const ng = new THREE.BufferGeometry(); ng.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        ng.setIndex(new THREE.BufferAttribute(g.index ? Uint32Array.from({ length: g.index.count }, (_, i) => g.index.getX(i)) : Uint32Array.from({ length: n }, (_, i) => i), 1));
+        let idx; if (g.index) idx = Uint32Array.from(g.index.array); else { idx = new Uint32Array(n); for (let i = 0; i < n; i++) idx[i] = i; }
+        ng.setIndex(new THREE.BufferAttribute(idx, 1));
         ng.applyMatrix4(new THREE.Matrix4().multiplyMatrices(inv, o.matrixWorld)); ng.computeVertexNormals();
         if (!byMat.has(key)) byMat.set(key, { mt, list: [] }); byMat.get(key).list.push(ng);
       });
-      if (!byMat.size) return;
+      if (!byMat.size) continue;
       [...c.children].forEach((ch) => c.remove(ch));
       for (const { mt, list } of byMat.values()) {
         const mg = mergeGeometries(list, false); list.forEach((x) => x.dispose()); if (!mg) continue;
         const m = new THREE.Mesh(mg, mt); m.userData.g = k; c.add(m); mats.push(mt);
       }
-    });
-    if (mats.length) Gp.mats = mats;
-  });
+    }
+    if (mats.length) { Gp.mats = mats; mats.forEach((m) => { m.userData.op = m.userData.op ?? m.opacity; }); }
+  }
+  applyXray();
 }
 // The CAD display is a plain green panel: lay the real touch-screen UI (ESP32 simulator screenshot) over its face.
 function screenUI() {
