@@ -40,7 +40,48 @@
     else if (s === 'TILT_BACK') { O.servo = P.servo_home; }
     else { S.test = false; allOff(); O.servo = P.servo_home; }
   }
+  // ---- real machine over USB from the browser (Web Serial, Chrome/Edge desktop): same text protocol as server.py
+  let SER = null;                                         // { port, writer, reader }
+  function serialCmd(c) {
+    let line = { start: 'START', stop: 'STOP', reset: 'RESET' }[c.cmd];
+    if (c.cmd === 'set') line = `SET:${c.key}=${c.val}`;
+    else if (c.cmd === 'test') line = `TEST:${c.out}=${Math.trunc(+c.val || 0)}`;
+    if (line && SER) SER.writer.write(new TextEncoder().encode(line + '\n'));
+  }
+  async function serialRead() {
+    let buf = '';
+    const dec = new TextDecoder();
+    try {
+      for (;;) {
+        const { value, done } = await SER.reader.read(); if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let i; while ((i = buf.indexOf('\n')) >= 0) { const l = buf.slice(0, i).trim(); buf = buf.slice(i + 1); if (!l) continue;
+          try { emit(JSON.parse(l)); } catch (e) {} }
+      }
+    } catch (e) { emit({ t: 'log', msg: 'USB: ' + e.message }); }
+    serialClose();
+  }
+  async function serialClose() {
+    if (!SER) return; const s = SER; SER = null;
+    try { s.reader.releaseLock(); } catch (e) {} try { s.writer.releaseLock(); } catch (e) {} try { await s.port.close(); } catch (e) {}
+    emit({ t: 'log', msg: 'USB disconnected — back to the simulator' }); window.dispatchEvent(new Event('hkserial'));
+  }
+  window.hkSerial = {
+    supported: 'serial' in navigator,
+    get connected() { return !!SER; },
+    async connect() {
+      const port = await navigator.serial.requestPort({ filters: [{ usbVendorId: 0x2341 }, { usbVendorId: 0x2a03 }, { usbVendorId: 0x1a86 }, { usbVendorId: 0x0403 }] });
+      await port.open({ baudRate: 115200 });
+      SER = { port, writer: port.writable.getWriter(), reader: port.readable.getReader() };
+      emit({ t: 'log', msg: 'USB connected: Arduino Mega' }); window.dispatchEvent(new Event('hkserial'));
+      serialRead();
+    },
+    disconnect: serialClose,
+  };
+  if (navigator.serial) navigator.serial.addEventListener('disconnect', () => serialClose());
+
   function command(c) {
+    if (SER) { serialCmd(c); return; }
     const idle = S.st === 'IDLE' || S.st === 'DONE';
     if (c.cmd === 'start' && idle) { if (S.lvl[0]) enter('DOSE', doseS()); else raise(1, 'acid low - fill 500 mL first'); }
     else if (c.cmd === 'stop') enter('SAFE', 0);
@@ -89,6 +130,7 @@
     const now = performance.now(), sim = (now - last) / 1000 * S.speed; last = now;
     const n = Math.max(1, Math.trunc(sim / 2)); for (let i = 0; i < n; i++) step(sim / n);
     if (now - tStat < 500) return; tStat = now;
+    if (SER) return;                                       // the real machine is talking
     const ph = S.ph + gauss(0.02), left = ['IDLE', 'DONE', 'SAFE'].includes(S.st) ? 0 : Math.max(0, S.len - (S.t - S.t_step)), p = {};
     ['dose_g', 'biochar_pct', 'bio_g_per_rev', 'auger_g_per_rev', 'dissolve_min', 'drip_min', 'set_min', 'peri_duty', 'top_stir_duty', 'chamber_stir_duty', 'ph_target', 'rinse_max', 'ph_v7', 'ph_slope'].forEach((k) => p[k] = P[k]);
     emit({ t: 'rig', ms: Math.trunc(S.t * 1000), state: S.st, left_s: Math.trunc(left), step_s: Math.trunc(S.len), ph: r(ph, 2),
@@ -108,7 +150,7 @@
   const realFetch = window.fetch.bind(window);
   window.fetch = async (url, opt) => {
     const u = typeof url === 'string' ? url : url.url, path = u.replace(location.origin, '').split('?')[0];
-    if (path === '/api/info') return J({ mode: 'sim', history: history.slice(-1200), logs: logs.slice(-60), bead_d_model_mm: r(beadD(), 2), needles: NEEDLES, sol_ml: SOL_ML });
+    if (path === '/api/info') return J({ mode: SER ? 'serial' : 'sim', history: history.slice(-1200), logs: logs.slice(-60), bead_d_model_mm: r(beadD(), 2), needles: NEEDLES, sol_ml: SOL_ML });
     if (path === '/api/cmd') { command(JSON.parse(opt.body)); return J({ ok: true }); }
     if (path === '/api/batches') {
       let rows = loadB();

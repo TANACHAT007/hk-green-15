@@ -408,3 +408,22 @@ function parseCSV(t) {
   } catch (e) {}
 })();
 
+
+// ------------------------------------------------------------------ real machine over USB (Web Serial, static site only)
+(function () {
+  const b = $('usbBtn'); if (!b || !window.hkSerial || !window.hkSerial.supported) return;
+  b.hidden = false;
+  const paint = () => {
+    const on = window.hkSerial.connected; MODE = on ? 'serial' : 'sim';
+    b.textContent = on ? '⏏ ตัดการเชื่อมต่อ USB' : '🔌 ต่อเครื่องจริง (USB)';
+    $('bMode').textContent = on ? 'เครื่องจริงทาง USB (Web Serial)' : 'โหมดจำลอง (ไม่มีฮาร์ดแวร์)';
+    $('bMode').className = 'badge ' + (on ? 'ok' : 'warn');
+    document.querySelectorAll('.sim').forEach((e) => e.style.display = on ? 'none' : '');
+  };
+  b.onclick = async () => {
+    try { if (window.hkSerial.connected) await window.hkSerial.disconnect(); else { await window.hkSerial.connect(); gtoast('🔌 ต่อ Arduino Mega แล้ว'); } }
+    catch (e) { if (e.name !== 'NotFoundError') gtoast('ต่อ USB ไม่ได้: ' + e.message); }
+    paint();
+  };
+  window.addEventListener('hkserial', paint);
+})();

@@ -74,6 +74,7 @@
     'ขนาดเม็ด': 'Bead size', 'ลบรอบ #': 'Delete batch #', 'ลบ': 'Delete', 'รอบเครื่อง ': 'Machine batch ', ' (ตัวจำลอง)': ' (simulator)', 'บันทึกรอบ: ': 'Saved: ', '→ พองตัว': '→ swelling',
     'ข้อมูลตัวอย่าง (สมมติ)': 'sample data (made up)', '⚠️ กำลังแสดง': '⚠️ Showing', ' ข้อมูลตัวอย่าง ': ' sample data, ', ' รอบ ': ' batches ', '— ไม่ใช่ผลทดลองจริง': '— not real results',
     'ลบข้อมูลตัวอย่าง': 'Remove sample data', 'ยังไม่มีผลทดลอง': 'No results yet', '🧪 ลองดูด้วยข้อมูลตัวอย่าง': '🧪 Try it with sample data', 'ขนาดเม็ดเฉลี่ย (mm) ± SD': 'Mean bead size (mm) ± SD',
+    '🔌 ต่อเครื่องจริง (USB)': '🔌 Connect machine (USB)', '⏏ ตัดการเชื่อมต่อ USB': '⏏ Disconnect USB', 'เครื่องจริงทาง USB (Web Serial)': 'Real machine over USB (Web Serial)', '🔌 ต่อ Arduino Mega แล้ว': '🔌 Arduino Mega connected', 'ต่อ USB ไม่ได้: ': 'USB failed: ',
     // ---- calibration
     'หัววัด pH': 'pH probe', 'จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"': 'Dip the probe in pH 7 buffer, wait 1 min → press "Store pH 7"',
     'ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"': 'Rinse the probe, dip in the 2nd buffer → pick its value, press "Store"', 'กด "ส่งค่าสอบเทียบ"': 'Press "Send calibration"',
