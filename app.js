@@ -429,41 +429,14 @@ function parseCSV(t) {
   window.addEventListener('hkserial', paint);
 })();
 
-// ------------------------------------------------------------------ virtual 7" screen: the ESP32 UI compiled to WebAssembly
+// ------------------------------------------------------------------ virtual 7" screen (screen.js: the ESP32 UI in WebAssembly)
 (function () {
   const tab = document.querySelector('#tabs button[data-t="screen"]'); if (!tab) return;
-  let mod = null, loading = false, lastP = 0, lastMsg = null;
-  const OUTK = ['peri', 'auger', 'bio', 'top', 'ch', 'rinse', 'valve', 'servo'];
-  const PK = ['dose_g', 'biochar_pct', 'dissolve_min', 'drip_min', 'set_min', 'ph_target', 'rinse_max', 'peri_duty', 'top_stir_duty', 'chamber_stir_duty', 'auger_g_per_rev', 'bio_g_per_rev', 'ph_v7', 'ph_slope'];
-  const feed = (l) => { if (mod) mod.ccall('hk_web_feed', null, ['string'], [l]); };
-  const pLine = (p) => 'P:' + PK.filter((k) => p[k] !== undefined).map((k) => k + '=' + p[k]).join(';');
-  window.onRigScreen = (m) => {
-    lastMsg = m; if (!mod) return;
-    const o = m.out || {}, lv = m.lvl || [1, 1, 0];
-    feed(`STATE:${m.state};LEFT_S:${m.left_s || 0};STEP_S:${m.step_s || 0};PH:${(m.ph ?? 7).toFixed(2)};PHV:${(m.ph_v ?? 2.5).toFixed(3)};RINSE:${m.rinse || 0};` +
-         `ESTOP:${m.estop ? 1 : 0};TEST:${m.test ? 1 : 0};ALARM:${m.alarm || 0};LVL:${lv.join(',')};OUT:${OUTK.map((k) => +(o[k] || 0)).join(',')}`);
-    if (m.p && Date.now() - lastP > 5000) { lastP = Date.now(); feed(pLine(m.p)); }
-  };
-  function onSend(line) {                                   // what the screen sends to the "Mega"
-    const [k, v] = line.split(/:(.*)/s);
-    if (line === 'START') cmd({ cmd: 'start' }); else if (line === 'STOP') cmd({ cmd: 'stop' }); else if (line === 'RESET') cmd({ cmd: 'reset' });
-    else if (line === 'GET') { if (lastMsg && lastMsg.p) feed(pLine(lastMsg.p)); }
-    else if (k === 'SET') { const [key, val] = v.split('='); cmd({ cmd: 'set', key, val: +val }); }
-    else if (k === 'TEST') { const [out, val] = v.split('='); cmd({ cmd: 'test', out, val: +val }); }
-  }
-  tab.addEventListener('click', () => {
-    if (mod || loading) return; loading = true;
-    const s = document.createElement('script'); s.src = 'display/hk_display.js';
-    s.onload = async () => {
-      const canvas = $('hkcanvas');
-      mod = await window.HKDisplay({ canvas, keyboardListeningElement: canvas, onSend, locateFile: (f) => 'display/' + f });
-      $('scrLoad').textContent = '';
-      const ptr = (e) => { const r = canvas.getBoundingClientRect(), down = e.type === 'pointerup' || e.type === 'pointercancel' ? 0 : (e.buttons & 1) || e.pointerType === 'touch' ? 1 : 0;
-        mod.ccall('hk_web_pointer', null, ['number', 'number', 'number'], [Math.round((e.clientX - r.left) * 800 / r.width), Math.round((e.clientY - r.top) * 480 / r.height), e.type === 'pointerdown' ? 1 : down]); };
-      ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach((t) => canvas.addEventListener(t, (e) => { if (t === 'pointerdown') canvas.setPointerCapture(e.pointerId); ptr(e); e.preventDefault(); }));
-      if (lastMsg) { lastP = 0; window.onRigScreen(lastMsg); }
-    };
-    s.onerror = () => { $('scrLoad').textContent = 'โหลดจอไม่ได้'; };
-    document.body.appendChild(s);
+  let scr = null, loading = false, lastMsg = null;
+  window.onRigScreen = (m) => { lastMsg = m; if (scr) scr.rig(m); };
+  tab.addEventListener('click', async () => {
+    if (scr || loading) return; loading = true;
+    try { scr = await window.HKScreen.mount($('hkcanvas'), cmd); $('scrLoad').textContent = ''; if (lastMsg) scr.rig(lastMsg); }
+    catch (e) { $('scrLoad').textContent = 'โหลดจอไม่ได้'; }
   });
 })();
