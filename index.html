@@ -9,11 +9,12 @@
 <meta name="description" content="เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ — โครงงานนักเรียน">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
 <link rel="stylesheet" href="crops.css">
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 <style>
 :root {
-  --bg: #f7f8ff; --panel: #fff; --panel2: #f1f3ff; --line: #e6e8f5; --text: #1d1b3a; --muted: #6f7392;
+  --bg: #f7f8ff; --panel: #fff; --panel2: #f1f3ff; --line: #e6e8f5; --text: #1d1b3a; --muted: #5d6180;
   --accent: #10b981; --accent2: #22c3a6; --sky: #5b8cff; --grape: #8b5cf6; --pink: #ff5ea8; --sun: #ffc23d; --water: #3b82f6;
   --shadow: 0 2px 4px rgba(60, 50, 140, .04), 0 14px 34px rgba(60, 50, 140, .08);
   --spring: cubic-bezier(.34, 1.56, .64, 1); --r: 26px;
@@ -219,7 +220,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#"><span class="logo">🫧</span>HK-Green-15</a>
   <div class="links"><a href="#video">วิดีโอ</a><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#crop">เลือกสูตร</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a></div>
-  <button class="lang" id="themeBtn" title="สว่าง / มืด">◐</button><button class="lang" id="lang" title="ภาษา / Language">EN</button>
+  <button class="lang" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด (light / dark)">◐</button><button class="lang" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
   <a class="btn dark sm" href="app.html">เปิดแดชบอร์ด →</a>
 </div></nav>
 
@@ -234,7 +235,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
     </div>
   </div>
   <div class="shot">
-    <img class="hero-img" src="img/hero.jpg" alt="ภาพเรนเดอร์เครื่อง HK-Green-15">
+    <img class="hero-img" src="img/hero.jpg" width="1600" height="1000" fetchpriority="high" alt="ภาพเรนเดอร์เครื่อง HK-Green-15">
     <div class="v3d" id="v3d"></div>
     <button class="spin3d" id="spin3d"><i>🧊</i> หมุนดูแบบ 3 มิติ<span class="bar" id="v3bar"></span></button>
     <div class="chip c1"><span>💧</span><div>หยดพร้อมกัน 12 เข็ม<small>เม็ดขนาดสม่ำเสมอ</small></div></div>
@@ -356,7 +357,7 @@ GAL.forEach(([f, c, big]) => { const el = document.createElement('figure'); el.c
 document.getElementById('lb').onclick = (e) => e.currentTarget.classList.remove('on');
 const DS = ['02_home_drip', '01_home_idle', '07_recipe', '06_test', '04_ph', '09_start_dialog'];
 let di = 0; const dimg = document.getElementById('dimg'), dd = document.getElementById('ddots');
-DS.forEach((_, i) => { const b = document.createElement('button'); b.onclick = () => { di = i; showD(); }; dd.appendChild(b); });
+DS.forEach((_, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'ภาพหน้าจอ ' + (i + 1)); b.onclick = () => { di = i; showD(); }; dd.appendChild(b); });
 function showD() { dimg.style.opacity = 0; setTimeout(() => { dimg.src = `img/display_${DS[di]}.png`; dimg.style.opacity = 1; }, 180); [...dd.children].forEach((b, i) => b.classList.toggle('on', i === di)); }
 dimg.style.transition = 'opacity .18s'; showD(); window.__dsT = setInterval(() => { di = (di + 1) % DS.length; showD(); }, 3800);
 const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });

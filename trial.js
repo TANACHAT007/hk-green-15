@@ -1,82 +1,14 @@
-// Plant trial: design a pot experiment (control / ½ / recommended / 2× dose of beads, n replicate pots), print pot
-// labels, log weekly measurements, and compare treatments (mean ± SD plant height, days to wilting). Kept in this browser.
-// HKTrial.mount(el)  — uses HKCrops.calc() for the recommended dose.
-window.HKTrial = (function () {
-  const KEY = 'hk15_trial';
-  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
-  const save = (t) => { try { localStorage.setItem(KEY, JSON.stringify(t)); } catch (e) {} };
-  const en = () => (window.LANG || (() => { try { return localStorage.getItem('hk15_lang'); } catch (e) { return 'th'; } })()) === 'en';
-  const T = (th, e) => (en() ? e : th);
-  const COL = ['#9aa0b8', '#5b8cff', '#10b981', '#8b5cf6'];
-  const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : NaN);
-  const sd = (a) => { if (a.length < 2) return 0; const m = mean(a); return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1)); };
-
-  function mount(el) {
-    let tr = load();
-    function create() {
-      const rec = window.HKCrops && HKCrops.calc ? HKCrops.calc() : { g: 6, crop: 'fruitveg', label: '' };
-      const reps = Math.max(2, Math.min(10, +el.querySelector('[data-k=reps]').value || 4));
-      const g = +el.querySelector('[data-k=g]').value || rec.g;
-      const doses = [0, g / 2, g, g * 2].map((x) => Math.round(x * 10) / 10);
-      tr = { started: new Date().toISOString().slice(0, 10), crop: rec.label, doses, reps, pots: [], log: [] };
-      doses.forEach((d, i) => { for (let r = 1; r <= reps; r++) tr.pots.push({ id: `T${i}-${r}`, t: i, dose: d }); });
-      save(tr); render();
-    }
-    function chart(cv) {
-      const g = cv.getContext('2d'), w = cv.width = cv.clientWidth * 2, h = cv.height = 440, pad = 60;
-      g.clearRect(0, 0, w, h); g.font = '22px Anuphan, sans-serif';
-      const weeks = [...new Set(tr.log.map((x) => x.week))].sort((a, b) => a - b); if (!weeks.length) { g.fillStyle = '#999'; g.fillText(T('ยังไม่มีข้อมูล', 'no data yet'), pad, h / 2); return; }
-      const ser = tr.doses.map((_, t) => weeks.map((wk) => mean(tr.log.filter((x) => x.week === wk && tr.pots.find((p) => p.id === x.pot).t === t && x.h > 0).map((x) => x.h))));
-      const ymax = Math.max(10, ...ser.flat().filter((x) => !isNaN(x))) * 1.15, X = (i) => pad + (w - pad * 2.6) * (weeks.length < 2 ? 0.5 : i / (weeks.length - 1)), Y = (v) => h - pad - (h - pad * 1.6) * v / ymax;
-      g.strokeStyle = '#ddd'; g.fillStyle = '#888'; for (let v = 0; v <= ymax; v += Math.ceil(ymax / 5)) { g.beginPath(); g.moveTo(pad, Y(v)); g.lineTo(w - pad / 2, Y(v)); g.stroke(); g.fillText(v, 8, Y(v) + 7); }
-      weeks.forEach((wk, i) => g.fillText(T('สัปดาห์ ', 'wk ') + wk, X(i) - 30, h - pad / 2.5));
-      ser.forEach((s, t) => { g.strokeStyle = g.fillStyle = COL[t]; g.lineWidth = 5; g.beginPath(); let first = true;
-        s.forEach((v, i) => { if (isNaN(v)) return; first ? g.moveTo(X(i), Y(v)) : g.lineTo(X(i), Y(v)); first = false; }); g.stroke();
-        s.forEach((v, i) => { if (!isNaN(v)) { g.beginPath(); g.arc(X(i), Y(v), 8, 0, 7); g.fill(); } }); });
-      g.lineWidth = 1; g.fillStyle = '#666'; g.fillText(T('ความสูงเฉลี่ย (ซม.)', 'mean height (cm)'), pad, 26);
-    }
-    function render() {
-      if (!tr) {
-        const rec = window.HKCrops && HKCrops.calc ? HKCrops.calc() : { g: 6, label: '' };
-        el.innerHTML = `<div class="tr0"><p>${T('วางแผนปลูกเปรียบเทียบเพื่อยืนยันว่าเม็ดช่วยจริง และหาปริมาณที่ดีที่สุด: 4 กลุ่ม (ไม่ใส่ · ครึ่งหนึ่ง · ตามคำแนะนำ · สองเท่า) กลุ่มละหลายกระถาง ดินและการรดน้ำเหมือนกันทุกกระถาง',
-          'Plan a side-by-side pot trial to prove the beads help and find the best amount: 4 groups (none · half · recommended · double), several pots each, same soil and watering everywhere.')}</p>
-          <div class="trf"><label>${T('พืช (จากเครื่องมือเลือกสูตร)', 'Crop (from the recipe tool)')}<b>${rec.label || '—'}</b></label>
-          <label>${T('ปริมาณที่แนะนำ (g/กระถาง)', 'Recommended (g/pot)')}<input data-k="g" type="number" step="0.5" value="${rec.g}"></label>
-          <label>${T('กระถางต่อกลุ่ม', 'Pots per group')}<input data-k="reps" type="number" min="2" max="10" value="4"></label>
-          <button class="b green" data-a="new">${T('สร้างแผนการทดลอง', 'Create the trial')}</button></div></div>`;
-        el.querySelector('[data-a=new]').onclick = create; return;
-      }
-      const nT = tr.doses.length, lastWeek = Math.max(0, ...tr.log.map((x) => x.week));
-      const names = [T('ไม่ใส่ (ควบคุม)', 'None (control)'), T('ครึ่งหนึ่ง', 'Half'), T('ตามคำแนะนำ', 'Recommended'), T('สองเท่า', 'Double')];
-      const sumRows = tr.doses.map((d, t) => { const ids = tr.pots.filter((p) => p.t === t).map((p) => p.id);
-        const hs = tr.log.filter((x) => x.week === lastWeek && ids.includes(x.pot) && x.h > 0).map((x) => x.h);
-        const wl = tr.log.filter((x) => ids.includes(x.pot) && x.wilt > 0).map((x) => x.wilt);
-        return `<tr><td><i class="dot" style="background:${COL[t]}"></i>${names[t]}</td><td>${d} g</td><td>${hs.length ? mean(hs).toFixed(1) + ' ± ' + sd(hs).toFixed(1) : '—'}</td><td>${wl.length ? mean(wl).toFixed(1) : '—'}</td></tr>`; }).join('');
-      el.innerHTML = `<div class="trhead"><b>${tr.crop || T('การทดลองปลูก', 'Pot trial')}</b><span>${T('เริ่ม', 'started')} ${tr.started} · ${nT} ${T('กลุ่ม', 'groups')} × ${tr.reps} ${T('กระถาง', 'pots')}</span>
-          <button class="mini ghost" data-a="print">🖨️ ${T('พิมพ์ป้ายกระถาง', 'Print pot labels')}</button><button class="mini ghost" data-a="csv">⬇ CSV</button><button class="mini ghost" data-a="reset">${T('เริ่มใหม่', 'New trial')}</button></div>
+window.HKTrial=function(){const v="hk15_trial",T=()=>{try{return JSON.parse(localStorage.getItem(v))||null}catch{return null}},x=n=>{try{localStorage.setItem(v,JSON.stringify(n))}catch{}},N=()=>(window.LANG||(()=>{try{return localStorage.getItem("hk15_lang")}catch{return"th"}})())==="en",l=(n,e)=>N()?e:n,k=["#9aa0b8","#5b8cff","#10b981","#8b5cf6"],y=n=>n.length?n.reduce((e,f)=>e+f,0)/n.length:NaN,C=n=>{if(n.length<2)return 0;const e=y(n);return Math.sqrt(n.reduce((f,S)=>f+(S-e)**2,0)/(n.length-1))};function H(n){let e=T();function f(){const g=window.HKCrops&&HKCrops.calc?HKCrops.calc():{g:6,crop:"fruitveg",label:""},a=Math.max(2,Math.min(10,+n.querySelector("[data-k=reps]").value||4)),h=+n.querySelector("[data-k=g]").value||g.g,u=[0,h/2,h,h*2].map(r=>Math.round(r*10)/10);e={started:new Date().toISOString().slice(0,10),crop:g.label,doses:u,reps:a,pots:[],log:[]},u.forEach((r,o)=>{for(let s=1;s<=a;s++)e.pots.push({id:`T${o}-${s}`,t:o,dose:r})}),x(e),w()}function S(g){const a=g.getContext("2d"),h=g.width=g.clientWidth*2,u=g.height=440,r=60;a.clearRect(0,0,h,u),a.font="22px Anuphan, sans-serif";const o=[...new Set(e.log.map(t=>t.week))].sort((t,b)=>t-b);if(!o.length){a.fillStyle="#999",a.fillText(l("\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25","no data yet"),r,u/2);return}const s=e.doses.map((t,b)=>o.map($=>y(e.log.filter(p=>p.week===$&&e.pots.find(m=>m.id===p.pot).t===b&&p.h>0).map(p=>p.h)))),i=Math.max(10,...s.flat().filter(t=>!isNaN(t)))*1.15,d=t=>r+(h-r*2.6)*(o.length<2?.5:t/(o.length-1)),c=t=>u-r-(u-r*1.6)*t/i;a.strokeStyle="#ddd",a.fillStyle="#888";for(let t=0;t<=i;t+=Math.ceil(i/5))a.beginPath(),a.moveTo(r,c(t)),a.lineTo(h-r/2,c(t)),a.stroke(),a.fillText(t,8,c(t)+7);o.forEach((t,b)=>a.fillText(l("\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C ","wk ")+t,d(b)-30,u-r/2.5)),s.forEach((t,b)=>{a.strokeStyle=a.fillStyle=k[b],a.lineWidth=5,a.beginPath();let $=!0;t.forEach((p,m)=>{isNaN(p)||($?a.moveTo(d(m),c(p)):a.lineTo(d(m),c(p)),$=!1)}),a.stroke(),t.forEach((p,m)=>{isNaN(p)||(a.beginPath(),a.arc(d(m),c(p),8,0,7),a.fill())})}),a.lineWidth=1,a.fillStyle="#666",a.fillText(l("\u0E04\u0E27\u0E32\u0E21\u0E2A\u0E39\u0E07\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 (\u0E0B\u0E21.)","mean height (cm)"),r,26)}function w(){if(!e){const o=window.HKCrops&&HKCrops.calc?HKCrops.calc():{g:6,label:""};n.innerHTML=`<div class="tr0"><p>${l("\u0E27\u0E32\u0E07\u0E41\u0E1C\u0E19\u0E1B\u0E25\u0E39\u0E01\u0E40\u0E1B\u0E23\u0E35\u0E22\u0E1A\u0E40\u0E17\u0E35\u0E22\u0E1A\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E22\u0E37\u0E19\u0E22\u0E31\u0E19\u0E27\u0E48\u0E32\u0E40\u0E21\u0E47\u0E14\u0E0A\u0E48\u0E27\u0E22\u0E08\u0E23\u0E34\u0E07 \u0E41\u0E25\u0E30\u0E2B\u0E32\u0E1B\u0E23\u0E34\u0E21\u0E32\u0E13\u0E17\u0E35\u0E48\u0E14\u0E35\u0E17\u0E35\u0E48\u0E2A\u0E38\u0E14: 4 \u0E01\u0E25\u0E38\u0E48\u0E21 (\u0E44\u0E21\u0E48\u0E43\u0E2A\u0E48 \xB7 \u0E04\u0E23\u0E36\u0E48\u0E07\u0E2B\u0E19\u0E36\u0E48\u0E07 \xB7 \u0E15\u0E32\u0E21\u0E04\u0E33\u0E41\u0E19\u0E30\u0E19\u0E33 \xB7 \u0E2A\u0E2D\u0E07\u0E40\u0E17\u0E48\u0E32) \u0E01\u0E25\u0E38\u0E48\u0E21\u0E25\u0E30\u0E2B\u0E25\u0E32\u0E22\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07 \u0E14\u0E34\u0E19\u0E41\u0E25\u0E30\u0E01\u0E32\u0E23\u0E23\u0E14\u0E19\u0E49\u0E33\u0E40\u0E2B\u0E21\u0E37\u0E2D\u0E19\u0E01\u0E31\u0E19\u0E17\u0E38\u0E01\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07","Plan a side-by-side pot trial to prove the beads help and find the best amount: 4 groups (none \xB7 half \xB7 recommended \xB7 double), several pots each, same soil and watering everywhere.")}</p>
+          <div class="trf"><label>${l("\u0E1E\u0E37\u0E0A (\u0E08\u0E32\u0E01\u0E40\u0E04\u0E23\u0E37\u0E48\u0E2D\u0E07\u0E21\u0E37\u0E2D\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E2A\u0E39\u0E15\u0E23)","Crop (from the recipe tool)")}<b>${o.label||"\u2014"}</b></label>
+          <label>${l("\u0E1B\u0E23\u0E34\u0E21\u0E32\u0E13\u0E17\u0E35\u0E48\u0E41\u0E19\u0E30\u0E19\u0E33 (g/\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07)","Recommended (g/pot)")}<input data-k="g" type="number" step="0.5" value="${o.g}"></label>
+          <label>${l("\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07\u0E15\u0E48\u0E2D\u0E01\u0E25\u0E38\u0E48\u0E21","Pots per group")}<input data-k="reps" type="number" min="2" max="10" value="4"></label>
+          <button class="b green" data-a="new">${l("\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E41\u0E1C\u0E19\u0E01\u0E32\u0E23\u0E17\u0E14\u0E25\u0E2D\u0E07","Create the trial")}</button></div></div>`,n.querySelector("[data-a=new]").onclick=f;return}const g=e.doses.length,a=Math.max(0,...e.log.map(o=>o.week)),h=[l("\u0E44\u0E21\u0E48\u0E43\u0E2A\u0E48 (\u0E04\u0E27\u0E1A\u0E04\u0E38\u0E21)","None (control)"),l("\u0E04\u0E23\u0E36\u0E48\u0E07\u0E2B\u0E19\u0E36\u0E48\u0E07","Half"),l("\u0E15\u0E32\u0E21\u0E04\u0E33\u0E41\u0E19\u0E30\u0E19\u0E33","Recommended"),l("\u0E2A\u0E2D\u0E07\u0E40\u0E17\u0E48\u0E32","Double")],u=e.doses.map((o,s)=>{const i=e.pots.filter(t=>t.t===s).map(t=>t.id),d=e.log.filter(t=>t.week===a&&i.includes(t.pot)&&t.h>0).map(t=>t.h),c=e.log.filter(t=>i.includes(t.pot)&&t.wilt>0).map(t=>t.wilt);return`<tr><td><i class="dot" style="background:${k[s]}"></i>${h[s]}</td><td>${o} g</td><td>${d.length?y(d).toFixed(1)+" \xB1 "+C(d).toFixed(1):"\u2014"}</td><td>${c.length?y(c).toFixed(1):"\u2014"}</td></tr>`}).join("");n.innerHTML=`<div class="trhead"><b>${e.crop||l("\u0E01\u0E32\u0E23\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E1B\u0E25\u0E39\u0E01","Pot trial")}</b><span>${l("\u0E40\u0E23\u0E34\u0E48\u0E21","started")} ${e.started} \xB7 ${g} ${l("\u0E01\u0E25\u0E38\u0E48\u0E21","groups")} \xD7 ${e.reps} ${l("\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07","pots")}</span>
+          <button class="mini ghost" data-a="print">\u{1F5A8}\uFE0F ${l("\u0E1E\u0E34\u0E21\u0E1E\u0E4C\u0E1B\u0E49\u0E32\u0E22\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07","Print pot labels")}</button><button class="mini ghost" data-a="csv">\u2B07 CSV</button><button class="mini ghost" data-a="reset">${l("\u0E40\u0E23\u0E34\u0E48\u0E21\u0E43\u0E2B\u0E21\u0E48","New trial")}</button></div>
         <canvas class="trc"></canvas>
-        <div class="tblwrap"><table><tr><th>${T('กลุ่ม', 'Group')}</th><th>${T('เม็ด/กระถาง', 'Beads/pot')}</th><th>${T('สูงเฉลี่ย สัปดาห์ล่าสุด (ซม.)', 'Mean height, latest week (cm)')}</th><th>${T('เหี่ยวหลังงดน้ำ (วัน)', 'Days to wilt without water')}</th></tr>${sumRows}</table></div>
-        <div class="trlog"><b>${T('บันทึกสัปดาห์ที่', 'Log week')}</b> <input data-k="wk" type="number" min="0" value="${lastWeek + (tr.log.length ? 1 : 0)}" style="width:70px">
-          <div class="trgrid">${tr.pots.map((p) => `<label style="border-color:${COL[p.t]}">${p.id}<input data-p="${p.id}" type="number" step="0.1" placeholder="${T('ซม.', 'cm')}"></label>`).join('')}</div>
-          <label class="trw">${T('ทดสอบงดน้ำ (ถ้าทำ): จำนวนวันจนเริ่มเหี่ยว ใส่ในช่องเดียวกันแล้วติ๊ก', 'Drought test (optional): days until wilting — enter in the same boxes and tick')} <input type="checkbox" data-k="wilt"></label>
-          <button class="b green" data-a="save" style="justify-self:start">${T('บันทึก', 'Save')}</button></div>`;
-      chart(el.querySelector('.trc'));
-      const q = (s) => el.querySelector(s);
-      q('[data-a=save]').onclick = () => { const wk = +q('[data-k=wk]').value || 0, wilt = q('[data-k=wilt]').checked;
-        el.querySelectorAll('[data-p]').forEach((i) => { if (i.value === '') return; const v = +i.value;
-          tr.log = tr.log.filter((x) => !(x.pot === i.dataset.p && x.week === wk && !!x.wilt === wilt));
-          tr.log.push(wilt ? { pot: i.dataset.p, week: wk, wilt: v } : { pot: i.dataset.p, week: wk, h: v }); });
-        save(tr); render(); };
-      q('[data-a=reset]').onclick = () => { if (confirm(T('ลบแผนและข้อมูลการทดลองนี้?', 'Delete this trial and its data?'))) { tr = null; localStorage.removeItem(KEY); render(); } };
-      q('[data-a=csv]').onclick = () => { const rows = ['pot,group,dose_g,week,height_cm,days_to_wilt'].concat(tr.log.map((x) => { const p = tr.pots.find((y) => y.id === x.pot); return [x.pot, names[p.t], p.dose, x.week, x.h ?? '', x.wilt ?? ''].join(','); }));
-        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + rows.join('\r\n')], { type: 'text/csv' })); a.download = 'plant_trial.csv'; a.click(); };
-      q('[data-a=print]').onclick = () => { const w = window.open('', '_blank');
-        w.document.write(`<html><head><meta charset="utf-8"><title>labels</title><style>body{font-family:Anuphan,sans-serif;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px}
-          div{border:2px dashed #999;border-radius:10px;padding:10px;text-align:center}b{font-size:28px;display:block}</style></head><body>` +
-          tr.pots.map((p) => `<div style="border-color:${COL[p.t]}"><b>${p.id}</b>${names[p.t]}<br>${T('เม็ด', 'beads')} ${p.dose} g</div>`).join('') + '<script>print()<\/script></body></html>'); w.document.close(); };
-    }
-    window.addEventListener('hklang', render);
-    render();
-  }
-  return { mount };
-})();
+        <div class="tblwrap"><table><tr><th>${l("\u0E01\u0E25\u0E38\u0E48\u0E21","Group")}</th><th>${l("\u0E40\u0E21\u0E47\u0E14/\u0E01\u0E23\u0E30\u0E16\u0E32\u0E07","Beads/pot")}</th><th>${l("\u0E2A\u0E39\u0E07\u0E40\u0E09\u0E25\u0E35\u0E48\u0E22 \u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C\u0E25\u0E48\u0E32\u0E2A\u0E38\u0E14 (\u0E0B\u0E21.)","Mean height, latest week (cm)")}</th><th>${l("\u0E40\u0E2B\u0E35\u0E48\u0E22\u0E27\u0E2B\u0E25\u0E31\u0E07\u0E07\u0E14\u0E19\u0E49\u0E33 (\u0E27\u0E31\u0E19)","Days to wilt without water")}</th></tr>${u}</table></div>
+        <div class="trlog"><b>${l("\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E2A\u0E31\u0E1B\u0E14\u0E32\u0E2B\u0E4C\u0E17\u0E35\u0E48","Log week")}</b> <input data-k="wk" type="number" min="0" value="${a+(e.log.length?1:0)}" style="width:70px">
+          <div class="trgrid">${e.pots.map(o=>`<label style="border-color:${k[o.t]}">${o.id}<input data-p="${o.id}" type="number" step="0.1" placeholder="${l("\u0E0B\u0E21.","cm")}"></label>`).join("")}</div>
+          <label class="trw">${l("\u0E17\u0E14\u0E2A\u0E2D\u0E1A\u0E07\u0E14\u0E19\u0E49\u0E33 (\u0E16\u0E49\u0E32\u0E17\u0E33): \u0E08\u0E33\u0E19\u0E27\u0E19\u0E27\u0E31\u0E19\u0E08\u0E19\u0E40\u0E23\u0E34\u0E48\u0E21\u0E40\u0E2B\u0E35\u0E48\u0E22\u0E27 \u0E43\u0E2A\u0E48\u0E43\u0E19\u0E0A\u0E48\u0E2D\u0E07\u0E40\u0E14\u0E35\u0E22\u0E27\u0E01\u0E31\u0E19\u0E41\u0E25\u0E49\u0E27\u0E15\u0E34\u0E4A\u0E01","Drought test (optional): days until wilting \u2014 enter in the same boxes and tick")} <input type="checkbox" data-k="wilt"></label>
+          <button class="b green" data-a="save" style="justify-self:start">${l("\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01","Save")}</button></div>`,S(n.querySelector(".trc"));const r=o=>n.querySelector(o);r("[data-a=save]").onclick=()=>{const o=+r("[data-k=wk]").value||0,s=r("[data-k=wilt]").checked;n.querySelectorAll("[data-p]").forEach(i=>{if(i.value==="")return;const d=+i.value;e.log=e.log.filter(c=>!(c.pot===i.dataset.p&&c.week===o&&!!c.wilt===s)),e.log.push(s?{pot:i.dataset.p,week:o,wilt:d}:{pot:i.dataset.p,week:o,h:d})}),x(e),w()},r("[data-a=reset]").onclick=()=>{confirm(l("\u0E25\u0E1A\u0E41\u0E1C\u0E19\u0E41\u0E25\u0E30\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E01\u0E32\u0E23\u0E17\u0E14\u0E25\u0E2D\u0E07\u0E19\u0E35\u0E49?","Delete this trial and its data?"))&&(e=null,localStorage.removeItem(v),w())},r("[data-a=csv]").onclick=()=>{const o=["pot,group,dose_g,week,height_cm,days_to_wilt"].concat(e.log.map(i=>{const d=e.pots.find(c=>c.id===i.pot);return[i.pot,h[d.t],d.dose,i.week,i.h??"",i.wilt??""].join(",")})),s=document.createElement("a");s.href=URL.createObjectURL(new Blob(["\uFEFF"+o.join(`\r
+`)],{type:"text/csv"})),s.download="plant_trial.csv",s.click()},r("[data-a=print]").onclick=()=>{const o=window.open("","_blank");o.document.write(`<html><head><meta charset="utf-8"><title>labels</title><style>body{font-family:Anuphan,sans-serif;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px}
+          div{border:2px dashed #999;border-radius:10px;padding:10px;text-align:center}b{font-size:28px;display:block}</style></head><body>`+e.pots.map(s=>`<div style="border-color:${k[s.t]}"><b>${s.id}</b>${h[s.t]}<br>${l("\u0E40\u0E21\u0E47\u0E14","beads")} ${s.dose} g</div>`).join("")+"<script>print()<\/script></body></html>"),o.document.close()}}window.addEventListener("hklang",w),w()}return{mount:H}}();
