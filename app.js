@@ -443,3 +443,4 @@ function parseCSV(t) {
 
 // ------------------------------------------------------------------ recipe by crop (crops.js)
 if (window.HKCrops && $('cropTool')) HKCrops.mount($('cropTool'), { onSend: (bio) => { cmd({ cmd: 'set', key: 'biochar_pct', val: bio }); gtoast('🌱 ส่งสูตรไบโอชาร์ ' + bio + ' % แล้ว'); } });
+if (window.HKTrial && $('trialTool')) HKTrial.mount($('trialTool'));

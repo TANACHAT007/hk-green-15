@@ -19,3 +19,15 @@
 .chow { grid-column: 1 / -1; margin: 4px 0 0; padding-left: 20px; font-size: 14px; } .csend { grid-column: 1 / -1; justify-self: start; }
 .cnote { font-size: 12.5px; color: var(--muted); margin: 0; }
 @media (max-width: 700px) { .cgrid { grid-template-columns: repeat(2, 1fr); } .cres { grid-template-columns: 1fr 1fr; } .ck b { font-size: 22px; } }
+
+/* plant trial */
+.tr0 p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+.trf { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; } .trf label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.trf b { color: var(--text); font-size: 15px; } .trf input, .trlog input[type=number] { width: 110px; padding: 7px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: inherit; }
+.trhead { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; } .trhead span { color: var(--muted); font-size: 13px; margin-right: auto; }
+.trc { width: 100%; height: 220px; display: block; margin-bottom: 10px; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.trlog { margin-top: 12px; display: grid; gap: 10px; }
+.trgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.trgrid label { display: grid; gap: 4px; font-size: 12px; font-weight: 600; padding: 6px; border-radius: 12px; border: 2px solid; } .trgrid input { width: 100% !important; box-sizing: border-box; }
+.trw { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; }

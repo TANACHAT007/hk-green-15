@@ -75,6 +75,7 @@ window.HKCrops = (function () {
     }
     const save = () => { try { localStorage.setItem('hk15_crop', JSON.stringify(st)); } catch (e) {} };
     window.addEventListener('hklang', render);
+    window.HKCrops.calc = () => { const r = calc(); return { g: r.g || 0, label: T(r.c.th, r.c.en) + ' · ' + T(SOILS.find((x) => x.id === st.soil).th, SOILS.find((x) => x.id === st.soil).en) }; };
     render();
   }
   return { mount };
