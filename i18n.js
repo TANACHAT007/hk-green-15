@@ -105,6 +105,7 @@
     '🧴 กรดในถังผสมไม่พอ — เติม 500 mL ก่อนกดเริ่ม': '🧴 Not enough acid — add 500 mL before starting', '🚰 น้ำล้างใกล้หมด — เครื่องรอให้เติมน้ำ': '🚰 Rinse water low — the machine waits for a refill',
     '🗑️ ถังน้ำทิ้งเต็ม — เครื่องรอให้เททิ้งก่อนปล่อยน้ำ': '🗑️ Waste tank full — the machine waits before draining', 'แจ้งเตือน': 'Alert', 'ย้อน': 'Back', 'หยุดชั่วคราว': 'Pause', 'ถัดไป': 'Next', 'ปิดทัวร์': 'Close tour',
     // ---- docs
+    'คู่มือ (PDF)': 'Manuals (PDF, Thai)', '📗 คู่มือการใช้งาน': '📗 User manual', '📋 คู่มือการปฏิบัติงาน (SOP)': '📋 Work instruction (SOP)', '📌 คู่มือย่อติดเครื่อง': '📌 Quick guide', '🔧 คู่มือบำรุงรักษา': '🔧 Maintenance',
     '✨ อัปเดตล่าสุด · v8.9 (15 ต.ค. 2026)': '✨ Latest · v8.9 (15 Oct 2026)', '⚫ ชุดป้อนไบโอชาร์แยก': '⚫ Separate biochar feeder',
     'ถัง ≈ 45 g (4 รอบ) + สกรู Ø12 + มอเตอร์ N20 · ไบโอชาร์ = 2 % ของน้ำหนักกรด + ไคโตซาน ≈ 10.6 g/รอบ ตั้ง 0–3 % บนหน้าจอ ไม่ต้องผสมผงเอง': 'Hopper ≈ 45 g (4 batches) + Ø12 auger + N20 motor · biochar = 2 % of acid + chitosan ≈ 10.6 g per batch, set 0–3 % on screen, no premixing',
     '🟩 บอร์ด shield Mega': '🟩 Mega shield board', 'ปริ้นหน้าเดียว ทำเองได้ · ขั้วต่อ JST ล็อก 8 ชุด · ไม่ต้องเดินจัมเปอร์': 'Single-sided, DIY-friendly · locking JST connectors · no jumper wires',
