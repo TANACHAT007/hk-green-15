@@ -216,7 +216,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 <body>
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#"><span class="logo">🫧</span>HK-Green-15</a>
-  <div class="links"><a href="#video">วิดีโอ</a><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#crop">เลือกสูตร</a><a href="#gallery">แกลเลอรี</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a></div>
+  <div class="links"><a href="#video">วิดีโอ</a><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#crop">เลือกสูตร</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a></div>
   <button class="lang" id="themeBtn" title="สว่าง / มืด">◐</button><button class="lang" id="lang" title="ภาษา / Language">EN</button>
   <a class="btn dark sm" href="app.html">เปิดแดชบอร์ด →</a>
 </div></nav>
@@ -294,13 +294,6 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   <div class="reveal" id="cropTool"></div>
 </div></section>
 
-<section id="gallery"><div class="wrap">
-  <div class="kicker reveal">แกลเลอรี</div>
-  <h2 class="reveal">ทุกชิ้นส่วนออกแบบจริงใน Fusion</h2>
-  <p class="sub reveal">ภาพเรนเดอร์จากโมเดล CAD ที่ใช้สั่งพิมพ์และตัดเลเซอร์จริง แตะเพื่อดูภาพใหญ่</p>
-  <div class="gal" id="gal"></div>
-</div></section>
-
 <section id="screen"><div class="wrap disp">
   <div class="reveal"><div class="device" id="device"><img id="dimg" src="img/display_02_home_drip.png" alt="หน้าจอควบคุม">
     <canvas id="hkcanvas" width="800" height="480" hidden oncontextmenu="event.preventDefault()"></canvas>
@@ -352,7 +345,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 const GAL = [['top_panel', 'แผงควบคุม: จอ 7″ + ปุ่ม START/STOP/E-stop', 1], ['gel_chamber', 'ถังขึ้นรูป NaOH + กล่องหยด 12 เข็ม', 1],
   ['hopper', 'ถังผงไคโตซาน เติมจากด้านบนเครื่อง'], ['rinse_tray', 'ตะกร้าล้าง + ถาดตาก'], ['electronics', 'ช่องอิเล็กทรอนิกส์'],
   ['right34', 'มุมขวา', 1], ['front', 'ด้านหน้า', 1]];
-const gal = document.getElementById('gal');
+const gal = document.getElementById('gal') || document.createElement('div');
 GAL.forEach(([f, c, big]) => { const el = document.createElement('figure'); el.className = 'g reveal' + (big ? ' big' : ''); el.style.margin = 0;
   el.innerHTML = `<img loading="lazy" src="img/${f}.jpg" alt="${c}"><figcaption>${c}</figcaption>`;
   el.querySelector('img').onerror = () => el.remove();   // render not made yet
