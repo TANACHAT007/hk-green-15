@@ -139,17 +139,17 @@
     if (n.nodeType === 3) {
       const v = n.nodeValue;
       if (!TH_RE.test(v)) return;
-      orig.set(n, v); n.nodeValue = tr(v);
+      const t = tr(v); if (t !== v) { orig.set(n, v); n.nodeValue = t; }
     } else if (n.nodeType === 1) {
-      for (const a of ['title', 'placeholder', 'aria-label']) { const v = n.getAttribute && n.getAttribute(a); if (v && TH_RE.test(v)) { n.dataset['th' + a.replace('-', '')] = v; n.setAttribute(a, tr(v)); } }
+      for (const a of ['title', 'placeholder', 'aria-label']) { const v = n.getAttribute && n.getAttribute(a); if (v && TH_RE.test(v)) { const t = tr(v); if (t !== v) { n.dataset['th' + a.replace('-', '')] = v; n.setAttribute(a, t); } } }
       if (n.tagName === 'SCRIPT' || n.tagName === 'STYLE') return;
       const w = document.createTreeWalker(n, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
       for (let x = w.nextNode(); x; x = w.nextNode()) if (x !== n) fixNode1(x);
     }
   }
   function fixNode1(x) {
-    if (x.nodeType === 3) { const v = x.nodeValue; if (TH_RE.test(v)) { orig.set(x, v); x.nodeValue = tr(v); } }
-    else for (const a of ['title', 'placeholder', 'aria-label']) { const v = x.getAttribute(a); if (v && TH_RE.test(v)) { x.dataset['th' + a.replace('-', '')] = v; x.setAttribute(a, tr(v)); } }
+    if (x.nodeType === 3) { const v = x.nodeValue; if (TH_RE.test(v)) { const t = tr(v); if (t !== v) { orig.set(x, v); x.nodeValue = t; } } }
+    else for (const a of ['title', 'placeholder', 'aria-label']) { const v = x.getAttribute(a); if (v && TH_RE.test(v)) { const t = tr(v); if (t !== v) { x.dataset['th' + a.replace('-', '')] = v; x.setAttribute(a, t); } } }
   }
   const mo = new MutationObserver((ms) => {
     if (busy || lang !== 'en') return; busy = true;
@@ -158,6 +158,7 @@
       else if (m.type === 'attributes') fixNode1(m.target);
       else m.addedNodes.forEach(fixNode);
     }
+    mo.takeRecords();                                    // our own writes: never re-handle them (no endless loop)
     busy = false;
   });
   function restore() {
