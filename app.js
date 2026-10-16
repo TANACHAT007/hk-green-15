@@ -440,3 +440,6 @@ function parseCSV(t) {
     catch (e) { $('scrLoad').textContent = 'โหลดจอไม่ได้'; }
   });
 })();
+
+// ------------------------------------------------------------------ recipe by crop (crops.js)
+if (window.HKCrops && $('cropTool')) HKCrops.mount($('cropTool'), { onSend: (bio) => { cmd({ cmd: 'set', key: 'biochar_pct', val: bio }); gtoast('🌱 ส่งสูตรไบโอชาร์ ' + bio + ' % แล้ว'); } });

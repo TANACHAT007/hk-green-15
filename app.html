@@ -7,7 +7,7 @@
 <title>HK-Green-15</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="crops.css">
 </head>
 <body>
 <aside id="side">
@@ -84,6 +84,7 @@
       <div class="row" style="margin-top:8px"><button class="b" id="sendRecipe">ส่งสูตรทั้งหมด</button><span class="note" id="recipeChk"></span></div>
     </div>
   </div>
+  <div class="card" style="margin-top:12px"><h3>🌱 เลือกสูตรตามพืช</h3><div id="cropTool"></div></div>
 </section>
 
 <!-- ============================================================ bench test -->
@@ -267,6 +268,7 @@
 <script>window.HK_STATIC = !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);</script>
 <script src="static_mode.js"></script>
 <script src="screen.js"></script>
+<script src="crops.js"></script>
 <script src="app.js"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 <script type="module" src="model3d.js"></script>

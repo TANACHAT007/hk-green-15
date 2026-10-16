@@ -77,6 +77,7 @@
     '🔌 ต่อเครื่องจริง (USB)': '🔌 Connect machine (USB)', '⏏ ตัดการเชื่อมต่อ USB': '⏏ Disconnect USB', 'เครื่องจริงทาง USB (Web Serial)': 'Real machine over USB (Web Serial)', '🔌 ต่อ Arduino Mega แล้ว': '🔌 Arduino Mega connected', 'ต่อ USB ไม่ได้: ': 'USB failed: ',
     'จอ 7″': '7″ screen', 'จอสัมผัส 7″ เสมือน': 'Virtual 7″ touch screen', 'กำลังโหลดจอ…': 'Loading the screen…', 'โหลดจอไม่ได้': 'Could not load the screen',
     'โค้ดหน้าจอตัวจริง (ESP32 + LVGL) รันในเว็บ · แตะ/คลิกได้เหมือนจอที่หน้าเครื่อง · ต่อกับเครื่องจำลองหรือเครื่องจริงทาง USB': 'The real display firmware (ESP32 + LVGL) running in the browser · tap/click it like the screen on the machine · linked to the simulator or the real machine over USB',
+    '🌱 เลือกสูตรตามพืช': '🌱 Recipe by crop', '🌱 ส่งสูตรไบโอชาร์ ': '🌱 Sent biochar ', ' % แล้ว': ' %',
     // ---- calibration
     'หัววัด pH': 'pH probe', 'จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"': 'Dip the probe in pH 7 buffer, wait 1 min → press "Store pH 7"',
     'ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"': 'Rinse the probe, dip in the 2nd buffer → pick its value, press "Store"', 'กด "ส่งค่าสอบเทียบ"': 'Press "Send calibration"',
@@ -165,7 +166,7 @@
     }
   }
   function set(l) {
-    lang = l; window.LANG = l; document.documentElement.lang = l;
+    lang = l; window.LANG = l; document.documentElement.lang = l; window.dispatchEvent(new Event('hklang'));
     try { localStorage.setItem('hk15_lang', l); } catch (e) {}
     for (const id of ['langBtn', 'langChip']) { const b = document.getElementById(id); if (b) b.textContent = l === 'en' ? 'ไทย' : 'EN'; }
     if (l === 'en') { busy = true; fixNode(document.body); busy = false; mo.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title', 'placeholder'] }); }
