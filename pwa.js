@@ -1,6 +1,10 @@
 // PWA: service worker + an "install app" toast (Android/desktop Chrome); iOS gets a one-time hint.
 (function () {
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then((r) => r.update()).catch(() => {});
+    let reloaded = false;                                   // a new version took over: reload once so old and new files never mix
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloaded && navigator.serviceWorker.controller) { reloaded = true; location.reload(); } });
+  }
   const en = () => (window.LANG || (localStorage.getItem('hk15_lang') || 'th')) === 'en';
   const seen = () => { try { return localStorage.getItem('hk15_pwa') === 'no'; } catch (e) { return false; } };
   function toast(txt, btn, onBtn) {

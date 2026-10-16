@@ -21,7 +21,8 @@ window.HKCrops = (function () {
   const SOILS = [{ id: 'sand', e: '🏖️', th: 'ดินทราย', en: 'Sandy', k: 1.5, bio: 3 }, { id: 'loam', e: '🟫', th: 'ดินร่วน', en: 'Loam', k: 1, bio: 2 },
                  { id: 'clay', e: '🧱', th: 'ดินเหนียว', en: 'Clay', k: 0.6, bio: 1 }];
   const WATER = [{ id: 'daily', th: 'รดทุกวัน', en: 'Daily', k: 0.8 }, { id: 'few', th: '2–3 วันครั้ง', en: 'Every 2–3 days', k: 1 }, { id: 'rain', th: 'พึ่งฝน', en: 'Rain only', k: 1.25 }];
-  const IMG = (id) => `img/crops/${id}.png`;               // optional pictures (ChatGPT-made); emoji until they exist
+  const PICS = window.HK_CROP_PICS || [];                    // ids that have a picture in img/crops (ChatGPT-made); emoji otherwise
+  const IMG = (id) => `img/crops/${id}.png`;
 
   function mount(el, opt = {}) {
     const st = { crop: 'fruitveg', soil: 'loam', place: 'field', potL: 10, water: 'few', n: 20 };
@@ -45,7 +46,7 @@ window.HKCrops = (function () {
       return { plant: T('ต่อต้น', 'per plant'), hole: T('ต่อหลุมปลูก', 'per planting hole'), tree: T('ต่อต้น (รอบทรงพุ่ม)', 'per tree (under the canopy)') }[r.c.unit];
     }
     function render() {
-      const r = calc(), card = (x, on, grp) => `<button class="cc ${on ? 'on' : ''}" data-g="${grp}" data-v="${x.id}"><span class="ci"><img src="${IMG(x.id)}" alt="" onerror="this.remove()"><b>${x.e}</b></span><span>${T(x.th, x.en)}</span>${x.ex ? `<small>${T(x.ex, x.exe)}</small>` : ''}</button>`;
+      const r = calc(), card = (x, on, grp) => `<button class="cc ${on ? 'on' : ''}" data-g="${grp}" data-v="${x.id}"><span class="ci">${PICS.includes(x.id) ? `<img src="${IMG(x.id)}" alt="">` : ""}<b>${x.e}</b></span><span>${T(x.th, x.en)}</span>${x.ex ? `<small>${T(x.ex, x.exe)}</small>` : ''}</button>`;
       const chip = (x, on, grp) => `<button class="cp ${on ? 'on' : ''}" data-g="${grp}" data-v="${x.id}">${x.e ? x.e + ' ' : ''}${T(x.th, x.en)}</button>`;
       el.innerHTML = `<div class="crops">
         <div class="cq">${T('1. ปลูกอะไร', '1. What are you growing?')}</div>
