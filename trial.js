@@ -27,7 +27,7 @@ window.HKTrial = (function () {
       g.clearRect(0, 0, w, h); g.font = '22px Anuphan, sans-serif';
       const weeks = [...new Set(tr.log.map((x) => x.week))].sort((a, b) => a - b); if (!weeks.length) { g.fillStyle = '#999'; g.fillText(T('ยังไม่มีข้อมูล', 'no data yet'), pad, h / 2); return; }
       const ser = tr.doses.map((_, t) => weeks.map((wk) => mean(tr.log.filter((x) => x.week === wk && tr.pots.find((p) => p.id === x.pot).t === t && x.h > 0).map((x) => x.h))));
-      const ymax = Math.max(10, ...ser.flat().filter((x) => !isNaN(x))) * 1.15, X = (i) => pad + (w - pad * 1.5) * (weeks.length < 2 ? 0.5 : i / (weeks.length - 1)), Y = (v) => h - pad - (h - pad * 1.6) * v / ymax;
+      const ymax = Math.max(10, ...ser.flat().filter((x) => !isNaN(x))) * 1.15, X = (i) => pad + (w - pad * 2.6) * (weeks.length < 2 ? 0.5 : i / (weeks.length - 1)), Y = (v) => h - pad - (h - pad * 1.6) * v / ymax;
       g.strokeStyle = '#ddd'; g.fillStyle = '#888'; for (let v = 0; v <= ymax; v += Math.ceil(ymax / 5)) { g.beginPath(); g.moveTo(pad, Y(v)); g.lineTo(w - pad / 2, Y(v)); g.stroke(); g.fillText(v, 8, Y(v) + 7); }
       weeks.forEach((wk, i) => g.fillText(T('สัปดาห์ ', 'wk ') + wk, X(i) - 30, h - pad / 2.5));
       ser.forEach((s, t) => { g.strokeStyle = g.fillStyle = COL[t]; g.lineWidth = 5; g.beginPath(); let first = true;
@@ -59,7 +59,7 @@ window.HKTrial = (function () {
         <div class="trlog"><b>${T('บันทึกสัปดาห์ที่', 'Log week')}</b> <input data-k="wk" type="number" min="0" value="${lastWeek + (tr.log.length ? 1 : 0)}" style="width:70px">
           <div class="trgrid">${tr.pots.map((p) => `<label style="border-color:${COL[p.t]}">${p.id}<input data-p="${p.id}" type="number" step="0.1" placeholder="${T('ซม.', 'cm')}"></label>`).join('')}</div>
           <label class="trw">${T('ทดสอบงดน้ำ (ถ้าทำ): จำนวนวันจนเริ่มเหี่ยว ใส่ในช่องเดียวกันแล้วติ๊ก', 'Drought test (optional): days until wilting — enter in the same boxes and tick')} <input type="checkbox" data-k="wilt"></label>
-          <button class="b green" data-a="save">${T('บันทึก', 'Save')}</button></div>`;
+          <button class="b green" data-a="save" style="justify-self:start">${T('บันทึก', 'Save')}</button></div>`;
       chart(el.querySelector('.trc'));
       const q = (s) => el.querySelector(s);
       q('[data-a=save]').onclick = () => { const wk = +q('[data-k=wk]').value || 0, wilt = q('[data-k=wilt]').checked;
