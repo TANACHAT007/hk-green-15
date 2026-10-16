@@ -56,7 +56,9 @@ const key = (name) => { name = name || ''; return KEYS.find((k) => name.startsWi
 
 // ---- operator-side state (what has been filled) — kept per browser
 const V = { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0, trayBeads: 0 };
-try { Object.assign(V, JSON.parse(localStorage.getItem('hk15_3d') || '{}')); } catch (e) {}
+let _saved = null; try { _saved = localStorage.getItem('hk15_3d'); } catch (e) {}
+if (_saved) { try { Object.assign(V, JSON.parse(_saved)); } catch (e) {} }
+else Object.assign(V, { bioG: 45, hopperG: 140, acidMl: 500, naoh: 1, water: 1, waste: 0 });   // first visit: tanks filled, START works at once
 const saveV = () => { try { localStorage.setItem('hk15_3d', JSON.stringify(V)); } catch (e) {} };
 const CAP = { hopperG: 140, acidMl: 500, bioG: 45 };   // biochar hopper ≈ 150 mL ≈ 45 g = 4 batches of 10.6 g
 let dosed = false, S = null, lastState = null, xray = true, labelsOn = true, runBeads = 0, beadWhere = 'none', phase0 = {};

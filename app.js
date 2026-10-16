@@ -140,6 +140,9 @@ function shell(m) {
   se.innerHTML = '<small>เซนเซอร์ระดับ</small>' + sens.map(([n, ok]) => `<span class="ck ${ok ? 'ok' : 'no'}">${ok ? '✓' : '!'} ${n}${n === 'น้ำทิ้ง' ? (ok ? ' ไม่เต็ม' : ' เต็ม') : (ok ? '' : ' ต่ำ')}</span>`).join('');
   if (m.alarm && m.alarm !== shell.alarm) gtoast(ALARM[m.alarm]);
   shell.alarm = m.alarm || 0;
+  const ra = $('runAlarm');                                 // the Control tab tells why START did nothing
+  if (ra) { ra.hidden = !m.alarm; if (m.alarm) { ra.innerHTML = `<span>${ALARM[m.alarm]}</span>` + (MODE === 'sim' ? '<button class="mini" id="raFill">✨ เติมครบ (จำลอง)</button>' : '');
+    const f = $('raFill'); if (f) f.onclick = () => { const b = $('fillAll'); if (b) b.click(); gtoast('✨ เติมวัตถุดิบครบแล้ว — กดเริ่มรอบผลิตได้เลย'); }; } }
   const showChk = st === 'IDLE' || st === 'DONE';
   $('checklist2').innerHTML = showChk ? chk.map(([n, ok]) => `<span class="ck ${ok ? 'ok' : 'no'}">${ok ? '✓' : '!'} ${n}</span>`).join('') +
     (chk.every((x) => x[1]) ? '' : '<button class="mini" id="fillAll2">✨ เติมครบทุกอย่าง</button>') : '';

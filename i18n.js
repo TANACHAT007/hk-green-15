@@ -79,6 +79,7 @@
     'โค้ดหน้าจอตัวจริง (ESP32 + LVGL) รันในเว็บ · แตะ/คลิกได้เหมือนจอที่หน้าเครื่อง · ต่อกับเครื่องจำลองหรือเครื่องจริงทาง USB': 'The real display firmware (ESP32 + LVGL) running in the browser · tap/click it like the screen on the machine · linked to the simulator or the real machine over USB',
     '🌱 เลือกสูตรตามพืช': '🌱 Recipe by crop', '🌱 ส่งสูตรไบโอชาร์ ': '🌱 Sent biochar ', ' % แล้ว': ' %',
     '🪴 ทดลองปลูกเปรียบเทียบ': '🪴 Plant trial',
+    '✨ เติมครบ (จำลอง)': '✨ Fill all (simulated)', '✨ เติมวัตถุดิบครบแล้ว — กดเริ่มรอบผลิตได้เลย': '✨ All filled — press Start batch',
     // ---- calibration
     'หัววัด pH': 'pH probe', 'จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"': 'Dip the probe in pH 7 buffer, wait 1 min → press "Store pH 7"',
     'ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"': 'Rinse the probe, dip in the 2nd buffer → pick its value, press "Store"', 'กด "ส่งค่าสอบเทียบ"': 'Press "Send calibration"',
