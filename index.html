@@ -3,10 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#10b981"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>HK-Green-15</title>
 <meta name="description" content="เครื่องผลิตเม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์อัตโนมัติ — โครงงานนักเรียน">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 <style>
 :root {
   --bg: #f7f8ff; --panel: #fff; --panel2: #f1f3ff; --line: #e6e8f5; --text: #1d1b3a; --muted: #6f7392;
@@ -67,6 +69,14 @@ h1 em { font-style: normal; background: linear-gradient(120deg, var(--accent), v
 .chip small { display: block; font-weight: 500; color: var(--muted); font-size: 12px; line-height: 1.2; }
 .c1 { left: -4%; top: 16%; animation-delay: -1s; } .c2 { right: 2%; top: 6%; animation-delay: -2.5s; } .c3 { right: -2%; bottom: 14%; animation-delay: -4s; }
 
+.v3d { position: absolute; inset: -4% -6%; opacity: 0; transition: opacity .6s; pointer-events: none; touch-action: none; }
+.v3d.on { opacity: 1; pointer-events: auto; } .v3d canvas { display: block; cursor: grab; }
+.shot.live img.hero-img { opacity: 0; transition: opacity .4s; }
+.spin3d { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); z-index: 3; border: 0; cursor: pointer; font: inherit; font-weight: 600; font-size: 14px;
+  padding: 9px 16px; border-radius: 999px; background: var(--panel); color: var(--text); box-shadow: var(--shadow); transition: transform .3s var(--spring); white-space: nowrap; }
+.spin3d:hover { transform: translateX(-50%) translateY(-2px); }
+.spin3d i { font-style: normal; display: inline-block; animation: wob 2.4s ease-in-out infinite; } @keyframes wob { 50% { transform: rotate(-14deg) scale(1.1); } }
+.spin3d .bar { display: block; height: 3px; border-radius: 2px; background: var(--accent); width: 0; margin-top: 4px; transition: width .2s; }
 /* stats */
 .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 26px 0 10px; }
 .stat { background: var(--panel); border-radius: 22px; padding: 18px 20px; box-shadow: var(--shadow); }
@@ -209,6 +219,8 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   </div>
   <div class="shot">
     <img class="hero-img" src="img/hero.jpg" alt="ภาพเรนเดอร์เครื่อง HK-Green-15">
+    <div class="v3d" id="v3d"></div>
+    <button class="spin3d" id="spin3d"><i>🧊</i> หมุนดูแบบ 3 มิติ<span class="bar" id="v3bar"></span></button>
     <div class="chip c1"><span>💧</span><div>หยดพร้อมกัน 12 เข็ม<small>เม็ดขนาดสม่ำเสมอ</small></div></div>
     <div class="chip c2"><span>🧪</span><div>ล้างจน pH 7.5<small>วัดเองทุกรอบล้าง</small></div></div>
     <div class="chip c3"><span>📱</span><div>จอสัมผัส 7″ + เว็บ<small>ดู/สั่งงานได้ทั้งสองทาง</small></div></div>
@@ -349,7 +361,21 @@ function setLang(l) {
 let L0 = new URLSearchParams(location.search).get('lang'); try { L0 = L0 || localStorage.getItem('hk15_lang'); } catch (e) {}
 setLang(L0 === 'en' ? 'en' : 'th');
 document.getElementById('lang').onclick = () => setLang(window.LANG === 'en' ? 'th' : 'en');
+
+// hero: render → live 3D on demand
+document.getElementById('spin3d').onclick = async (e) => {
+  const b = e.currentTarget, host = document.getElementById('v3d'), bar = document.getElementById('v3bar');
+  if (host.classList.contains('on')) return;
+  b.disabled = true;
+  try {
+    const { mount } = await import('./landing3d.js');
+    await mount(host, (f) => { bar.style.width = Math.round(f * 100) + '%'; });
+    host.classList.add('on'); document.querySelector('.shot').classList.add('live');
+    b.innerHTML = '<i>👆</i> ' + (window.LANG === 'en' ? 'Drag to rotate' : 'ลากเพื่อหมุน');
+  } catch (err) { b.textContent = 'โหลดโมเดลไม่ได้'; }
+};
 addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 10), { passive: true });
 </script>
+<script src="pwa.js"></script>
 </body>
 </html>

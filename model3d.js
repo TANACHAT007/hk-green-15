@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { OrbitControls } from './vendor/OrbitControls.js';
 import { GLTFLoader } from './vendor/GLTFLoader.js';
 import { RoomEnvironment } from './vendor/RoomEnvironment.js';
+import { MeshoptDecoder } from './vendor/meshopt_decoder.module.js';   // the published GLB is meshopt-compressed (11.6 → 2.4 MB)
 
 const GROUPS = {   // top-level Fusion component -> Thai label
   Frame_2020: 'โครงอลูมิเนียม 2020', Bracket_2020_corner_20x20x17: 'ฉากยึดโครง + น็อต', Plates_PP: 'แผ่น PP',
@@ -76,7 +77,7 @@ function init() {
   scene.add(new THREE.HemisphereLight(0xffffff, 0xc9d6ff, 0.55));
   ground();
   info.textContent = 'กำลังโหลดโมเดล…';
-  new GLTFLoader().load('model/hk-green-15.glb', (g) => {
+  new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load('model/hk-green-15.glb', (g) => {
     model = g.scene; model.scale.setScalar(1000); model.rotation.x = -Math.PI / 2;   // m -> mm, Fusion Z-up -> Y-up
     const top = model.children[0] || model;
     for (const c of top.children) {
@@ -90,7 +91,7 @@ function init() {
         if (k === 'Acrylic_Enclosure_Top') Object.assign(m, { transparent: true, opacity: 0.18, depthWrite: false });
         m.userData.op = m.opacity; Gp.mats.push(m); });
     }
-    scene.add(model); buildFx(); applyXray(); buildList(); view('all', true);
+    scene.add(model); screenUI(); buildFx(); applyXray(); buildList(); view('all', true);
     info.textContent = 'ลากเพื่อหมุน · เลื่อนล้อเพื่อซูม · คลิกขวาลากเพื่อเลื่อน · คลิกชิ้นส่วนเพื่อดูชื่อ';
     host.classList.add('ready');
     if (S) update(S, true);
@@ -99,6 +100,20 @@ function init() {
   renderer.domElement.addEventListener('pointerdown', (e) => { pick = [e.clientX, e.clientY]; });
   renderer.domElement.addEventListener('pointerup', (e) => { if (pick && Math.hypot(e.clientX - pick[0], e.clientY - pick[1]) < 4) select(e); });
   new ResizeObserver(size).observe(host); size(); loop();
+}
+// The CAD display is a plain green panel: lay the real touch-screen UI (ESP32 simulator screenshot) over its face.
+function screenUI() {
+  let best = null; model.updateMatrixWorld(true);
+  model.traverse((o) => {
+    if (!o.isMesh || !o.material.color) return;
+    const c = o.material.color; if (!(c.g > c.r * 1.4 && c.g > c.b * 1.3)) return;
+    const b = new THREE.Box3().setFromObject(o), sz = b.getSize(new THREE.Vector3());
+    const area = sz.x * sz.y; if (sz.z < 3 && sz.x > 80 && (!best || area > best.area)) best = { b, sz, area };
+  });
+  if (!best) return;
+  const tex = new THREE.TextureLoader().load('img/display_02_home_drip.png'); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(best.sz.x, best.sz.x * 480 / 800), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }));
+  const c = best.b.getCenter(new THREE.Vector3()); m.position.set(c.x, c.y, best.b.max.z + 0.6); scene.add(m);
 }
 function ground() {
   const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
