@@ -458,6 +458,9 @@ function parseCSV(t) {
       const canvas = $('hkcanvas');
       mod = await window.HKDisplay({ canvas, keyboardListeningElement: canvas, onSend, locateFile: (f) => 'display/' + f });
       $('scrLoad').textContent = '';
+      const ptr = (e) => { const r = canvas.getBoundingClientRect(), down = e.type === 'pointerup' || e.type === 'pointercancel' ? 0 : (e.buttons & 1) || e.pointerType === 'touch' ? 1 : 0;
+        mod.ccall('hk_web_pointer', null, ['number', 'number', 'number'], [Math.round((e.clientX - r.left) * 800 / r.width), Math.round((e.clientY - r.top) * 480 / r.height), e.type === 'pointerdown' ? 1 : down]); };
+      ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach((t) => canvas.addEventListener(t, (e) => { if (t === 'pointerdown') canvas.setPointerCapture(e.pointerId); ptr(e); e.preventDefault(); }));
       if (lastMsg) { lastP = 0; window.onRigScreen(lastMsg); }
     };
     s.onerror = () => { $('scrLoad').textContent = 'โหลดจอไม่ได้'; };
