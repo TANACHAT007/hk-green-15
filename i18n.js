@@ -72,6 +72,8 @@
     'สรุปตามสัดส่วนไบโอชาร์': 'Summary by biochar %', 'ผลทั้งหมด': 'All results', 'ดาวน์โหลด CSV': 'Download CSV', 'การพองตัว %': 'Swelling %', 'งานวิจัยเดิม 605 %': 'earlier study 605 %',
     'การพองตัว = ': 'Swelling = ', 'เวลา': 'Time', 'ซ้ำ': 'Rep', 'ผง (g)': 'Powder (g)', 'ขนาด (mm)': 'Size (mm)', 'เปียก (g)': 'Wet (g)', 'แห้ง (g)': 'Dry (g)', 'พองตัว': 'Swelling',
     'ขนาดเม็ด': 'Bead size', 'ลบรอบ #': 'Delete batch #', 'ลบ': 'Delete', 'รอบเครื่อง ': 'Machine batch ', ' (ตัวจำลอง)': ' (simulator)', 'บันทึกรอบ: ': 'Saved: ', '→ พองตัว': '→ swelling',
+    'ข้อมูลตัวอย่าง (สมมติ)': 'sample data (made up)', '⚠️ กำลังแสดง': '⚠️ Showing', ' ข้อมูลตัวอย่าง ': ' sample data, ', ' รอบ ': ' batches ', '— ไม่ใช่ผลทดลองจริง': '— not real results',
+    'ลบข้อมูลตัวอย่าง': 'Remove sample data', 'ยังไม่มีผลทดลอง': 'No results yet', '🧪 ลองดูด้วยข้อมูลตัวอย่าง': '🧪 Try it with sample data', 'ขนาดเม็ดเฉลี่ย (mm) ± SD': 'Mean bead size (mm) ± SD',
     // ---- calibration
     'หัววัด pH': 'pH probe', 'จุ่มหัววัดในบัฟเฟอร์ pH 7 รอค่านิ่ง 1 นาที → กด "จำค่า pH 7"': 'Dip the probe in pH 7 buffer, wait 1 min → press "Store pH 7"',
     'ล้างหัววัด จุ่มบัฟเฟอร์ตัวที่ 2 → เลือกค่า กด "จำค่า"': 'Rinse the probe, dip in the 2nd buffer → pick its value, press "Store"', 'กด "ส่งค่าสอบเทียบ"': 'Press "Send calibration"',

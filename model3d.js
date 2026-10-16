@@ -575,15 +575,22 @@ function tourUI() {
   return el;
 }
 let tourPaused_k = 0;
-function tourStart() {
+function tourStart(at) {
+  at = Math.max(0, Math.min(TOUR.length - 1, +at || 0));
   if (!started) init();
-  if (!fx) { setTimeout(tourStart, 300); return; }
+  if (!fx) { setTimeout(() => tourStart(at), 300); return; }
   if (tourI < 0) tourSaved = { V: { ...V }, S };
   Object.assign(V, { bioG: 0, hopperG: 0, acidMl: 0, naoh: 0, water: 0, waste: 0.1, trayBeads: 0 });
   tray.place('tray', 0, false); beads.place('chamber', 0, false); beadWhere = 'none'; runBeads = 0; drainAnim = null; dosed = false;
   lastState = null; xray = true; applyXray();
   host.classList.add('touring'); tourUI().classList.add('on'); $('m3dTourBtn').classList.add('on');
-  tourGo(0);
+  if (at > 0) {                                      // jump in: replay the earlier steps instantly so tanks, beads and levels match
+    Object.assign(V, { hopperG: CAP.hopperG, bioG: CAP.bioG, acidMl: CAP.acidMl, naoh: 1, water: 1 }); levels();
+    for (let i = 0; i < at; i++) { const s = TOUR[i]; if (s.fill) continue; const x = s.f ? s.f(1) : {};
+      const m = { state: s.st, out: { servo: 10, ...(s.out || {}) }, p: TP, step_s: 5, left_s: 0, ph: 7, rinse: 0, speed: 1, ...x };
+      if (x.out) m.out = { servo: 10, ...x.out }; update(m, false); }
+  }
+  tourGo(at);
 }
 function tourGo(i) {
   if (i >= TOUR.length) { tourEnd(); return; }
@@ -625,7 +632,7 @@ function tourEnd() {
 }
 window.hkTour = tourStart;
 
-on('m3dTourBtn', () => (tourI < 0 ? tourStart() : tourEnd()));
+on('m3dTourBtn', () => (tourI < 0 ? tourStart(0) : tourEnd()));
 // level sensors in simulation: what the operator filled here is what the three XKC-Y25 sensors would see
 let lvlSent = '';
 const ALARM_TH = { 1: '🧴 กรดในถังผสมไม่พอ — เติม 500 mL ก่อนกดเริ่ม', 2: '🚰 น้ำล้างใกล้หมด — เครื่องรอให้เติมน้ำ', 3: '🗑️ ถังน้ำทิ้งเต็ม — เครื่องรอให้เททิ้งก่อนปล่อยน้ำ' };
@@ -646,4 +653,4 @@ window.onRig3d = (m) => {
 document.querySelector('#tabs button[data-t="m3d"]').addEventListener('click', () => { if (!started) init(); else size(); });
 if (location.hash.startsWith('#m3d')) init();
 if (/[?&]kiosk=1/.test(location.search)) document.body.classList.add('kiosk');   // full-screen 3D (video capture)
-if (/[?&]tour=1/.test(location.search) || location.hash === '#tour') { const b = document.querySelector('#tabs button[data-t="m3d"]'); if (b) b.click(); setTimeout(tourStart, 200); }
+if (/[?&]tour=1/.test(location.search) || location.hash === '#tour') { const b = document.querySelector('#tabs button[data-t="m3d"]'); if (b) b.click(); const st = new URLSearchParams(location.search).get('step'); setTimeout(() => tourStart(st), 200); }

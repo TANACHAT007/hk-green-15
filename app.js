@@ -230,7 +230,44 @@ function drawSw() {
   g.strokeStyle = css('--warn'); g.setLineDash([4, 3]); g.beginPath(); g.moveTo(pad.l, Y(605)); g.lineTo(w - pad.r, Y(605)); g.stroke(); g.setLineDash([]);
   g.fillStyle = css('--warn'); g.fillText('งานวิจัยเดิม 605 %', w - pad.r - 110, Y(605) - 4);
 }
-function drawAll() { drawTrend(); drawProc(); drawSw(); }
+function drawD() {
+  const C = canvasCtx('dChart'); if (!C) return; const { g, w, h } = C, pad = { l: 40, r: 10, t: 10, b: 26 };
+  axes(g, w, h, pad, 'ไบโอชาร์ (% w/w)', 'mm');
+  const k = {}; BATCHES.forEach((b) => { if (+b.bead_d_mm > 0) (k[b.biochar_pct] = k[b.biochar_pct] || []).push(+b.bead_d_mm); });
+  const ymax = 4, Y = (v) => h - pad.b - (h - pad.t - pad.b) * v / ymax, gw = (w - pad.l - pad.r) / 4;
+  g.fillStyle = css('--muted'); for (let v = 0; v <= ymax; v++) g.fillText(v, 14, Y(v) + 4);
+  [0, 1, 2, 3].forEach((b, i) => { const a = k[b]; const x = pad.l + gw * i + gw * 0.5;
+    g.fillStyle = css('--muted'); g.fillText(b + ' %', x - 10, h - pad.b + 14); if (!a) return;
+    const m = mean(a), e = sd(a);
+    a.forEach((v, j) => { g.fillStyle = css('--sky'); g.globalAlpha = 0.5; g.beginPath(); g.arc(x - 12 + (j % 5) * 6, Y(v), 3.5, 0, 7); g.fill(); g.globalAlpha = 1; });
+    g.strokeStyle = css('--grape'); g.lineWidth = 2; g.beginPath(); g.moveTo(x + 18, Y(m - e)); g.lineTo(x + 18, Y(m + e)); g.moveTo(x + 10, Y(m)); g.lineTo(x + 26, Y(m)); g.stroke(); g.lineWidth = 1;
+    g.fillStyle = css('--text'); g.fillText(fmt(m, 2), x + 30, Y(m) + 4); });
+}
+// sample results (clearly marked, never mixed silently with real ones)
+const SAMPLE_NOTE = 'ข้อมูลตัวอย่าง (สมมติ)';
+function sampleBar() {
+  const n = BATCHES.filter((b) => (b.note || '').includes(SAMPLE_NOTE)).length, el = $('sampleBar'); if (!el) return;
+  el.innerHTML = n ? `<span>⚠️ กำลังแสดง<b> ข้อมูลตัวอย่าง ${n} รอบ </b>— ไม่ใช่ผลทดลองจริง</span><button class="mini ghost" id="sampleDel">ลบข้อมูลตัวอย่าง</button>`
+    : (BATCHES.length ? '' : '<span>ยังไม่มีผลทดลอง</span><button class="mini" id="sampleAdd">🧪 ลองดูด้วยข้อมูลตัวอย่าง</button>');
+  el.className = 'samplebar' + (n ? ' warn' : '');
+  const add = $('sampleAdd'), del = $('sampleDel');
+  if (add) add.onclick = async () => {
+    const base = { 0: [420, 2.55], 1: [515, 2.62], 2: [612, 2.70], 3: [566, 2.81] };
+    for (const b of [0, 1, 2, 3]) for (let rep = 1; rep <= 3; rep++) {
+      const sw = base[b][0] * (0.93 + Math.random() * 0.14), d = base[b][1] + (Math.random() - 0.5) * 0.18, dry = 1.2 + Math.random() * 0.3;
+      await fetch('/api/batches', { method: 'POST', body: JSON.stringify({ biochar_pct: b, rep, dose_g: 30, drip_min: 40, beads_n: Math.round(5200 + Math.random() * 900),
+        bead_d_mm: +d.toFixed(2), bead_d_sd: +(0.12 + Math.random() * 0.08).toFixed(2), yield_wet_g: +(310 + Math.random() * 40).toFixed(1), dry_g: +dry.toFixed(2),
+        swell_g: +(dry * (1 + sw / 100)).toFixed(2), swelling_pct: +sw.toFixed(1), final_ph: +(7.1 + Math.random() * 0.35).toFixed(2), rinse_cycles: 4 + Math.round(Math.random() * 3),
+        run_h: 8.9, note: SAMPLE_NOTE }) });
+    }
+    BATCHES = await (await fetch('/api/batches')).json(); renderBatches();
+  };
+  if (del) del.onclick = async () => {
+    for (const b of BATCHES.filter((x) => (x.note || '').includes(SAMPLE_NOTE))) BATCHES = await (await fetch('/api/batches', { method: 'POST', body: JSON.stringify({ delete: b.id }) })).json();
+    renderBatches();
+  };
+}
+function drawAll() { drawTrend(); drawProc(); drawSw(); drawD(); }
 window.addEventListener('resize', drawAll);
 setInterval(() => { if (S && S.out && S.out.peri > 0) drawProc(); }, 120);
 
@@ -287,7 +324,7 @@ function renderBatches() {
     BATCHES.map((b) => `<tr><td>${b.id}</td><td>${b.time}</td><td>${b.biochar_pct} %</td><td>${b.rep}</td><td>${b.dose_g}</td><td>${b.beads_n}</td><td>${fmt(b.bead_d_mm, 2)} ± ${fmt(b.bead_d_sd, 2)}</td><td>${b.yield_wet_g}</td><td>${b.dry_g}</td><td><b>${fmt(b.swelling_pct, 0)} %</b></td><td>${fmt(b.final_ph, 2)}</td><td>${b.rinse_cycles}</td><td>${fmt(b.run_h, 1)}</td><td><button class="b ghost" onclick="delBatch(${b.id})">ลบ</button></td></tr>`).join('');
   $('sumTbl').innerHTML = '<tr><th>ไบโอชาร์</th><th>n</th><th>พองตัว %</th><th>ขนาดเม็ด</th><th>pH สุดท้าย</th><th>รอบล้าง</th></tr>' +
     summary().map((s) => `<tr><td>${s.biochar_pct} %</td><td>${s.n}${s.n < 3 ? ' ⚠' : ''}</td><td>${fmt(s.mean, 0)} ± ${fmt(s.sd, 0)}</td><td>${fmt(s.d, 2)} mm</td><td>${fmt(s.ph, 2)}</td><td>${fmt(s.rin, 1)}</td></tr>`).join('');
-  drawSw();
+  drawSw(); drawD(); sampleBar();
 }
 window.delBatch = async (id) => { if (!confirm('ลบรอบ #' + id + '?')) return; BATCHES = await (await fetch('/api/batches', { method: 'POST', body: JSON.stringify({ delete: id }) })).json(); renderBatches(); };
 $('bFill').onclick = () => { const r = lastRun || (S ? { ph: S.ph, rinse: S.rinse, beads: S.sim_beads, d: S.sim_bead_d_mm } : null); if (!r) return;
