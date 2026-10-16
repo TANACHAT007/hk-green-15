@@ -515,7 +515,11 @@ function labels(t) {
     el.classList.toggle('act', !!act);
     el.style.display = v.z < 1 ? '' : 'none'; el.style.transform = `translate(${(v.x + 1) / 2 * w}px, ${(1 - v.y) / 2 * h + bob}px) translate(-50%, -50%)`; });
 }
-function loop() { requestAnimationFrame(loop); const dt = Math.min(0.05, clock.getDelta()); stepTween(); controls.update(); tourTick(false); animate(dt); renderer.render(scene, camera); }
+function loop() {
+  requestAnimationFrame(loop); const dt = Math.min(0.05, clock.getDelta());
+  if (document.hidden || host.offsetParent === null) return;            // 3D tab not on screen: no work at all
+  stepTween(); controls.update(); tourTick(false); animate(dt); renderer.render(scene, camera);
+}
 
 // ================================================================= parts list, picking
 function buildList() {

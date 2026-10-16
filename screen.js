@@ -25,6 +25,8 @@ window.HKScreen = (function () {
         up ? 0 : e.type === 'pointerdown' || (e.buttons & 1) || e.pointerType === 'touch' ? 1 : 0]); };
     ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'].forEach((t) => canvas.addEventListener(t, (e) => {
       if (t === 'pointerdown') canvas.setPointerCapture(e.pointerId); ptr(e); e.preventDefault(); }));
+    const act = () => mod.ccall('hk_web_active', null, ['number'], [canvas.offsetParent !== null && !document.hidden ? 1 : 0]);
+    setInterval(act, 700); document.addEventListener('visibilitychange', act);
     return {
       rig(m) {
         last = m; const o = m.out || {}, lv = m.lvl || [1, 1, 0];

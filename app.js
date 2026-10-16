@@ -16,7 +16,7 @@ const RECIPE = [['dose_g', 'ไคโตซาน', 'g'], ['biochar_pct', 'ไ�
 let S = null, MODE = 'none', HIST = [], BATCHES = [], INFO = {}, lastRun = null, runT0 = null, cal = {};
 
 // ------------------------------------------------------------------ UI basics
-document.querySelectorAll('#tabs button').forEach((b) => b.onclick = () => {
+document.querySelectorAll('#tabs button').forEach((b) => b.onclick = () => { setTimeout(drawAll, 30);
   document.querySelectorAll('#tabs button').forEach((x) => x.classList.toggle('on', x === b));
   document.querySelectorAll('section.tab').forEach((s) => s.classList.toggle('on', s.id === 't-' + b.dataset.t));
   $('tbTitle').textContent = b.querySelector('span') ? b.querySelector('span').textContent : b.textContent;
@@ -268,9 +268,10 @@ function sampleBar() {
     renderBatches();
   };
 }
-function drawAll() { drawTrend(); drawProc(); drawSw(); drawD(); }
+const shown = (id) => { const e = $(id); return !!e && e.offsetParent !== null && !document.hidden; };   // skip canvases nobody can see (phones)
+function drawAll() { if (shown('trend')) drawTrend(); if (shown('proc')) drawProc(); if (shown('swChart')) { drawSw(); drawD(); } }
 window.addEventListener('resize', drawAll);
-setInterval(() => { if (S && S.out && S.out.peri > 0) drawProc(); }, 120);
+setInterval(() => { if (S && S.out && S.out.peri > 0 && shown('proc')) drawProc(); }, 120);
 
 // ------------------------------------------------------------------ run + recipe
 $('start').onclick = () => cmd({ cmd: 'start' });
