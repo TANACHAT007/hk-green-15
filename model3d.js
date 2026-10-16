@@ -64,7 +64,7 @@ let dosed = false, S = null, lastState = null, xray = true, labelsOn = true, run
 function init() {
   started = true; clock = new THREE.Clock();
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  renderer.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
   host.prepend(renderer.domElement);
   scene = new THREE.Scene();
