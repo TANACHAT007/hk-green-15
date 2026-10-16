@@ -228,14 +228,14 @@ function drawSw() {
     g.fillStyle = css('--text'); g.fillText(fmt(r.mean, 0), x, Y(r.mean) - 4);
   });
   g.strokeStyle = css('--warn'); g.setLineDash([4, 3]); g.beginPath(); g.moveTo(pad.l, Y(605)); g.lineTo(w - pad.r, Y(605)); g.stroke(); g.setLineDash([]);
-  g.fillStyle = css('--warn'); g.fillText('งานวิจัยเดิม 605 %', w - pad.r - 110, Y(605) - 4);
+  g.fillStyle = css('--warn'); g.fillText('งานวิจัยเดิม 605 %', pad.l + 4, Y(605) - 4);
 }
 function drawD() {
   const C = canvasCtx('dChart'); if (!C) return; const { g, w, h } = C, pad = { l: 40, r: 10, t: 10, b: 26 };
-  axes(g, w, h, pad, 'ไบโอชาร์ (% w/w)', 'mm');
+  axes(g, w, h, pad, 'ไบโอชาร์ (% w/w)', '');
   const k = {}; BATCHES.forEach((b) => { if (+b.bead_d_mm > 0) (k[b.biochar_pct] = k[b.biochar_pct] || []).push(+b.bead_d_mm); });
-  const ymax = 4, Y = (v) => h - pad.b - (h - pad.t - pad.b) * v / ymax, gw = (w - pad.l - pad.r) / 4;
-  g.fillStyle = css('--muted'); for (let v = 0; v <= ymax; v++) g.fillText(v, 14, Y(v) + 4);
+  const y0 = 2, ymax = 3.2, Y = (v) => h - pad.b - (h - pad.t - pad.b) * (v - y0) / (ymax - y0), gw = (w - pad.l - pad.r) / 4;   // zoomed: sizes differ by tenths of a mm
+  g.fillStyle = css('--muted'); for (let v = 2; v <= 3.21; v += 0.4) g.fillText(v.toFixed(1), 8, Y(v) + 4);
   [0, 1, 2, 3].forEach((b, i) => { const a = k[b]; const x = pad.l + gw * i + gw * 0.5;
     g.fillStyle = css('--muted'); g.fillText(b + ' %', x - 10, h - pad.b + 14); if (!a) return;
     const m = mean(a), e = sd(a);
