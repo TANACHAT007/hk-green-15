@@ -9,10 +9,11 @@
   const seen = () => { try { return localStorage.getItem('hk15_pwa') === 'no'; } catch (e) { return false; } };
   function toast(txt, btn, onBtn) {
     if (seen() || document.getElementById('pwaToast')) return;
+    if (/app\.html/.test(location.pathname)) return;           // never cover the dashboard (its phone tab bar sits at the bottom)
     const t = document.createElement('div'); t.id = 'pwaToast';
     t.innerHTML = `<img src="icons/icon-192.png" alt=""><div><b>${en() ? 'Install the app' : 'ติดตั้งแอป'}</b><small>${txt}</small></div>` +
       (btn ? `<button class="go">${btn}</button>` : '') + `<button class="x">${en() ? 'Later' : 'ไว้ก่อน'}</button>`;
-    Object.assign(t.style, { position: 'fixed', right: '16px', bottom: '16px', zIndex: 60, display: 'flex', gap: '12px', alignItems: 'center', maxWidth: 'calc(100% - 32px)',
+    Object.assign(t.style, { position: 'fixed', right: '16px', bottom: innerWidth < 700 ? 'auto' : '16px', top: innerWidth < 700 ? '70px' : 'auto', zIndex: 60, display: 'flex', gap: '12px', alignItems: 'center', maxWidth: 'calc(100% - 32px)',
       padding: '12px 14px', borderRadius: '20px', background: 'var(--panel, #fff)', color: 'var(--text, #1d1b3a)', boxShadow: '0 14px 40px rgba(40,30,120,.2)',
       font: '14px/1.35 Anuphan, system-ui, sans-serif', animation: 'pwaIn .5s cubic-bezier(.34,1.56,.64,1)' });
     const st = document.createElement('style');

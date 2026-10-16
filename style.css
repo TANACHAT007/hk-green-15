@@ -334,3 +334,11 @@ body.kiosk #m3dLabels span { font-size: 15px; }
 .scrload { position: absolute; inset: 18px; display: grid; place-items: center; color: #fff; font-weight: 600; border-radius: 8px; background: rgba(22, 21, 43, .6); }
 .scrload:empty { display: none; }
 @media (max-width: 700px) { .bezel { padding: 8px; border-radius: 16px; } }
+/* phone: 3D view controls in one tidy row */
+.h3views button { white-space: nowrap; }
+@media (max-width: 700px) {
+  .h3views { max-width: calc(100% - 20px); overflow-x: auto; scrollbar-width: none; bottom: 10px; }
+  .h3views button { padding: 6px 10px; font-size: 12px; }
+  .tourbtn { top: 62px; bottom: auto; right: auto; left: 14px; padding: 7px 14px 7px 8px; font-size: 13px; }
+  #m3d.touring .tourbtn { top: 62px; }
+}
