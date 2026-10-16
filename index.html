@@ -66,7 +66,7 @@ h1 em { font-style: normal; background: linear-gradient(120deg, var(--accent), v
 .lead { font-size: 19px; color: var(--muted); max-width: 33em; margin: 0 0 28px; }
 .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 .shot { position: relative; }
-.shot img.hero-img { width: 100%; display: block; mix-blend-mode: multiply; animation: float 6s ease-in-out infinite; }
+.shot img.hero-img { width: 100%; height: auto; display: block; mix-blend-mode: multiply; animation: float 6s ease-in-out infinite; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .shot img.hero-img { mix-blend-mode: normal; border-radius: var(--r); } }
 @keyframes float { 50% { transform: translateY(-10px); } }
 .chip { position: absolute; display: flex; gap: 8px; align-items: center; padding: 9px 14px; border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); font-size: 14px; font-weight: 600; animation: float 5s ease-in-out infinite; }
