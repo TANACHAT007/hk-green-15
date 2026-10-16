@@ -18,6 +18,7 @@ export function mount(host, onProgress) {
     const ctl = new OrbitControls(cam, r.domElement);
     Object.assign(ctl, { enableDamping: true, dampingFactor: 0.08, autoRotate: true, autoRotateSpeed: 1.2, enablePan: false, maxPolarAngle: Math.PI * 0.52 });
     ctl.target.set(420, 440, -170); cam.position.set(-1150, 1250, 1850);
+    if (host.clientWidth < 520) cam.position.lerp(ctl.target, 0.28);   // phones: closer, the model fills the hero
     const size = () => { const w = host.clientWidth, h = host.clientHeight; r.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix(); };
     new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load('model/hk-green-15.glb', (g) => {
       const m = g.scene; m.scale.setScalar(1000); m.rotation.x = -Math.PI / 2;
