@@ -325,3 +325,12 @@ body.kiosk #m3dLabels span { font-size: 15px; }
 
 .usbbtn { font-size: 12.5px; padding: 7px 12px; } @media (max-width: 800px) { .usbbtn { display: none; } }
 .usbbtn[hidden] { display: none !important; }
+
+/* virtual 7" screen */
+.scrcard { max-width: 1000px; margin: 0 auto; }
+.scrhead { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 14px; } .scrhead h3 { margin: 0; }
+.bezel { position: relative; background: #16152b; border-radius: 28px; padding: 18px; box-shadow: 0 30px 70px rgba(30, 25, 80, .25); }
+.bezel canvas { display: block; width: 100%; height: auto; aspect-ratio: 800 / 480; border-radius: 8px; touch-action: none; background: #f6f7ff; }
+.scrload { position: absolute; inset: 18px; display: grid; place-items: center; color: #fff; font-weight: 600; border-radius: 8px; background: rgba(22, 21, 43, .6); }
+.scrload:empty { display: none; }
+@media (max-width: 700px) { .bezel { padding: 8px; border-radius: 16px; } }
