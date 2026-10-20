@@ -7,16 +7,16 @@ Label both ends with the wire number. Gauge = practical chassis rating (×1.25) 
 | 1 | IEC.L | PSU.L | AC L | ac_l | 0.05 | AWG18 | 0.75 | brown | 250 | 0.003 |
 | 2 | IEC.N | PSU.N | AC N | ac_n | 0.05 | AWG18 | 0.75 | blue | 250 | 0.003 |
 | 3 | IEC.PE | PSU.PE | PE | pe | 0.05 | AWG18 | 0.75 |  | 250 | 0.003 |
-| 4 | PSU.+V | F1.in | +12 V | v12 | 3.82 | AWG16 | 1.5 | red | 150 | 0.015 |
-| 5 | F1.out | ESTOP.in | +12 V | v12 | 3.82 | AWG16 | 1.5 | red | 500 | 0.050 |
-| 6 | ESTOP.out | MDD10A.VB+ | +12 V | v12 | 0.40 | AWG16 | 1.5 | red | 500 | 0.005 |
-| 7 | ESTOP.out | MDD3A.VB+ | +12 V | v12 | 1.00 | AWG16 | 1.5 | red | 500 | 0.013 |
-| 8 | ESTOP.out | MOS.V+ | +12 V | v12 | 0.30 | AWG16 | 1.5 | red | 500 | 0.004 |
-| 9 | ESTOP.out | MOS2.V+ | +12 V | v12 | 0.06 | AWG16 | 1.5 | red | 500 | 0.001 |
-| 10 | ESTOP.out | RELAY.COM | +12 V | v12 | 1.50 | AWG16 | 1.5 | red | 500 | 0.019 |
-| 11 | ESTOP.out | BUCK6.IN+ | +12 V | v12 | 0.56 | AWG16 | 1.5 | red | 500 | 0.007 |
-| 12 | PSU.+V | F2.in | +12 V | v12 | 0.48 | AWG26 | 0.13 | red | 150 | 0.019 |
-| 13 | F2.out | BUCK5.IN+ | +12 V | v12 | 0.29 | AWG26 | 0.13 | red | 150 | 0.012 |
+| 4 | PSU.+V | F1.in | +12 V | v12 | 5.77 | AWG14 | 2.5 | red | 150 | 0.014 |
+| 5 | F1.out | ESTOP.in | +12 V | v12 | 5.77 | AWG14 | 2.5 | red | 500 | 0.048 |
+| 6 | ESTOP.out | MDD10A.VB+ | +12 V | v12 | 0.40 | AWG14 | 2.5 | red | 500 | 0.003 |
+| 7 | ESTOP.out | MDD3A.VB+ | +12 V | v12 | 1.00 | AWG14 | 2.5 | red | 500 | 0.008 |
+| 8 | ESTOP.out | MOS.V+ | +12 V | v12 | 0.30 | AWG14 | 2.5 | red | 500 | 0.002 |
+| 9 | ESTOP.out | MOS2.V+ | +12 V | v12 | 0.06 | AWG14 | 2.5 | red | 500 | 0.000 |
+| 10 | ESTOP.out | RELAY.COM | +12 V | v12 | 1.50 | AWG14 | 2.5 | red | 500 | 0.012 |
+| 11 | ESTOP.out | BUCK6.IN+ | +12 V | v12 | 0.56 | AWG14 | 2.5 | red | 500 | 0.005 |
+| 12 | PSU.+V | F2.in | +12 V | v12 | 0.50 | AWG26 | 0.13 | red | 150 | 0.020 |
+| 13 | F2.out | BUCK5.IN+ | +12 V | v12 | 0.31 | AWG26 | 0.13 | red | 150 | 0.012 |
 | 14 | F2.out | LAMPDRV.COM | +12 V | v12 | 0.04 | AWG26 | 0.13 | red | 400 | 0.004 |
 | 15 | F2.out | LAMPS.+G | +12 V | v12 | 0.04 | AWG26 | 0.13 | red | 600 | 0.006 |
 | 16 | F2.out | LAMPS.+R | +12 V | v12 | 0.04 | AWG26 | 0.13 | red | 600 | 0.006 |
@@ -29,7 +29,7 @@ Label both ends with the wire number. Gauge = practical chassis rating (×1.25) 
 | 23 | BUCK5.OUT+ | LVW.V+ | +5 V | v5 | 0.01 | AWG26 | 0.13 | orange | 900 | 0.001 |
 | 24 | BUCK5.OUT+ | LVX.V+ | +5 V | v5 | 0.01 | AWG26 | 0.13 | orange | 900 | 0.001 |
 | 25 | BUCK6.OUT+ | SERVO.+ | +6 V | v6 | 1.00 | AWG24 | 0.2 | pink | 600 | 0.101 |
-| 26 | GND.g1 | PSU.-V | GND | gnd | 3.82 | AWG20 | 0.5 | black | 150 | 0.038 |
+| 26 | GND.g1 | PSU.-V | GND | gnd | 5.77 | AWG16 | 1.5 | black | 150 | 0.022 |
 | 27 | GND.g2 | MDD10A.GND | GND | gnd | 0.25 | AWG26 | 0.13 | black | 150 | 0.010 |
 | 28 | GND.g3 | MDD3A.GND | GND | gnd | 0.80 | AWG26 | 0.13 | black | 150 | 0.032 |
 | 29 | GND.g4 | MOS.GND | GND | gnd | 0.30 | AWG26 | 0.13 | black | 150 | 0.012 |
@@ -89,25 +89,63 @@ Label both ends with the wire number. Gauge = practical chassis rating (×1.25) 
 | 83 | MEGA.TX1 | DIV.in | UART/I2C | comm |  | AWG26 | 0.13 | UART/I2C | 250 |  |
 | 84 | DIV.out | ESP.RX | UART/I2C | comm |  | AWG24 | 0.2 | UART/I2C | 700 |  |
 | 85 | ESP.TX | MEGA.RX1 | UART/I2C | comm |  | AWG24 | 0.2 | UART/I2C | 700 |  |
+| 86 | ESTOP.out | MOS3.V+ | +12 V | v12 | 0.40 | AWG14 | 2.5 | red | 500 | 0.003 |
+| 87 | ESTOP.out | MOS4.V+ | +12 V | v12 | 0.40 | AWG14 | 2.5 | red | 500 | 0.003 |
+| 88 | ESTOP.out | MOS5.V+ | +12 V | v12 | 0.40 | AWG14 | 2.5 | red | 500 | 0.003 |
+| 89 | ESTOP.out | MOS6.V+ | +12 V | v12 | 0.15 | AWG14 | 2.5 | red | 500 | 0.001 |
+| 90 | ESTOP.out | MDD3B.VB+ | +12 V | v12 | 0.60 | AWG14 | 2.5 | red | 500 | 0.005 |
+| 91 | BUCK6.IN- | MOS3.GND | GND | gnd | 1.00 | AWG24 | 0.2 | black | 300 | 0.050 |
+| 92 | BUCK6.IN- | MOS4.GND | GND | gnd | 1.00 | AWG24 | 0.2 | black | 300 | 0.050 |
+| 93 | BUCK6.IN- | MOS5.GND | GND | gnd | 1.00 | AWG24 | 0.2 | black | 300 | 0.050 |
+| 94 | BUCK6.IN- | MOS6.GND | GND | gnd | 1.00 | AWG24 | 0.2 | black | 300 | 0.050 |
+| 95 | BUCK6.IN- | MDD3B.GND | GND | gnd | 1.00 | AWG24 | 0.2 | black | 300 | 0.050 |
+| 96 | MOS3.OUT+ | SOL1.+ | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 97 | MOS3.OUT- | SOL1.- | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 98 | MOS4.OUT+ | SOL2.+ | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 99 | MOS4.OUT- | SOL2.- | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 100 | MOS5.OUT+ | SOL3.+ | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 101 | MOS5.OUT- | SOL3.- | load output | out | 0.40 | AWG26 | 0.13 | white | 1200 | 0.129 |
+| 102 | MOS6.OUT+ | DRYFAN.+ | load output | out | 0.15 | AWG26 | 0.13 | white | 1300 | 0.052 |
+| 103 | MOS6.OUT- | DRYFAN.- | load output | out | 0.15 | AWG26 | 0.13 | white | 1300 | 0.052 |
+| 104 | MDD3B.M1A | ACIDP.+ | load output | out | 0.30 | AWG26 | 0.13 | white | 900 | 0.072 |
+| 105 | MDD3B.M1B | ACIDP.- | load output | out | 0.30 | AWG26 | 0.13 | white | 900 | 0.072 |
+| 106 | MDD3B.M2A | NAOHP.+ | load output | out | 0.30 | AWG26 | 0.13 | white | 900 | 0.072 |
+| 107 | MDD3B.M2B | NAOHP.- | load output | out | 0.30 | AWG26 | 0.13 | white | 900 | 0.072 |
+| 108 | BUCK5.OUT+ | NTC.V+ | +5 V | v5 | 0.05 | AWG26 | 0.13 | orange | 1300 | 0.017 |
+| 109 | NTC.GND | BUCK5.OUT- | GND | gnd | 0.50 | AWG26 | 0.13 | black | 1300 | 0.174 |
+| 110 | BUCK5.OUT+ | BUZ.VCC | +5 V | v5 | 0.03 | AWG26 | 0.13 | orange | 200 | 0.002 |
+| 111 | BUZ.GND | BUCK5.OUT- | GND | gnd | 0.50 | AWG26 | 0.13 | black | 200 | 0.027 |
+| 112 | SSR.IN- | BUCK5.OUT- | GND | gnd | 0.50 | AWG26 | 0.13 | black | 200 | 0.027 |
+| 113 | MEGA.D23 | MOS3.SIG | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 114 | MEGA.D25 | MOS4.SIG | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 115 | MEGA.D27 | MOS5.SIG | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 116 | MEGA.D29 | MOS6.SIG | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 117 | MEGA.D31 | SSR.IN+ | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 118 | MEGA.D2 | MDD3B.M1A_in | PWM | pwm |  | AWG26 | 0.13 | PWM | 300 |  |
+| 119 | MEGA.D24 | MDD3B.M1B_in | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 120 | MEGA.D10 | MDD3B.M2A_in | PWM | pwm |  | AWG26 | 0.13 | PWM | 300 |  |
+| 121 | MEGA.D26 | MDD3B.M2B_in | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 122 | MEGA.D28 | BUZ.IO | digital | dig |  | AWG26 | 0.13 | digital | 300 |  |
+| 123 | NTC.OUT | MEGA.A1 | analog | ana |  | AWG26 | 0.13 | analog | 300 |  |
 
 ## Wire to buy (add 30 % for routing)
 
 | AWG | mm² | Net | Metres |
 |---|---|---|---|
-| 16 | 1.5 | +12 V | 4.7 |
+| 14 | 2.5 | +12 V | 8.0 |
+| 16 | 1.5 | GND | 0.2 |
 | 18 | 0.75 | AC L | 0.3 |
 | 18 | 0.75 | AC N | 0.3 |
 | 18 | 0.75 | PE | 0.3 |
-| 20 | 0.5 | GND | 0.2 |
 | 24 | 0.2 | UART/I2C | 1.8 |
-| 24 | 0.2 | GND | 2.7 |
+| 24 | 0.2 | GND | 4.7 |
 | 24 | 0.2 | load output | 0.7 |
 | 24 | 0.2 | +6 V | 0.8 |
-| 26 | 0.13 | analog | 0.3 |
+| 26 | 0.13 | analog | 0.7 |
 | 26 | 0.13 | UART/I2C | 0.3 |
-| 26 | 0.13 | digital | 4.2 |
-| 26 | 0.13 | GND | 7.5 |
-| 26 | 0.13 | load output | 12.5 |
-| 26 | 0.13 | PWM | 2.3 |
+| 26 | 0.13 | digital | 7.3 |
+| 26 | 0.13 | GND | 9.7 |
+| 26 | 0.13 | load output | 29.9 |
+| 26 | 0.13 | PWM | 3.1 |
 | 26 | 0.13 | +12 V | 3.0 |
-| 26 | 0.13 | +5 V | 5.1 |
+| 26 | 0.13 | +5 V | 7.0 |

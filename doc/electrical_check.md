@@ -1,8 +1,8 @@
 # HK-Green-15 — electrical check
 
-✅ 47 · ⚠️ 0 · ❌ 0
+✅ 79 · ⚠️ 0 · ❌ 0
 
-- ✅ PSU +V 12 V 12.5 A vs loads run 4.27 A ×1.25 / peak 8.81 A
+- ✅ PSU +V 12 V 12.5 A vs loads run 6.23 A ×1.25 / peak 11.52 A
 - ✅ PERI: power is cut by the E-stop
 - ✅ AUGER: power is cut by the E-stop
 - ✅ TOPSTIR: power is cut by the E-stop
@@ -11,6 +11,12 @@
 - ✅ BIOAUG: power is cut by the E-stop
 - ✅ VALVE: power is cut by the E-stop
 - ✅ SERVO: power is cut by the E-stop
+- ✅ SOL1: power is cut by the E-stop
+- ✅ SOL2: power is cut by the E-stop
+- ✅ SOL3: power is cut by the E-stop
+- ✅ DRYFAN: power is cut by the E-stop
+- ✅ ACIDP: power is cut by the E-stop
+- ✅ NAOHP: power is cut by the E-stop
 - ✅ PERI: inductive — driver has flyback diodes
 - ✅ AUGER: inductive — driver has flyback diodes
 - ✅ TOPSTIR: inductive — driver has flyback diodes
@@ -18,6 +24,12 @@
 - ✅ CHSTIR: inductive — driver has flyback diodes
 - ✅ BIOAUG: inductive — driver has flyback diodes
 - ✅ VALVE: inductive — driver has flyback diodes
+- ✅ SOL1: inductive — driver has flyback diodes
+- ✅ SOL2: inductive — driver has flyback diodes
+- ✅ SOL3: inductive — driver has flyback diodes
+- ✅ DRYFAN: inductive — driver has flyback diodes
+- ✅ ACIDP: inductive — driver has flyback diodes
+- ✅ NAOHP: inductive — driver has flyback diodes
 - ✅ BUCK5: on the common ground
 - ✅ BUCK6: on the common ground
 - ✅ MEGA: on the common ground
@@ -34,8 +46,16 @@
 - ✅ LVA: on the common ground
 - ✅ LVW: on the common ground
 - ✅ LVX: on the common ground
-- ✅ F1: branch 3.82 A → fuse 7.5 A slow-blow; 8 wire(s) on its net upsized to ≥ 7.5 A
-- ✅ F2: branch 0.48 A → fuse 1 A fast
+- ✅ MOS3: on the common ground
+- ✅ MOS4: on the common ground
+- ✅ MOS5: on the common ground
+- ✅ MOS6: on the common ground
+- ✅ MDD3B: on the common ground
+- ✅ SSR: on the common ground
+- ✅ NTC: on the common ground
+- ✅ BUZ: on the common ground
+- ✅ F1: branch 5.77 A → fuse 15 A slow-blow; 13 wire(s) on its net upsized to ≥ 15 A
+- ✅ F2: branch 0.50 A → fuse 1 A fast
 - ✅ MDD10A: output MDD10A.M1A→PERI.+ 0.25 A vs rating 10 A
 - ✅ MDD10A: output MDD10A.M1B→PERI.- 0.25 A vs rating 10 A
 - ✅ MDD10A: output MDD10A.M2A→AUGER.+ 0.15 A vs rating 10 A
@@ -49,8 +69,22 @@
 - ✅ MOS2: output MOS2.OUT+→BIOAUG.+ 0.06 A vs rating 5 A
 - ✅ MOS2: output MOS2.OUT-→BIOAUG.- 0.06 A vs rating 5 A
 - ✅ RELAY: output RELAY.NO→VALVE.+ 1.5 A vs rating 10 A
+- ✅ MOS3: output MOS3.OUT+→SOL1.+ 0.4 A vs rating 5 A
+- ✅ MOS3: output MOS3.OUT-→SOL1.- 0.4 A vs rating 5 A
+- ✅ MOS4: output MOS4.OUT+→SOL2.+ 0.4 A vs rating 5 A
+- ✅ MOS4: output MOS4.OUT-→SOL2.- 0.4 A vs rating 5 A
+- ✅ MOS5: output MOS5.OUT+→SOL3.+ 0.4 A vs rating 5 A
+- ✅ MOS5: output MOS5.OUT-→SOL3.- 0.4 A vs rating 5 A
+- ✅ MOS6: output MOS6.OUT+→DRYFAN.+ 0.15 A vs rating 5 A
+- ✅ MOS6: output MOS6.OUT-→DRYFAN.- 0.15 A vs rating 5 A
+- ✅ MDD3B: output MDD3B.M1A→ACIDP.+ 0.3 A vs rating 3 A
+- ✅ MDD3B: output MDD3B.M1B→ACIDP.- 0.3 A vs rating 3 A
+- ✅ MDD3B: output MDD3B.M2A→NAOHP.+ 0.3 A vs rating 3 A
+- ✅ MDD3B: output MDD3B.M2B→NAOHP.- 0.3 A vs rating 3 A
 
 ## Notes
+- v9.0 tray heater: 220 V 150 W pad switched by the SSR-40DA on its own fused 1 A AC branch from the IEC inlet (L through the SSR, N direct, PE to the stainless tray) with an 85 °C thermal fuse in series. The Mega only turns the SSR on in the DRY step (thermostat on the tray NTC, cut-off 75 °C / sensor fault); E-stop -> SAFE switches it off in software.
+- v9.0 solenoids V1-V3: the rinse pump only runs with exactly one of them open (firmware rinseVia()).
 - E-stop main contact breaks the 12 V motor bus (drivers, relay COM, servo buck); logic stays on so the Mega can report SAFE.
 - ESP32 TX (3.3 V) → Mega RX1 is read correctly as HIGH (V_IH of the ATmega2560 ≈ 3.0 V at 5 V — marginal but works; use a 74HCT125 buffer if the link is unreliable).
 - TOPSTIR is a brushless PC fan (internal driver): drive it one direction only and keep PWM duty >= ~50 % (it stalls below ~5-7 V).
