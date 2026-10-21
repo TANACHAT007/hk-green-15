@@ -80,14 +80,20 @@ img.chart { width: 100%; height: auto; display: block; border-radius: 12px; back
 .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
 .mini { background: var(--panel2); border-radius: 14px; padding: 10px 12px; font-size: 15px; }
 .mini b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 9px; margin-right: 6px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0 4px; }
+.stat { background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); padding: 12px 16px; }
+.stat b { display: block; font-size: 30px; line-height: 1.1; background: linear-gradient(135deg, var(--accent), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat span { font-size: 14px; color: var(--muted); }
 footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
-@media print { nav, .calc, .tbtn { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } }
+@media print { nav, .calc, .tbtn, #community .grid4 { display: none !important; } body { background: #fff; font-size: 13px; }
+  .card, .hero-ill, .stat, .ph { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; } section { break-inside: auto; } h2 { break-after: avoid; } }
 </style>
 </head>
 <body>
 <nav><div class="wrap">
   <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
   <div class="links"><a href="#biochar">ไบโอชาร์</a><a href="#check">ตรวจคุณภาพ</a><a href="#use">วิธีใช้</a><a href="#chitosan">ไคโตซาน</a><a href="#bead">เม็ดอุ้มน้ำ</a><a href="#community">ชุมชน</a><a href="#ref">แหล่งข้อมูล</a></div>
+  <button class="tbtn" id="printBtn" title="พิมพ์เป็นคู่มือแจกเกษตรกร" aria-label="พิมพ์คู่มือ">🖨️</button>
   <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
 </div></nav>
 
@@ -153,6 +159,12 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
     <text x="455" y="292">ไบโอชาร์+ไคโตซาน</text><text x="670" y="292">เม็ดอุ้มน้ำ</text><text x="890" y="292">ดินชื้นนานขึ้น</text>
   </g>
 </svg></figure>
+  <div class="stats">
+    <div class="stat"><b>605%</b><span>เม็ดดูดน้ำได้ ~6 เท่าของน้ำหนักแห้ง (สูตรไบโอชาร์ 2%)</span></div>
+    <div class="stat"><b>13×</b><span>ดินผสมเม็ดยังชื้นกว่าดินเปล่า ในวันที่ 14 ที่ไม่รดน้ำ</span></div>
+    <div class="stat"><b>≥350°C</b><span>อุณหภูมิเผาไบโอชาร์ตามมาตรฐาน มผช.1752/2569</span></div>
+    <div class="stat"><b>45%</b><span>ได้ถ่านไบโอชาร์จากเตาถัง 200 ลิตร (ข้อมูลที่กรมพัฒนาที่ดินอ้าง)</span></div>
+  </div>
 </header>
 
 <main class="wrap">
@@ -263,6 +275,27 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
     <b>เกษตรกรทั่วไปแนะนำให้ซื้อไคโตซานเกรดเกษตร</b> หรือรวมกลุ่มกับวิสาหกิจชุมชนหรือสถาบันการศึกษาในพื้นที่</div>
   <div class="card">
     <h3>ขั้นตอนตามงานวิจัยของ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ (2560)</h3>
+<figure class="hero-ill" style="margin:4px 0 12px"><svg viewBox="0 0 980 230" role="img" aria-label="ขั้นตอนทำไคโตซาน">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a59"/></marker></defs>
+  <g transform="translate(95 90)"><path d="M-46 10 Q-40 -34 0 -32 Q40 -30 46 8 Q26 -6 8 -4 Q-18 -2 -24 20 Z" fill="#fb923c" stroke="#c2410c" stroke-width="3"/>
+    <path d="M-30 30 h60" stroke="#60a5fa" stroke-width="6" stroke-linecap="round"/><path d="M-20 40 h40" stroke="#93c5fd" stroke-width="6" stroke-linecap="round"/></g>
+  <path d="M160 90 h60" stroke="#ff7a59" stroke-width="5" marker-end="url(#ar2)"/>
+  <g transform="translate(290 90)"><path d="M-40 -40 h80 l-8 84 a10 10 0 0 1 -10 9 h-44 a10 10 0 0 1 -10 -9 z" fill="#fde68a" stroke="#475569" stroke-width="3"/>
+    <rect x="-40" y="-46" width="80" height="8" rx="3" fill="#475569"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Anuphan" font-size="17" font-weight="700" fill="#0f172a">HCl 2M</text></g>
+  <path d="M355 90 h60" stroke="#ff7a59" stroke-width="5" marker-end="url(#ar2)"/><g transform="translate(480 90)"><path d="M-40 -40 h80 l-8 84 a10 10 0 0 1 -10 9 h-44 a10 10 0 0 1 -10 -9 z" fill="#bfdbfe" stroke="#475569" stroke-width="3"/>
+    <rect x="-40" y="-46" width="80" height="8" rx="3" fill="#475569"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Anuphan" font-size="17" font-weight="700" fill="#0f172a">NaOH 2M</text></g>
+  <path d="M545 90 h60" stroke="#ff7a59" stroke-width="5" marker-end="url(#ar2)"/><g transform="translate(670 90)"><path d="M-40 -40 h80 l-8 84 a10 10 0 0 1 -10 9 h-44 a10 10 0 0 1 -10 -9 z" fill="#fecaca" stroke="#475569" stroke-width="3"/>
+    <rect x="-40" y="-46" width="80" height="8" rx="3" fill="#475569"/><path d="M-22 60 q-4 -14 6 -22 q0 12 8 8 q-2 -10 8 -16 q-2 16 6 22 q-8 12 -28 8z" fill="#f97316"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Anuphan" font-size="17" font-weight="700" fill="#0f172a">NaOH 50%</text></g>
+  <path d="M735 90 h60" stroke="#ff7a59" stroke-width="5" marker-end="url(#ar2)"/>
+  <g transform="translate(880 96)"><path d="M-50 30 Q-30 -16 0 -22 Q30 -16 50 30 Z" fill="#fef9c3" stroke="#a16207" stroke-width="3"/>
+    <g fill="#fde68a"><circle cx="-20" cy="10" r="3"/><circle cx="0" cy="0" r="3"/><circle cx="18" cy="12" r="3"/><circle cx="-6" cy="20" r="3"/><circle cx="26" cy="24" r="3"/><circle cx="-30" cy="24" r="3"/></g></g>
+  <g font-family="Anuphan" font-size="18" font-weight="600" fill="var(--text)" text-anchor="middle">
+    <text x="95" y="200">เปลือกกุ้งต้มสุก</text><text x="290" y="200">กำจัดแร่ธาตุ 2 ชม.</text><text x="480" y="200">กำจัดโปรตีน 2 ชม.</text>
+    <text x="670" y="200">ต้ม 100°C 2 ชม.</text><text x="880" y="200">ผงไคโตซาน</text></g>
+</svg></figure>
     <ol class="steps shell">
       <li><b>เตรียมเปลือก</b> ล้างแยกเนื้อและไขมัน <b class="k">ต้มเปลือกในน้ำเดือด 3 นาที</b> แล้วตัดเป็นชิ้นราว 1×1 ซม. (เปลือกต้มสุกให้ไคโตซานมากกว่าเปลือกดิบ)</li>
       <li><b>กำจัดแร่ธาตุ</b> แช่กรดไฮโดรคลอริก 2 โมลาร์ (เปลือก 1 ส่วน : กรด 20 ส่วน) กวน 2 ชั่วโมงที่อุณหภูมิห้อง ล้างน้ำจนเป็นกลาง</li>
@@ -378,6 +411,7 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
   ['acid', 'bc'].forEach((i) => $(i).addEventListener('input', batch)); batch();
   const root = document.documentElement, KEY = 'theme';
   try { const t = localStorage.getItem(KEY); if (t) root.dataset.theme = t; } catch (e) {}
+  $('printBtn').addEventListener('click', () => window.print());
   $('themeBtn').addEventListener('click', () => {
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(KEY, root.dataset.theme); } catch (e) {}
