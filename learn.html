@@ -88,12 +88,14 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 @media print { nav, .calc, .tbtn, #community .grid4 { display: none !important; } body { background: #fff; font-size: 13px; }
   .card, .hero-ill, .stat, .ph { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; } section { break-inside: auto; } h2 { break-after: avoid; } }
 </style>
+<script src="farm_i18n.js"></script>
 </head>
 <body>
 <nav><div class="wrap">
   <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
   <div class="links"><a href="#biochar">ไบโอชาร์</a><a href="#check">ตรวจคุณภาพ</a><a href="#use">วิธีใช้</a><a href="#chitosan">ไคโตซาน</a><a href="#bead">เม็ดอุ้มน้ำ</a><a href="#community">ชุมชน</a><a href="#ref">แหล่งข้อมูล</a></div>
   <button class="tbtn" id="printBtn" title="พิมพ์เป็นคู่มือแจกเกษตรกร" aria-label="พิมพ์คู่มือ">🖨️</button>
+  <button class="tbtn" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
   <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
 </div></nav>
 
@@ -388,28 +390,29 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 <script>
 (function () {
   const $ = (id) => document.getElementById(id), num = (id) => parseFloat($(id).value);
-  const fmt = (x, d = 1) => x.toLocaleString('th-TH', { maximumFractionDigits: d, minimumFractionDigits: d });
+  const fmt = (x, d = 1) => x.toLocaleString(tr('th-TH', 'en-US'), { maximumFractionDigits: d, minimumFractionDigits: d });
   function moist() {
     const a = num('m1'), b = num('m2'), o = $('mOut');
-    if (!(a > 0 && b > 0) || b > a) { o.textContent = b > a ? 'น้ำหนักหลังอบต้องไม่มากกว่าก่อนอบ' : 'กรอกตัวเลขเพื่อคำนวณ'; o.className = 'out'; return; }
+    if (!(a > 0 && b > 0) || b > a) { o.textContent = b > a ? tr('น้ำหนักหลังอบต้องไม่มากกว่าก่อนอบ', 'The dried weight cannot be more than before') : tr('กรอกตัวเลขเพื่อคำนวณ', 'Enter numbers to calculate'); o.className = 'out'; return; }
     const m = (a - b) / a * 100, ok = m <= 20;
-    o.innerHTML = 'ความชื้น ' + fmt(m) + '% → ' + (ok ? '✅ ผ่าน (ไม่เกิน 20%)' : '❌ ชื้นเกิน ตากหรืออบต่อ'); o.className = 'out ' + (ok ? 'pass' : 'fail');
+    o.innerHTML = tr('ความชื้น ', 'Moisture ') + fmt(m) + '% → ' + (ok ? tr('✅ ผ่าน (ไม่เกิน 20%)', '✅ Pass (≤ 20%)') : tr('❌ ชื้นเกิน ตากหรืออบต่อ', '❌ Too wet — keep drying')); o.className = 'out ' + (ok ? 'pass' : 'fail');
   }
   function whc() {
     const d = num('w1'), w = num('w2'), o = $('wOut');
-    if (!(d > 0 && w > 0) || w < d) { o.textContent = w < d ? 'น้ำหนักหลังแช่ต้องมากกว่าน้ำหนักแห้ง' : 'กรอกตัวเลขเพื่อคำนวณ'; o.className = 'out'; return; }
+    if (!(d > 0 && w > 0) || w < d) { o.textContent = w < d ? tr('น้ำหนักหลังแช่ต้องมากกว่าน้ำหนักแห้ง', 'The soaked weight must be more than the dry weight') : tr('กรอกตัวเลขเพื่อคำนวณ', 'Enter numbers to calculate'); o.className = 'out'; return; }
     const r = (w - d) / d, ok = r >= 1;
-    o.innerHTML = 'อุ้มน้ำได้ ' + fmt(r, 2) + ' เท่า (' + fmt(r * 100, 0) + '%) → ' + (ok ? '✅ ผ่าน (ไม่น้อยกว่า 1 เท่า)' : '❌ ต่ำกว่าเกณฑ์'); o.className = 'out ' + (ok ? 'pass' : 'fail');
+    o.innerHTML = tr('อุ้มน้ำได้ ', 'Holds ') + fmt(r, 2) + tr(' เท่า (', '× (') + fmt(r * 100, 0) + '%) → ' + (ok ? tr('✅ ผ่าน (ไม่น้อยกว่า 1 เท่า)', '✅ Pass (≥ 1×)') : tr('❌ ต่ำกว่าเกณฑ์', '❌ Below the standard')); o.className = 'out ' + (ok ? 'pass' : 'fail');
   }
   function batch() {
     const v = num('acid'), p = num('bc'), o = $('bOut');
-    if (!(v > 0) || !(p >= 0)) { o.textContent = 'กรอกปริมาตรกรดและเปอร์เซ็นต์ไบโอชาร์'; return; }
+    if (!(v > 0) || !(p >= 0)) { o.textContent = tr('กรอกปริมาตรกรดและเปอร์เซ็นต์ไบโอชาร์', 'Enter the acid volume and biochar %'); return; }
     const ch = v * 0.06, bio = (v + ch) * p / 100;     // biochar % of (acid ≈ 1 g/mL + chitosan), as in the team's recipe
-    o.innerHTML = 'ไคโตซาน ' + fmt(ch) + ' กรัม · ไบโอชาร์ ' + fmt(bio) + ' กรัม'
-      + (p > 3 ? '<br><span style="font-weight:400;font-size:14px">⚠️ เกิน 3% ยังไม่ได้ทดลอง (ที่ 3% ดูดน้ำน้อยกว่า 2%)</span>' : '');
+    o.innerHTML = tr('ไคโตซาน ', 'Chitosan ') + fmt(ch) + tr(' กรัม · ไบโอชาร์ ', ' g · biochar ') + fmt(bio) + tr(' กรัม', ' g')
+      + (p > 3 ? '<br><span style="font-weight:400;font-size:14px">' + tr('⚠️ เกิน 3% ยังไม่ได้ทดลอง (ที่ 3% ดูดน้ำน้อยกว่า 2%)', '⚠️ Above 3% not tested (3% absorbed less than 2%)') + '</span>' : '');
   }
   ['m1', 'm2'].forEach((i) => $(i).addEventListener('input', moist)); ['w1', 'w2'].forEach((i) => $(i).addEventListener('input', whc));
   ['acid', 'bc'].forEach((i) => $(i).addEventListener('input', batch)); batch();
+  window.addEventListener('hklang', () => { batch(); if ($('m1').value || $('m2').value) moist(); if ($('w1').value || $('w2').value) whc(); });
   const root = document.documentElement, KEY = 'theme';
   try { const t = localStorage.getItem(KEY); if (t) root.dataset.theme = t; } catch (e) {}
   $('printBtn').addEventListener('click', () => window.print());
