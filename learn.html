@@ -67,6 +67,19 @@ th { color: var(--muted); font-weight: 600; font-size: 14px; }
 .flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; font-size: 14px; }
 .flow span { background: var(--panel2); padding: 5px 10px; border-radius: 10px; }
 .flow i { font-style: normal; color: var(--muted); }
+.hero-ill { margin: 8px 0 0; background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); padding: 10px 8px 4px; }
+.hero-ill svg { width: 100%; height: auto; display: block; }
+.split { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: start; }
+.kiln { margin: 0; } .kiln svg { width: 100%; height: auto; }
+@media (max-width: 640px) { .split { grid-template-columns: 1fr; } .kiln { max-width: 220px; margin: 0 auto; } }
+.photo2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 10px 0; }
+.ph { margin: 0; background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+.ph img { width: 100%; height: 220px; object-fit: cover; display: block; background: #fff; }
+.ph figcaption { font-size: 14px; color: var(--muted); padding: 8px 12px 10px; }
+img.chart { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; margin: 8px 0; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
+.mini { background: var(--panel2); border-radius: 14px; padding: 10px 12px; font-size: 15px; }
+.mini b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 9px; margin-right: 6px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); }
 footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
 @media print { nav, .calc, .tbtn { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } }
 </style>
@@ -74,7 +87,7 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 <body>
 <nav><div class="wrap">
   <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
-  <div class="links"><a href="#biochar">ไบโอชาร์</a><a href="#check">ตรวจคุณภาพ</a><a href="#use">วิธีใช้</a><a href="#chitosan">ไคโตซาน</a><a href="#bead">เม็ดอุ้มน้ำ</a><a href="#ref">แหล่งข้อมูล</a></div>
+  <div class="links"><a href="#biochar">ไบโอชาร์</a><a href="#check">ตรวจคุณภาพ</a><a href="#use">วิธีใช้</a><a href="#chitosan">ไคโตซาน</a><a href="#bead">เม็ดอุ้มน้ำ</a><a href="#community">ชุมชน</a><a href="#ref">แหล่งข้อมูล</a></div>
   <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
 </div></nav>
 
@@ -84,7 +97,62 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
   <p class="lead">วิธีทำถ่านชีวภาพ (ไบโอชาร์) และไคโตซาน พร้อมวิธีตรวจคุณภาพตามมาตรฐานผลิตภัณฑ์ชุมชน และวิธีใช้ในแปลงปลูก
     เนื้อหาสรุปจากกรมพัฒนาที่ดิน (ศูนย์ศึกษาการพัฒนาเขาหินซ้อนอันเนื่องมาจากพระราชดำริ) สำนักงานมาตรฐานผลิตภัณฑ์อุตสาหกรรม (สมอ.)
     และมหาวิทยาลัยของรัฐ ดูรายชื่อแหล่งข้อมูลได้ท้ายหน้า</p>
-  <div class="flow"><span>🌽 ซังข้าวโพด</span><i>→ เผาแบบอับอากาศ →</i><span>⚫ ไบโอชาร์</span><i>+</i><span>🦐 ไคโตซาน</span><i>→</i><span>🫧 เม็ดอุ้มน้ำ</span><i>→</i><span>🌱 ดินชื้นนานขึ้น</span></div>
+<figure class="hero-ill" aria-label="จากซังข้าวโพดและเปลือกกุ้ง สู่เม็ดอุ้มน้ำในดิน">
+<svg viewBox="0 0 980 300" role="img">
+  <defs>
+    <linearGradient id="gSoil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d6e4f"/><stop offset="1" stop-color="#5d4632"/></linearGradient>
+    <linearGradient id="gDrum" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6b7280"/><stop offset=".5" stop-color="#9ca3af"/><stop offset="1" stop-color="#4b5563"/></linearGradient>
+    <linearGradient id="gFlame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f97316"/><stop offset="1" stop-color="#fde047"/></linearGradient>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
+    <radialGradient id="gBead" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#6b7280"/><stop offset="1" stop-color="#111827"/></radialGradient>
+  </defs>
+  <!-- 1 corn cob -->
+  <g transform="translate(70 120)">
+    <ellipse cx="0" cy="0" rx="26" ry="62" fill="#f5c542" stroke="#b7791f" stroke-width="3"/>
+    <g fill="#e0a82e"><circle cx="-12" cy="-48" r="5"/><circle cx="0" cy="-48" r="5"/><circle cx="12" cy="-48" r="5"/><circle cx="-12" cy="-34" r="5"/><circle cx="0" cy="-34" r="5"/><circle cx="12" cy="-34" r="5"/><circle cx="-12" cy="-20" r="5"/><circle cx="0" cy="-20" r="5"/><circle cx="12" cy="-20" r="5"/><circle cx="-12" cy="-6" r="5"/><circle cx="0" cy="-6" r="5"/><circle cx="12" cy="-6" r="5"/><circle cx="-12" cy="8" r="5"/><circle cx="0" cy="8" r="5"/><circle cx="12" cy="8" r="5"/><circle cx="-12" cy="22" r="5"/><circle cx="0" cy="22" r="5"/><circle cx="12" cy="22" r="5"/><circle cx="-12" cy="36" r="5"/><circle cx="0" cy="36" r="5"/><circle cx="12" cy="36" r="5"/><circle cx="-12" cy="50" r="5"/><circle cx="0" cy="50" r="5"/><circle cx="12" cy="50" r="5"/></g>
+    <path d="M-26 40 Q-50 70 -20 66 M26 40 Q50 72 18 66" fill="#84cc16" stroke="#4d7c0f" stroke-width="3"/>
+  </g>
+  <!-- shrimp -->
+  <g transform="translate(70 240)">
+    <path d="M-34 0 Q-30 -26 0 -24 Q30 -22 34 4 Q20 -6 6 -4 Q-14 -2 -18 14 Z" fill="#fb923c" stroke="#c2410c" stroke-width="3"/>
+    <path d="M-34 0 L-48 -10 M-34 2 L-50 4" stroke="#c2410c" stroke-width="3"/>
+  </g>
+  <path d="M110 150 L178 150" stroke="var(--accent)" stroke-width="5" marker-end="url(#ar)"/>
+  <!-- 2 kiln 200 L -->
+  <g transform="translate(250 60)">
+    <path d="M10 70 Q20 40 0 20 Q30 34 24 0 Q44 30 40 60" fill="none" stroke="var(--muted)" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+    <rect x="-40" y="80" width="80" height="120" rx="10" fill="url(#gDrum)" stroke="#374151" stroke-width="3"/>
+    <rect x="-40" y="110" width="80" height="6" fill="#374151"/><rect x="-40" y="165" width="80" height="6" fill="#374151"/>
+    <path d="M-16 210 Q-22 190 -8 176 Q-6 192 4 186 Q2 170 16 162 Q12 190 22 200 Q14 214 -16 210Z" fill="url(#gFlame)"/>
+  </g>
+  <path d="M310 150 L378 150" stroke="var(--accent)" stroke-width="5" marker-end="url(#ar)"/>
+  <!-- 3 biochar + chitosan -->
+  <g transform="translate(450 150)">
+    <path d="M-56 40 Q-40 0 -10 -6 Q10 -24 30 -4 Q52 4 58 40 Z" fill="#1f2937"/>
+    <g fill="#4b5563"><rect x="-30" y="10" width="14" height="9" rx="2"/><rect x="2" y="2" width="12" height="8" rx="2"/><rect x="22" y="18" width="14" height="9" rx="2"/></g>
+    <rect x="-24" y="-90" width="48" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+    <rect x="-24" y="-62" width="48" height="32" rx="6" fill="#fef3c7"/>
+    <rect x="-28" y="-98" width="56" height="12" rx="4" fill="#0284c7"/>
+  </g>
+  <path d="M520 150 L588 150" stroke="var(--accent)" stroke-width="5" marker-end="url(#ar)"/>
+  <!-- 4 beads -->
+  <g transform="translate(670 150)"><circle cx="-40" cy="10" r="14" fill="url(#gBead)"/><circle cx="-14" cy="-4" r="15" fill="url(#gBead)"/><circle cx="14" cy="8" r="14" fill="url(#gBead)"/><circle cx="40" cy="-6" r="13" fill="url(#gBead)"/><circle cx="-28" cy="-28" r="12" fill="url(#gBead)"/><circle cx="4" cy="-30" r="13" fill="url(#gBead)"/><circle cx="30" cy="-30" r="11" fill="url(#gBead)"/><circle cx="-2" cy="26" r="13" fill="url(#gBead)"/><circle cx="26" cy="30" r="12" fill="url(#gBead)"/><circle cx="-30" cy="34" r="11" fill="url(#gBead)"/>
+    <g fill="#38bdf8"><path d="M-50 -50 q6 10 0 14 q-6 -4 0 -14z"/><path d="M48 -48 q6 10 0 14 q-6 -4 0 -14z"/><path d="M56 24 q6 10 0 14 q-6 -4 0 -14z"/></g>
+  </g>
+  <path d="M730 150 L798 150" stroke="var(--accent)" stroke-width="5" marker-end="url(#ar)"/>
+  <!-- 5 moist soil + plant -->
+  <g transform="translate(890 60)">
+    <rect x="-70" y="120" width="140" height="90" rx="10" fill="url(#gSoil)"/>
+    <g fill="#111827"><circle cx="-44" cy="150" r="5"/><circle cx="-10" cy="170" r="5"/><circle cx="24" cy="148" r="5"/><circle cx="50" cy="184" r="5"/><circle cx="-36" cy="192" r="5"/><circle cx="8" cy="196" r="5"/></g>
+    <g fill="#7dd3fc" opacity=".9"><circle cx="-56" cy="140" r="3"/><circle cx="-24" cy="160" r="3"/><circle cx="36" cy="166" r="3"/><circle cx="-2" cy="140" r="3"/><circle cx="58" cy="150" r="3"/><circle cx="-52" cy="180" r="3"/><circle cx="20" cy="186" r="3"/></g>
+    <path d="M0 120 L0 40" stroke="#15803d" stroke-width="6"/>
+    <path d="M0 80 Q-40 70 -46 40 Q-10 44 0 76Z M0 64 Q36 52 44 22 Q8 24 0 60Z M0 42 Q-18 20 -8 0 Q8 18 0 40Z" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+  </g>
+  <g font-family="Anuphan, sans-serif" font-size="22" font-weight="600" fill="var(--text)" text-anchor="middle">
+    <text x="84" y="292">ซัง + เปลือกกุ้ง</text><text x="262" y="292">เผาอับอากาศ</text>
+    <text x="455" y="292">ไบโอชาร์+ไคโตซาน</text><text x="670" y="292">เม็ดอุ้มน้ำ</text><text x="890" y="292">ดินชื้นนานขึ้น</text>
+  </g>
+</svg></figure>
 </header>
 
 <main class="wrap">
@@ -114,6 +182,23 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
   </div>
   <div class="card">
     <h3>ขั้นตอนทั่วไปกับเตาถัง 200 ลิตร</h3>
+    <div class="split"><figure class="kiln"><svg viewBox="-56 -30 322 330" role="img" aria-label="ภาพตัดเตาเผาถัง 200 ลิตร">
+  <rect x="50" y="40" width="160" height="230" rx="14" fill="url(#gDrum2)" stroke="#374151" stroke-width="4"/>
+  <defs><linearGradient id="gDrum2" x1="0" x2="1"><stop offset="0" stop-color="#9ca3af"/><stop offset=".5" stop-color="#d1d5db"/><stop offset="1" stop-color="#6b7280"/></linearGradient></defs>
+  <rect x="64" y="60" width="132" height="196" rx="8" fill="#f5c542" opacity=".35"/>
+  <g fill="#c08a2b"><rect x="72" y="150" width="22" height="9" rx="4"/><rect x="104" y="150" width="22" height="9" rx="4"/><rect x="136" y="150" width="22" height="9" rx="4"/><rect x="166" y="150" width="22" height="9" rx="4"/><rect x="72" y="166" width="22" height="9" rx="4"/><rect x="104" y="166" width="22" height="9" rx="4"/><rect x="136" y="166" width="22" height="9" rx="4"/><rect x="166" y="166" width="22" height="9" rx="4"/><rect x="72" y="182" width="22" height="9" rx="4"/><rect x="104" y="182" width="22" height="9" rx="4"/><rect x="136" y="182" width="22" height="9" rx="4"/><rect x="166" y="182" width="22" height="9" rx="4"/><rect x="72" y="198" width="22" height="9" rx="4"/><rect x="104" y="198" width="22" height="9" rx="4"/><rect x="136" y="198" width="22" height="9" rx="4"/><rect x="166" y="198" width="22" height="9" rx="4"/><rect x="72" y="214" width="22" height="9" rx="4"/><rect x="104" y="214" width="22" height="9" rx="4"/><rect x="136" y="214" width="22" height="9" rx="4"/><rect x="166" y="214" width="22" height="9" rx="4"/><rect x="72" y="230" width="22" height="9" rx="4"/><rect x="104" y="230" width="22" height="9" rx="4"/><rect x="136" y="230" width="22" height="9" rx="4"/><rect x="166" y="230" width="22" height="9" rx="4"/><rect x="72" y="246" width="22" height="9" rx="4"/><rect x="104" y="246" width="22" height="9" rx="4"/><rect x="136" y="246" width="22" height="9" rx="4"/><rect x="166" y="246" width="22" height="9" rx="4"/></g>
+  <g fill="#1f2937"><rect x="72" y="70" width="22" height="9" rx="4"/><rect x="104" y="70" width="22" height="9" rx="4"/><rect x="136" y="70" width="22" height="9" rx="4"/><rect x="166" y="70" width="22" height="9" rx="4"/><rect x="72" y="86" width="22" height="9" rx="4"/><rect x="104" y="86" width="22" height="9" rx="4"/><rect x="136" y="86" width="22" height="9" rx="4"/><rect x="166" y="86" width="22" height="9" rx="4"/><rect x="72" y="102" width="22" height="9" rx="4"/><rect x="104" y="102" width="22" height="9" rx="4"/><rect x="136" y="102" width="22" height="9" rx="4"/><rect x="166" y="102" width="22" height="9" rx="4"/><rect x="72" y="118" width="22" height="9" rx="4"/><rect x="104" y="118" width="22" height="9" rx="4"/><rect x="136" y="118" width="22" height="9" rx="4"/><rect x="166" y="118" width="22" height="9" rx="4"/><rect x="72" y="134" width="22" height="9" rx="4"/><rect x="104" y="134" width="22" height="9" rx="4"/><rect x="136" y="134" width="22" height="9" rx="4"/><rect x="166" y="134" width="22" height="9" rx="4"/></g>
+  <path d="M64 142 H196" stroke="#f97316" stroke-width="4" stroke-dasharray="8 6"/>
+  <text x="200" y="138" font-size="13" fill="#c2410c" text-anchor="end" font-family="Anuphan">ไฟลามลง ↓</text>
+  <rect x="40" y="28" width="180" height="14" rx="5" fill="#374151"/>
+  <rect x="118" y="6" width="24" height="24" rx="3" fill="#4b5563"/>
+  <path d="M130 4 Q120 -14 134 -24" stroke="var(--muted)" stroke-width="4" fill="none" opacity=".6"/>
+  <g font-family="Anuphan" font-size="14" fill="var(--text)">
+    <text x="-52" y="104">ถ่านแล้ว</text><text x="-52" y="204">ซังที่รอ</text><text x="-52" y="222">ไหม้</text>
+  </g>
+  <g fill="#ef4444"><circle cx="80" cy="262" r="5"/><circle cx="110" cy="262" r="5"/><circle cx="150" cy="262" r="5"/><circle cx="180" cy="262" r="5"/></g>
+  <text x="130" y="292" font-family="Anuphan" font-size="14" fill="var(--muted)" text-anchor="middle">รูอากาศด้านล่าง: ปิดเมื่อควันใส</text>
+</svg></figure>
     <ol class="steps char">
       <li><b>ตากซังข้าวโพดให้แห้ง</b> ยิ่งแห้งยิ่งเผาง่าย ควันน้อย ได้ถ่านสม่ำเสมอ</li>
       <li><b>บรรจุให้แน่นพอดี</b> แล้วจุดไฟจากด้านบน ให้ไฟค่อย ๆ ลามลง</li>
@@ -121,7 +206,7 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
       <li><b>ปิดช่องอากาศทั้งหมด</b> ปิดฝาให้สนิท ทิ้งให้เย็นในเตา (ข้ามคืน) ห้ามเปิดตอนร้อน เพราะถ่านจะลุกเป็นไฟและกลายเป็นขี้เถ้า</li>
       <li><b>ดับให้สนิท</b> ถ้าไม่แน่ใจ ให้พรมน้ำ แล้วตากให้แห้ง (ความชื้นไม่เกิน 20% ตามมาตรฐาน)</li>
       <li><b>ทุบให้เล็ก</b> ขนาดเฉลี่ยไม่เกิน 1 ซม. เพื่อให้คลุกกับดินได้ง่าย</li>
-    </ol>
+    </ol></div>
     <div class="src">แบบเตาและรายละเอียดต่างกันไปตามพื้นที่ แนะนำให้ขอคำแนะนำหรือเข้าอบรมกับสถานีพัฒนาที่ดินประจำจังหวัด (สายด่วนกรมพัฒนาที่ดิน 1760)</div>
   </div>
   <div class="card warn"><b>⚠️ ความปลอดภัย</b> เผาในที่โล่ง ห่างบ้านและเชื้อเพลิง เตรียมน้ำดับไฟ ไม่อยู่ใต้ลมควัน (มีคาร์บอนมอนอกไซด์และทาร์)
@@ -196,6 +281,10 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 <section id="bead">
   <h2><span class="ic">🫧</span>เม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์ (สูตรของโครงงาน)</h2>
   <p class="sub">นำสองวัสดุมารวมกัน ไคโตซานทำหน้าที่เป็นโครงเม็ดที่ย่อยสลายได้ ส่วนไบโอชาร์ช่วยเพิ่มรูพรุนสำหรับเก็บน้ำ</p>
+  <div class="photo2">
+    <figure class="ph"><img src="img/beads.jpg" alt="เม็ดไฮโดรเจลไม่มีและมีไบโอชาร์" loading="lazy"><figcaption>เม็ดจริงจากการทดลอง: ซ้าย ไคโตซานล้วน · ขวา ผสมไบโอชาร์ 2%</figcaption></figure>
+    <figure class="ph"><img src="img/hero.jpg" alt="เครื่องผลิตเม็ดอัตโนมัติ" loading="lazy"><figcaption>เครื่องผลิตอัตโนมัติ หยดพร้อมกัน 12 เข็ม ล้างจนได้ pH เป้าหมาย</figcaption></figure>
+  </div>
   <div class="grid2">
     <div class="card">
       <h3>สูตรมาตรฐาน</h3>
@@ -219,7 +308,22 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
       <tr><td>ดูดน้ำ (% ของน้ำหนักเม็ดแห้ง)</td><td>378.6</td><td>520.8</td><td><b class="k">605.2</b></td><td>563.4</td><td>–</td></tr>
       <tr><td>ความชื้นดินวันที่ 14 ไม่รดน้ำ (%)</td><td>12.0</td><td>18.0</td><td><b class="k">26.0</b></td><td>20.0</td><td>2.0</td></tr>
     </table>
+    <img class="chart" src="img/results_th.jpg" alt="กราฟการพองตัวและความชื้นในดิน 14 วัน" loading="lazy">
     <div class="src">ทดลองในกระถางดินร่วนที่ยังไม่มีพืช ผสมเม็ด 10 กรัมต่อดิน 1 กก. เป็นการทดลองขนาดเล็กระดับโรงเรียน ต้องยืนยันด้วยการปลูกพืชจริงต่อไป</div>
+  </div>
+</section>
+
+<section id="community">
+  <h2><span class="ic">🤝</span>ชุมชนได้อะไร: รับซื้อของเหลือทิ้ง ช่วยพื้นที่แล้ง</h2>
+  <p class="sub">โมเดลธุรกิจเพื่อสังคมของโครงงาน รายได้ไหลกลับสู่ชุมชนในทุกขั้น</p>
+  <div class="card"><img class="chart" src="img/business_th.jpg" alt="ห่วงโซ่คุณค่าและรายได้ชุมชน" loading="lazy">
+    <div class="grid4">
+      <div class="mini"><b>1</b> ขายซังข้าวโพดและเปลือกกุ้งที่เคยไม่มีราคา</div>
+      <div class="mini"><b>2</b> ค่าแรงผลิตไบโอชาร์ และขายไบโอชาร์มาตรฐาน มผช.</div>
+      <div class="mini"><b>3</b> ค่าแรงเดินเครื่อง บรรจุ และส่งสินค้า</div>
+      <div class="mini"><b>4</b> ส่วนแบ่งกำไรเข้ากองทุนชุมชน</div>
+    </div>
+    <div class="src">พื้นที่แห้งแล้งได้รับเม็ดอุ้มน้ำราคาพิเศษผ่านทุนรัฐ อบต. และ CSR · ราคารับซื้อ/ขายจะกำหนดจากต้นทุนจริงในช่วงนำร่อง</div>
   </div>
 </section>
 
