@@ -108,13 +108,16 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 .ph { margin: 0; } .ph img { width: 100%; border-radius: 16px; display: block; }
 .dl { display: inline-flex; gap: 8px; align-items: center; padding: 10px 18px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 700; text-decoration: none; }
 table.imp { width: 100%; border-collapse: collapse; font-size: 15px; } table.imp th, table.imp td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; } table.imp th { color: var(--muted); font-size: 14px; }
+.lb { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; }
+.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.out2 { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--panel2); font-weight: 600; line-height: 1.8; }
 </style>
 <script src="farm_i18n.js"></script>
 </head>
 <body>
 <nav><div class="wrap">
   <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
-  <div class="links"><a href="#chain">ห่วงโซ่คุณค่า</a><a href="#income">รายได้ชุมชน</a><a href="#canvas">Canvas</a><a href="#impact">ผลกระทบ</a><a href="learn.html">คลังความรู้</a></div>
+  <div class="links"><a href="#chain">ห่วงโซ่คุณค่า</a><a href="#income">รายได้ชุมชน</a><a href="#canvas">Canvas</a><a href="#calc">คำนวณ</a><a href="#impact">ผลกระทบ</a><a href="learn.html">คลังความรู้</a></div>
   <button class="tbtn" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
   <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
 </div></nav>
@@ -170,6 +173,22 @@ table.imp { width: 100%; border-collapse: collapse; font-size: 15px; } table.imp
   </div>
 </section>
 
+<section id="calc"><h2><span class="ic">🧮</span>คำนวณต้นทุนและรายได้ชุมชนต่อรอบผลิต</h2>
+  <p class="sub">ปริมาณต่อรอบมาจากสูตรของโครงงาน (กรด 500 มล. ไคโตซาน 30 ก. ไบโอชาร์ 10.6 ก.) ให้กรอกราคาจริงที่ชุมชนซื้อขาย ผลเป็นการประมาณเบื้องต้น</p>
+  <div class="card"><div class="grid2">
+    <div><label class="lb" for="pc">ราคาไคโตซาน (บาท/กก.)</label><input id="pc" class="in" type="number" inputmode="decimal" min="0">
+      <label class="lb" for="pb">ราคาไบโอชาร์ที่รับซื้อจากชุมชน (บาท/กก.)</label><input id="pb" class="in" type="number" inputmode="decimal" min="0">
+      <label class="lb" for="pa">ค่ากรดและด่างต่อรอบ (บาท)</label><input id="pa" class="in" type="number" inputmode="decimal" min="0">
+      <label class="lb" for="pl">ค่าแรงชุมชนต่อรอบ (บาท)</label><input id="pl" class="in" type="number" inputmode="decimal" min="0"></div>
+    <div><label class="lb" for="pe">ค่าไฟและบรรจุภัณฑ์ต่อรอบ (บาท)</label><input id="pe" class="in" type="number" inputmode="decimal" min="0">
+      <label class="lb" for="ps">ราคาขายเม็ด (บาท/กก.)</label><input id="ps" class="in" type="number" inputmode="decimal" min="0">
+      <label class="lb" for="pf">ส่วนแบ่งกำไรเข้ากองทุนชุมชน (%)</label><input id="pf" class="in" type="number" inputmode="decimal" min="0" max="100">
+      <label class="lb" for="py">น้ำหนักเม็ดแห้งที่ได้ต่อรอบ (กรัม)</label><input id="py" class="in" type="number" inputmode="decimal" min="0"></div>
+  </div>
+  <div class="out2" id="bmOut">กรอกตัวเลขเพื่อคำนวณ</div>
+  <div class="src">น้ำหนักเม็ดแห้งต่อรอบสูงสุดตามทฤษฎีราว 40 กรัม (ไคโตซาน + ไบโอชาร์) ค่าจริงต้องชั่งจากการผลิต · รายได้ชุมชน = ค่าไบโอชาร์ที่รับซื้อ + ค่าแรง + ส่วนแบ่งกำไร</div></div>
+</section>
+
 <section id="impact"><h2><span class="ic">📈</span>ผลกระทบที่วัดได้</h2>
   <div class="stats">
     <div class="stat"><b>605%</b><span>เม็ดดูดน้ำ (สูตรไบโอชาร์ 2%)</span></div>
@@ -204,6 +223,29 @@ table.imp { width: 100%; border-collapse: collapse; font-size: 15px; } table.imp
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(KEY, root.dataset.theme); } catch (e) {}
   });
+})();
+</script>
+<script>
+(function () {
+  const $ = (i) => document.getElementById(i), v = (i) => parseFloat($(i).value);
+  const T = (th, en) => (window.tr ? window.tr(th, en) : th);
+  const f = (x) => x.toLocaleString(T('th-TH', 'en-US'), { maximumFractionDigits: 2 });
+  const CH = 30, BIO = 10.6;                              // g per 500 mL batch (team recipe)
+  function calc() {
+    const pc = v('pc'), pb = v('pb'), pa = v('pa') || 0, pl = v('pl') || 0, pe = v('pe') || 0, ps = v('ps'), pf = v('pf') || 0, py = v('py'), o = $('bmOut');
+    if (!(pc >= 0 && pb >= 0 && py > 0)) { o.textContent = T('กรอกราคาไคโตซาน ราคาไบโอชาร์ และน้ำหนักเม็ดที่ได้', 'Enter the chitosan and biochar prices and the bead yield'); return; }
+    const mat = CH / 1000 * pc + BIO / 1000 * pb + pa, cost = mat + pl + pe, perKg = cost / (py / 1000);
+    let h = T('ต้นทุนต่อรอบ ', 'Cost per batch ') + f(cost) + T(' บาท · ต่อกิโลกรัมเม็ด ', ' THB · per kg of beads ') + f(perKg) + T(' บาท', ' THB');
+    if (ps > 0) {
+      const rev = ps * py / 1000, profit = rev - cost, fund = Math.max(0, profit) * pf / 100, comm = BIO / 1000 * pb + pl + fund;
+      h += '<br>' + T('รายได้ต่อรอบ ', 'Revenue per batch ') + f(rev) + T(' บาท · กำไร ', ' THB · profit ') + f(profit) + T(' บาท', ' THB')
+        + '<br>' + T('รายได้ที่เข้าสู่ชุมชนต่อรอบ ', 'Income to the community per batch ') + f(comm) + T(' บาท (ค่าไบโอชาร์ + ค่าแรง + กองทุน ', ' THB (biochar + wages + fund ') + f(fund) + ')';
+      if (profit < 0) h += '<br><span style="color:#e5484d">' + T('⚠️ ราคาขายยังต่ำกว่าต้นทุน', '⚠️ The selling price is below cost') + '</span>';
+    }
+    o.innerHTML = h;
+  }
+  ['pc', 'pb', 'pa', 'pl', 'pe', 'ps', 'pf', 'py'].forEach((i) => $(i).addEventListener('input', calc));
+  window.addEventListener('hklang', calc);
 })();
 </script>
 </body>
