@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#10b981"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>ทำเองได้: ไบโอชาร์ ไคโตซาน</title>
+<meta name="description" content="คู่มือเกษตรกร: ทำถ่านชีวภาพ (ไบโอชาร์) จากซังข้าวโพด ทำไคโตซานจากเปลือกกุ้ง และเม็ดไฮโดรเจลอุ้มน้ำ อ้างอิงกรมพัฒนาที่ดิน สมอ. และมหาวิทยาลัยของรัฐ">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8ff; --panel: #fff; --panel2: #f1f3ff; --line: #e6e8f5; --text: #1d1b3a; --muted: #5d6180;
+  --accent: #10b981; --accent2: #22c3a6; --sky: #5b8cff; --grape: #8b5cf6; --sun: #ffc23d; --bad: #ef4444; --char: #3a3a46;
+  --shadow: 0 2px 4px rgba(60, 50, 140, .04), 0 14px 34px rgba(60, 50, 140, .08); --r: 22px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13122a; --panel: #1c1b38; --panel2: #25244a; --line: #302f58; --text: #eeeefe; --muted: #a3a2cc; --char: #c9c9da; --shadow: 0 1px 2px rgba(0,0,0,.3); } }
+:root[data-theme="dark"] { --bg: #13122a; --panel: #1c1b38; --panel2: #25244a; --line: #302f58; --text: #eeeefe; --muted: #a3a2cc; --char: #c9c9da; --shadow: 0 1px 2px rgba(0,0,0,.3); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; overflow-wrap: break-word; background: var(--bg); color: var(--text); font: 17px/1.7 "Anuphan", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--sky); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; min-width: 0; }
+html { overflow-x: hidden; }
+td:first-child { min-width: 92px; }
+nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 85%, transparent); border-bottom: 1px solid var(--line); }
+nav .wrap { display: flex; align-items: center; gap: 10px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--text); text-decoration: none; white-space: nowrap; }
+.logo { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+.links { display: flex; gap: 2px; margin-left: auto; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.links a { white-space: nowrap; padding: 6px 11px; border-radius: 999px; color: var(--muted); font-size: 15px; text-decoration: none; }
+.links a:hover { background: var(--panel2); color: var(--text); }
+.tbtn { border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 14px; padding: 7px 11px; border-radius: 999px; background: var(--panel2); color: var(--text); }
+header { padding: 34px 0 10px; }
+h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.2; margin: 0 0 10px; letter-spacing: -.01em; }
+h1 em { font-style: normal; background: linear-gradient(135deg, var(--accent), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 18px; max-width: 720px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.chip { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--panel); box-shadow: var(--shadow); color: var(--muted); }
+section { padding: 26px 0 8px; }
+h2 { font-size: clamp(22px, 4.5vw, 30px); line-height: 1.3; margin: 0 0 6px; display: flex; gap: 10px; align-items: center; }
+h2 .ic { width: 42px; height: 42px; flex: none; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: var(--panel2); }
+h3 { font-size: 19px; margin: 18px 0 6px; }
+.sub { color: var(--muted); margin: 0 0 14px; }
+.card { background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px 20px; margin: 12px 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 6px 0; }
+ol.steps > li { counter-increment: s; position: relative; padding: 4px 0 12px 48px; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+  font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+ol.steps.char > li::before { background: linear-gradient(135deg, #4b4b5c, #22222c); }
+ol.steps.shell > li::before { background: linear-gradient(135deg, #ff8a5c, #ff5e7a); }
+b.k { color: var(--accent); }
+.warn { border-left: 5px solid var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--panel)); }
+.tip { border-left: 5px solid var(--sun); background: color-mix(in srgb, var(--sun) 10%, var(--panel)); }
+.ok { border-left: 5px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--panel)); }
+.src { font-size: 13px; color: var(--muted); margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 14px; }
+.tw { overflow-x: auto; }
+.calc label { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; }
+.calc input { width: 100%; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.out { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--panel2); font-weight: 600; min-height: 50px; }
+.pass { color: var(--accent); } .fail { color: var(--bad); }
+.flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; font-size: 14px; }
+.flow span { background: var(--panel2); padding: 5px 10px; border-radius: 10px; }
+.flow i { font-style: normal; color: var(--muted); }
+footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
+@media print { nav, .calc, .tbtn { display: none !important; } .card { box-shadow: none; border: 1px solid #ddd; } }
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
+  <div class="links"><a href="#biochar">ไบโอชาร์</a><a href="#check">ตรวจคุณภาพ</a><a href="#use">วิธีใช้</a><a href="#chitosan">ไคโตซาน</a><a href="#bead">เม็ดอุ้มน้ำ</a><a href="#ref">แหล่งข้อมูล</a></div>
+  <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
+</div></nav>
+
+<header class="wrap">
+  <div class="chips"><span class="chip">📚 คลังความรู้สำหรับเกษตรกรและชุมชน</span><span class="chip">อ้างอิงหน่วยงานรัฐ</span></div>
+  <h1>เปลี่ยนซังข้าวโพดและเปลือกกุ้ง<br>ให้เป็น <em>ตัวช่วยอุ้มน้ำในดิน</em></h1>
+  <p class="lead">วิธีทำถ่านชีวภาพ (ไบโอชาร์) และไคโตซาน พร้อมวิธีตรวจคุณภาพตามมาตรฐานผลิตภัณฑ์ชุมชน และวิธีใช้ในแปลงปลูก
+    เนื้อหาสรุปจากกรมพัฒนาที่ดิน (ศูนย์ศึกษาการพัฒนาเขาหินซ้อนอันเนื่องมาจากพระราชดำริ) สำนักงานมาตรฐานผลิตภัณฑ์อุตสาหกรรม (สมอ.)
+    และมหาวิทยาลัยของรัฐ ดูรายชื่อแหล่งข้อมูลได้ท้ายหน้า</p>
+  <div class="flow"><span>🌽 ซังข้าวโพด</span><i>→ เผาแบบอับอากาศ →</i><span>⚫ ไบโอชาร์</span><i>+</i><span>🦐 ไคโตซาน</span><i>→</i><span>🫧 เม็ดอุ้มน้ำ</span><i>→</i><span>🌱 ดินชื้นนานขึ้น</span></div>
+</header>
+
+<main class="wrap">
+
+<section id="why">
+  <div class="grid2">
+    <div class="card"><h3>💧 ทำไมต้องช่วยดินอุ้มน้ำ</h3>
+      พื้นที่เกษตรของไทยส่วนใหญ่อยู่นอกเขตชลประทาน ปี 2565 มีพื้นที่ชลประทานที่พัฒนาแล้ว 35.23 ล้านไร่ จากพื้นที่เกษตร 149.25 ล้านไร่
+      (ราว 24% คำนวณจากรายงานกรมชลประทาน) ช่วงฝนทิ้งช่วง ดินที่เก็บน้ำได้นานกว่าช่วยให้พืชรอดได้มากกว่า</div>
+    <div class="card"><h3>♻️ ทำไมต้องเป็นของเหลือทิ้ง</h3>
+      ซังและตอซังข้าวโพดมักถูกเผาในที่โล่ง ซึ่งเป็นต้นเหตุสำคัญของหมอกควันและ PM2.5 ส่วนเปลือกกุ้งเป็นของเหลือจากอุตสาหกรรมอาหารทะเล
+      นำมาทำเป็นไบโอชาร์และไคโตซานแทน ได้ทั้งลดขยะ ลดควัน และได้วัสดุปรับปรุงดินที่ย่อยสลายได้</div>
+  </div>
+</section>
+
+<section id="biochar">
+  <h2><span class="ic">⚫</span>ทำไบโอชาร์ (ถ่านชีวภาพ) จากซังข้าวโพด</h2>
+  <p class="sub">ไบโอชาร์คือถ่านที่ได้จากการเผาวัสดุเหลือใช้ทางการเกษตรแบบ <b>จำกัดออกซิเจน</b> (ไพโรไลซิส) ไม่ใช่เผาจนเป็นขี้เถ้า</p>
+  <div class="card">
+    <h3>หลักสำคัญ (จากกรมพัฒนาที่ดิน และ มผช.1752/2569)</h3>
+    <ul>
+      <li>วัตถุดิบ: เศษวัสดุทางการเกษตรที่ย่อยสลายได้ เช่น <b>ซังข้าวโพด</b> ฟางข้าว แกลบ กะลามะพร้าว ชานอ้อย กิ่งไม้ ใบไม้ เปลือกผลไม้</li>
+      <li>เผาแบบช้า (slow pyrolysis) ใช้เวลาเป็นชั่วโมง อุณหภูมิ <b class="k">350–600 °C</b> ในสภาวะออกซิเจนจำกัด</li>
+      <li>มาตรฐานผลิตภัณฑ์ชุมชนกำหนดอุณหภูมิ <b class="k">ไม่น้อยกว่า 350 °C</b> คาร์บอนจะถูกเก็บไว้ในดินได้ระยะยาว</li>
+      <li>เตาเผาแบบถัง 200 ลิตร ได้ถ่านไบโอชาร์ราว <b class="k">45%</b> ของวัสดุที่ใส่ (งานวิจัยตอซังและฟางข้าวที่กรมพัฒนาที่ดินอ้างถึง)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>ขั้นตอนทั่วไปกับเตาถัง 200 ลิตร</h3>
+    <ol class="steps char">
+      <li><b>ตากซังข้าวโพดให้แห้ง</b> ยิ่งแห้งยิ่งเผาง่าย ควันน้อย ได้ถ่านสม่ำเสมอ</li>
+      <li><b>บรรจุให้แน่นพอดี</b> แล้วจุดไฟจากด้านบน ให้ไฟค่อย ๆ ลามลง</li>
+      <li><b>สังเกตควัน</b> ช่วงแรกควันขาวหนา (ไล่ความชื้น) เมื่อควันจางลงจนเกือบใส แปลว่าเผาใกล้เสร็จ</li>
+      <li><b>ปิดช่องอากาศทั้งหมด</b> ปิดฝาให้สนิท ทิ้งให้เย็นในเตา (ข้ามคืน) ห้ามเปิดตอนร้อน เพราะถ่านจะลุกเป็นไฟและกลายเป็นขี้เถ้า</li>
+      <li><b>ดับให้สนิท</b> ถ้าไม่แน่ใจ ให้พรมน้ำ แล้วตากให้แห้ง (ความชื้นไม่เกิน 20% ตามมาตรฐาน)</li>
+      <li><b>ทุบให้เล็ก</b> ขนาดเฉลี่ยไม่เกิน 1 ซม. เพื่อให้คลุกกับดินได้ง่าย</li>
+    </ol>
+    <div class="src">แบบเตาและรายละเอียดต่างกันไปตามพื้นที่ แนะนำให้ขอคำแนะนำหรือเข้าอบรมกับสถานีพัฒนาที่ดินประจำจังหวัด (สายด่วนกรมพัฒนาที่ดิน 1760)</div>
+  </div>
+  <div class="card warn"><b>⚠️ ความปลอดภัย</b> เผาในที่โล่ง ห่างบ้านและเชื้อเพลิง เตรียมน้ำดับไฟ ไม่อยู่ใต้ลมควัน (มีคาร์บอนมอนอกไซด์และทาร์)
+    สวมถุงมือกันความร้อนและหน้ากาก ห้ามเผาวัสดุที่ปนพลาสติกหรือสารเคมี</div>
+</section>
+
+<section id="check">
+  <h2><span class="ic">✅</span>ตรวจคุณภาพไบโอชาร์ตาม มผช.1752/2569</h2>
+  <p class="sub">มาตรฐานผลิตภัณฑ์ชุมชน “ถ่านชีวภาพสำหรับปรับปรุงดิน” ประกาศ 5 มิถุนายน 2569 ถ้าผ่านเกณฑ์ ชุมชนยื่นขอการรับรอง มผช. แล้วจำหน่ายเป็นสินค้าชุมชนได้</p>
+  <div class="card tw">
+    <table>
+      <tr><th>รายการ</th><th>เกณฑ์ (มผช.)</th><th>ตรวจเองเบื้องต้นได้อย่างไร</th></tr>
+      <tr><td>ลักษณะทั่วไป</td><td>ขนาดใกล้เคียงกัน สีดำสม่ำเสมอ ไม่มีสิ่งแปลกปลอม</td><td>ดูด้วยตา ไม่มีขี้เถ้าขาวหรือเศษที่ยังไม่ไหม้</td></tr>
+      <tr><td>ความชื้น</td><td>ไม่เกิน 20% โดยน้ำหนัก</td><td>ชั่ง แล้วตากหรืออบจนน้ำหนักคงที่ (ใช้เครื่องคำนวณด้านล่าง)</td></tr>
+      <tr><td>ความเป็นกรด-ด่าง (pH)</td><td>ตั้งแต่ 7.0 ขึ้นไป</td><td>แช่ถ่านในน้ำสะอาด วัดด้วยกระดาษหรือเครื่องวัด pH</td></tr>
+      <tr><td>อัตราส่วน H/C<sub>org</sub></td><td>ไม่เกิน 0.7</td><td>ต้องส่งห้องปฏิบัติการวิเคราะห์ (บอกว่าเผาถึงขั้นเป็นคาร์บอนเสถียรแล้ว)</td></tr>
+      <tr><td>ความสามารถในการอุ้มน้ำ</td><td>ไม่น้อยกว่า 1 เท่าของมวลแห้ง</td><td>แช่น้ำ สะเด็ดน้ำ แล้วชั่ง (ใช้เครื่องคำนวณด้านล่าง)</td></tr>
+      <tr><td>ฉลาก</td><td>ชื่อผลิตภัณฑ์ น้ำหนักสุทธิ เดือนปีที่ทำ วิธีใช้ ชื่อและที่ตั้งผู้ทำ</td><td>พิมพ์ฉลากตามรายการนี้</td></tr>
+    </table>
+  </div>
+  <div class="grid2">
+    <div class="card calc"><h3>🧮 ความชื้น</h3>
+      <label for="m1">น้ำหนักถ่านก่อนอบ/ตาก (กรัม)</label><input id="m1" type="number" inputmode="decimal" placeholder="เช่น 120">
+      <label for="m2">น้ำหนักหลังอบจนแห้งคงที่ (กรัม)</label><input id="m2" type="number" inputmode="decimal" placeholder="เช่น 105">
+      <div class="out" id="mOut">กรอกตัวเลขเพื่อคำนวณ</div></div>
+    <div class="card calc"><h3>🧮 การอุ้มน้ำ</h3>
+      <label for="w1">น้ำหนักถ่านแห้ง (กรัม)</label><input id="w1" type="number" inputmode="decimal" placeholder="เช่น 50">
+      <label for="w2">น้ำหนักหลังแช่น้ำ 24 ชม. แล้วสะเด็ดน้ำ (กรัม)</label><input id="w2" type="number" inputmode="decimal" placeholder="เช่น 140">
+      <div class="out" id="wOut">กรอกตัวเลขเพื่อคำนวณ</div></div>
+  </div>
+  <div class="src">เครื่องคำนวณนี้ใช้ตรวจเบื้องต้นเท่านั้น การรับรอง มผช. ต้องทดสอบตามวิธีมาตรฐานที่ระบุ (เช่น ISO 18134-1, ISO 10390, ISO 14238)</div>
+</section>
+
+<section id="use">
+  <h2><span class="ic">🌱</span>ใช้ไบโอชาร์ในแปลงปลูก</h2>
+  <div class="card">
+    <ol class="steps">
+      <li><b>ทุบถ่านให้เล็ก</b> เฉลี่ยไม่เกิน 1 ซม. ถ่านก้อนใหญ่เกะกะรากพืช</li>
+      <li><b>ผสมกับปุ๋ยหมักหรือปุ๋ยคอก</b> สัดส่วนราว 50% คลุกให้เป็นเนื้อเดียวกัน ถ่านจะดูดธาตุอาหารเก็บไว้ก่อน (จะรดด้วยน้ำหมักชีวภาพด้วยก็ได้)</li>
+      <li><b>โรยตอนเตรียมดิน</b> รดน้ำให้ชุ่มให้ถ่านดูดน้ำ แล้วพรวนลึก 10–20 ซม. รดน้ำอีกครั้ง</li>
+      <li><b>ปลูกพืชตามปกติ</b> งานวิจัยกับผักคะน้าที่ผสมถ่าน 50% ในปุ๋ยหมัก ได้ผลผลิตเท่ากับใช้ปุ๋ยหมักอย่างเดียว</li>
+    </ol>
+  </div>
+  <div class="card tip"><b>💡 ข้อมูลน่ารู้</b> ไบโอชาร์มีรูพรุนและพื้นที่ผิวมาก มีประจุลบ จึงช่วยเก็บน้ำและธาตุอาหาร และเป็นที่อยู่ของจุลินทรีย์
+    งานวิจัยที่กรมพัฒนาที่ดินอ้างถึงพบว่าไบโอชาร์จากเศษข้าวโพดมีพื้นที่ผิวจำเพาะ 93.36 ตร.ม./กรัม ส่วนดินทรายผสมไบโอชาร์ 10% เก็บความชื้นได้นาน 104 ชั่วโมง
+    ทั้งนี้อัตราที่เหมาะสมขึ้นกับชนิดดินและพืช ควรลองแปลงเล็กก่อน</div>
+</section>
+
+<section id="chitosan">
+  <h2><span class="ic">🦐</span>ไคโตซานจากเปลือกกุ้ง</h2>
+  <p class="sub">เปลือกกุ้งมีไคติน แร่ธาตุ (หินปูน) และโปรตีน ต้องเอาแร่ธาตุกับโปรตีนออกก่อนจะได้ไคติน แล้วต้มกับด่างเข้มข้นจนได้ไคโตซาน</p>
+  <div class="card warn"><b>⚠️ อ่านก่อน</b> ขั้นตอนสุดท้ายใช้โซเดียมไฮดรอกไซด์ (โซดาไฟ) เข้มข้น 50% ที่ 100 °C ซึ่งกัดผิวหนังและตาได้รุนแรง
+    ควรทำในห้องปฏิบัติการของโรงเรียนหรือมหาวิทยาลัยโดยมีครูหรือผู้เชี่ยวชาญดูแล สวมแว่นตา ถุงมือ และผ้ากันเปื้อนกันสารเคมีทุกครั้ง
+    <b>เกษตรกรทั่วไปแนะนำให้ซื้อไคโตซานเกรดเกษตร</b> หรือรวมกลุ่มกับวิสาหกิจชุมชนหรือสถาบันการศึกษาในพื้นที่</div>
+  <div class="card">
+    <h3>ขั้นตอนตามงานวิจัยของ มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ (2560)</h3>
+    <ol class="steps shell">
+      <li><b>เตรียมเปลือก</b> ล้างแยกเนื้อและไขมัน <b class="k">ต้มเปลือกในน้ำเดือด 3 นาที</b> แล้วตัดเป็นชิ้นราว 1×1 ซม. (เปลือกต้มสุกให้ไคโตซานมากกว่าเปลือกดิบ)</li>
+      <li><b>กำจัดแร่ธาตุ</b> แช่กรดไฮโดรคลอริก 2 โมลาร์ (เปลือก 1 ส่วน : กรด 20 ส่วน) กวน 2 ชั่วโมงที่อุณหภูมิห้อง ล้างน้ำจนเป็นกลาง</li>
+      <li><b>กำจัดโปรตีน</b> แช่โซเดียมไฮดรอกไซด์ 2 โมลาร์ (1 : 20) กวน 2 ชั่วโมงที่อุณหภูมิห้อง ล้างน้ำจนเป็นกลาง จะได้ <b>ไคติน</b></li>
+      <li><b>เปลี่ยนเป็นไคโตซาน</b> ต้มไคตินในโซเดียมไฮดรอกไซด์ 50% (1 : 100) ที่ 100 °C เปลี่ยนสารละลายทุก 1 ชั่วโมง รวม 2 ชั่วโมง</li>
+      <li><b>ล้างและอบ</b> ล้างน้ำจนเป็นกลาง อบที่ 60 °C นาน 24 ชั่วโมง แล้วบดเป็นผง</li>
+    </ol>
+    <div class="ok card" style="margin:8px 0 0"><b>ผลที่ได้:</b> เปลือกกุ้งสุกให้ไคโตซาน <b class="k">46.61%</b> ส่วนเปลือกดิบได้ 38.59% (โดยน้ำหนักแห้ง)
+      และไคโตซานที่ได้มีโครงสร้างใกล้เคียงไคโตซานทางการค้า (ตรวจด้วย FT-IR)</div>
+    <h3>ทดสอบง่าย ๆ ว่าได้ไคโตซานแล้ว</h3>
+    ผงไคโตซานจะ <b>ละลายในกรดอะซิติกเจือจาง 1%</b> (น้ำส้มสายชูเจือจาง) เป็นของเหลวหนืดใส ส่วนไคตินที่ยังเปลี่ยนไม่สมบูรณ์จะไม่ละลาย
+  </div>
+  <div class="card tip"><b>♻️ น้ำทิ้ง</b> น้ำล้างกรดและด่างต้องปรับให้เป็นกลาง (pH 6–9) ก่อนทิ้ง โดยค่อย ๆ ผสมน้ำกรดกับน้ำด่างเข้าด้วยกันและวัด pH ห้ามเทลงแหล่งน้ำโดยตรง</div>
+</section>
+
+<section id="bead">
+  <h2><span class="ic">🫧</span>เม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์ (สูตรของโครงงาน)</h2>
+  <p class="sub">นำสองวัสดุมารวมกัน ไคโตซานทำหน้าที่เป็นโครงเม็ดที่ย่อยสลายได้ ส่วนไบโอชาร์ช่วยเพิ่มรูพรุนสำหรับเก็บน้ำ</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>สูตรมาตรฐาน</h3>
+      <ol class="steps">
+        <li>ละลายไคโตซาน <b class="k">6%</b> (น้ำหนักต่อปริมาตร) ในกรดอะซิติก 1 โมลาร์ กวนราว 2 ชั่วโมง</li>
+        <li>เติมผงไบโอชาร์ซังข้าวโพด (ร่อน 100 เมช) <b class="k">2%</b> โดยน้ำหนัก กวน 30 นาที</li>
+        <li>หยดลงในโซเดียมไฮดรอกไซด์ 2 โมลาร์ จะเกิดเม็ด 2–4 มม. แช่ให้เซ็ตตัว 6 ชั่วโมง</li>
+        <li>ล้างน้ำจน pH ประมาณ 7 แล้วอบ 60 °C นาน 24 ชั่วโมง</li>
+      </ol>
+      <a href="app.html">เครื่อง HK-Green-15 ทำทุกขั้นตอนนี้อัตโนมัติ ลองเครื่องจำลองได้ที่นี่ →</a>
+    </div>
+    <div class="card calc"><h3>🧮 คำนวณวัตถุดิบต่อรอบ</h3>
+      <label for="acid">ปริมาตรกรดอะซิติก 1 M (มล.)</label><input id="acid" type="number" inputmode="decimal" value="500">
+      <label for="bc">ไบโอชาร์ (% โดยน้ำหนัก, 0–3)</label><input id="bc" type="number" inputmode="decimal" value="2" step="0.5" min="0" max="3">
+      <div class="out" id="bOut"></div></div>
+  </div>
+  <div class="card tw">
+    <h3>ผลทดลองของทีม (ทดลอง 3 ซ้ำ)</h3>
+    <table>
+      <tr><th>สูตรไบโอชาร์</th><th>0%</th><th>1%</th><th>2%</th><th>3%</th><th>ดินเปล่า</th></tr>
+      <tr><td>ดูดน้ำ (% ของน้ำหนักเม็ดแห้ง)</td><td>378.6</td><td>520.8</td><td><b class="k">605.2</b></td><td>563.4</td><td>–</td></tr>
+      <tr><td>ความชื้นดินวันที่ 14 ไม่รดน้ำ (%)</td><td>12.0</td><td>18.0</td><td><b class="k">26.0</b></td><td>20.0</td><td>2.0</td></tr>
+    </table>
+    <div class="src">ทดลองในกระถางดินร่วนที่ยังไม่มีพืช ผสมเม็ด 10 กรัมต่อดิน 1 กก. เป็นการทดลองขนาดเล็กระดับโรงเรียน ต้องยืนยันด้วยการปลูกพืชจริงต่อไป</div>
+  </div>
+</section>
+
+<section id="ref">
+  <h2><span class="ic">📖</span>แหล่งข้อมูลและหน่วยงานที่ติดต่อได้</h2>
+  <div class="card">
+    <ol style="margin:0;padding-left:20px">
+      <li>ดวงใจ วัยเจริญ และเกษร จำปา. (2562). <i>ไบโอชาร์ (Biochar) ถ่านชีวภาพ ตัวช่วยปรับปรุงคุณภาพดิน</i>. ศูนย์ศึกษาการพัฒนาเขาหินซ้อนอันเนื่องมาจากพระราชดำริ สำนักงานพัฒนาที่ดินเขต 2 กรมพัฒนาที่ดิน.
+        <a href="https://opsmoac.go.th/chachoengsao-article_prov-files-431391791813" target="_blank" rel="noopener">เอกสาร</a></li>
+      <li>สำนักงานมาตรฐานผลิตภัณฑ์อุตสาหกรรม. (2569). <i>มาตรฐานผลิตภัณฑ์ชุมชน ถ่านชีวภาพสำหรับปรับปรุงดิน มผช.1752/2569</i>.
+        <a href="https://tcps.tisi.go.th/pub/tcps1752_2569(%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%8A%E0%B8%B5%E0%B8%A7%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B8%94%E0%B8%B4%E0%B8%99).pdf" target="_blank" rel="noopener">เอกสาร</a></li>
+      <li>สุธีรา ขันทพันธ์ และสุธิดา อัครชนียากร. (2560). การศึกษาเปรียบเทียบสมบัติของไคโตซานจากเปลือกกุ้งดิบและเปลือกกุ้งสุก. <i>วารสารวิทยาศาสตร์ประยุกต์</i> 16(1), 74–86. มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ.
+        <a href="https://doi.org/10.14416/j.appsci.2017.06.003" target="_blank" rel="noopener">doi</a></li>
+      <li>กรมชลประทาน. (2565). <i>สรุปผลการดำเนินงานประจำปี 2565</i>.
+        <a href="https://rid.go.th/_data/documents/rid_annual_conclusion/02_conclusion/2565/Booklet.pdf" target="_blank" rel="noopener">เอกสาร</a></li>
+    </ol>
+    <h3>ติดต่อขอคำแนะนำหรืออบรม</h3>
+    <ul style="margin:0">
+      <li>กรมพัฒนาที่ดิน: สถานีพัฒนาที่ดินประจำจังหวัด / หมอดินอาสาประจำหมู่บ้าน (สายด่วน 1760) เรื่องการทำและใช้ถ่านชีวภาพ</li>
+      <li>ศูนย์ศึกษาการพัฒนาอันเนื่องมาจากพระราชดำริ (เช่น เขาหินซ้อน จ.ฉะเชิงเทรา) เป็นแหล่งเรียนรู้เรื่องการปรับปรุงดิน</li>
+      <li>สำนักงานอุตสาหกรรมจังหวัด เรื่องการยื่นขอการรับรองมาตรฐานผลิตภัณฑ์ชุมชน (มผช.)</li>
+    </ul>
+  </div>
+</section>
+</main>
+<footer class="wrap">HK-Green-15 · คลังความรู้สำหรับเกษตรกร เรียบเรียงโดยทีมนักเรียนจากเอกสารที่ระบุ ไม่ได้แทนคำแนะนำของหน่วยงาน · <a href="index.html">หน้าแรก</a> · <a href="app.html">แดชบอร์ด/เครื่องจำลอง</a></footer>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id), num = (id) => parseFloat($(id).value);
+  const fmt = (x, d = 1) => x.toLocaleString('th-TH', { maximumFractionDigits: d, minimumFractionDigits: d });
+  function moist() {
+    const a = num('m1'), b = num('m2'), o = $('mOut');
+    if (!(a > 0 && b > 0) || b > a) { o.textContent = b > a ? 'น้ำหนักหลังอบต้องไม่มากกว่าก่อนอบ' : 'กรอกตัวเลขเพื่อคำนวณ'; o.className = 'out'; return; }
+    const m = (a - b) / a * 100, ok = m <= 20;
+    o.innerHTML = 'ความชื้น ' + fmt(m) + '% → ' + (ok ? '✅ ผ่าน (ไม่เกิน 20%)' : '❌ ชื้นเกิน ตากหรืออบต่อ'); o.className = 'out ' + (ok ? 'pass' : 'fail');
+  }
+  function whc() {
+    const d = num('w1'), w = num('w2'), o = $('wOut');
+    if (!(d > 0 && w > 0) || w < d) { o.textContent = w < d ? 'น้ำหนักหลังแช่ต้องมากกว่าน้ำหนักแห้ง' : 'กรอกตัวเลขเพื่อคำนวณ'; o.className = 'out'; return; }
+    const r = (w - d) / d, ok = r >= 1;
+    o.innerHTML = 'อุ้มน้ำได้ ' + fmt(r, 2) + ' เท่า (' + fmt(r * 100, 0) + '%) → ' + (ok ? '✅ ผ่าน (ไม่น้อยกว่า 1 เท่า)' : '❌ ต่ำกว่าเกณฑ์'); o.className = 'out ' + (ok ? 'pass' : 'fail');
+  }
+  function batch() {
+    const v = num('acid'), p = num('bc'), o = $('bOut');
+    if (!(v > 0) || !(p >= 0)) { o.textContent = 'กรอกปริมาตรกรดและเปอร์เซ็นต์ไบโอชาร์'; return; }
+    const ch = v * 0.06, bio = (v + ch) * p / 100;     // biochar % of (acid ≈ 1 g/mL + chitosan), as in the team's recipe
+    o.innerHTML = 'ไคโตซาน ' + fmt(ch) + ' กรัม · ไบโอชาร์ ' + fmt(bio) + ' กรัม'
+      + (p > 3 ? '<br><span style="font-weight:400;font-size:14px">⚠️ เกิน 3% ยังไม่ได้ทดลอง (ที่ 3% ดูดน้ำน้อยกว่า 2%)</span>' : '');
+  }
+  ['m1', 'm2'].forEach((i) => $(i).addEventListener('input', moist)); ['w1', 'w2'].forEach((i) => $(i).addEventListener('input', whc));
+  ['acid', 'bc'].forEach((i) => $(i).addEventListener('input', batch)); batch();
+  const root = document.documentElement, KEY = 'theme';
+  try { const t = localStorage.getItem(KEY); if (t) root.dataset.theme = t; } catch (e) {}
+  $('themeBtn').addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(KEY, root.dataset.theme); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
