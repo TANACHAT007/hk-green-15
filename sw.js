@@ -1,5 +1,5 @@
 // Offline cache for the GitHub Pages site: pages network-first (always fresh when online), assets cache-first.
-const V = 'hk15-1792566331';
+const V = 'hk15-1792568313';
 const CORE = ['./', './index.html', './app.html', './style.css', './app.js', './model3d.js', './static_mode.js', './i18n.js', './landing3d.js',
   './vendor/three.module.js', './vendor/GLTFLoader.js', './vendor/OrbitControls.js', './vendor/RoomEnvironment.js', './vendor/BufferGeometryUtils.js',
   './vendor/meshopt_decoder.module.js', './icons/icon-192.png', './img/hero.jpg'];
