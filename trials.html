@@ -238,7 +238,8 @@ table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { ove
     const e = document.getElementById('exp').value;
     const meas = e === '1' ? ['day', 'pot_weight_g', 'moisture_pct', 'air_temp_C', 'note'] : ['week', 'water_ml', 'alive', 'wilting', 'height_cm', 'leaves', 'note'];
     const head = ['pot_id', 'block', 'position', 'soil', 'soil_name', 'treatment', 'water'].concat(meas);
-    const lines = [head.join(',')].concat(rows.map((r) => r.concat(meas.map(() => '')).join(',')));
+    // trial 1: one row per pot per day (days 0–28), ready for the virtual trial's "use real data" upload
+    const lines = [head.join(',')].concat(e === '1' ? rows.flatMap((r) => Array.from({ length: 29 }, (_, d) => r.concat([d, '', '', '', '']).join(','))) : rows.map((r) => r.concat(meas.map(() => '')).join(',')));
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv' }));
     a.download = 'hk-green-15_trial' + e + '_datasheet.csv'; a.click();
   }
