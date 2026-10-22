@@ -122,6 +122,16 @@ table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { ove
 .ctl select, .ctl button { font: inherit; font-size: 15px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); cursor: pointer; }
 .ctl button.go { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: 0; font-weight: 700; }
 .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--muted); margin-top: 8px; } .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 4px; vertical-align: -1px; }
+.sumg { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.sc { display: block; text-decoration: none; color: var(--text); background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px 20px; transition: transform .2s; }
+.sc:hover { transform: translateY(-3px); }
+.sc b { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+.sc h3 { margin: 10px 0 4px; } .sc p { margin: 0; color: var(--muted); font-size: 15px; } .sc span { display: inline-block; margin-top: 10px; font-weight: 700; color: var(--accent); font-size: 15px; }
+.gantt { display: grid; grid-template-columns: 110px 1fr; gap: 8px 10px; align-items: center; font-size: 14px; }
+.gw { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; } .gl { color: var(--muted); }
+.gb { position: relative; height: 30px; background: var(--panel2); border-radius: 8px; }
+.gb i { position: absolute; top: 0; bottom: 0; border-radius: 8px; font-style: normal; color: #fff; font-size: 12.5px; font-weight: 600; display: flex; align-items: center; padding: 0 8px; white-space: nowrap; overflow: hidden; }
+@media (max-width: 640px) { .gantt { grid-template-columns: 84px 1fr; } }
 </style>
 <script src="farm_i18n.js"></script>
 <script src="site_nav.js" defer></script>
@@ -142,6 +152,33 @@ table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { ove
   <p class="lead">ต่อยอดจากผลในกระถางที่ยังไม่มีพืช ไปทดลองกับดิน 3 ชนิดที่พบในไทย และปลูกพืชเศรษฐกิจภายใต้การให้น้ำน้อย แบ่งเป็น 3 การทดลองที่ทำต่อเนื่องกัน</p>
 </header>
 <main class="wrap">
+
+<section id="summary"><h2><span class="ic">📋</span>สรุปแผนการทดลอง</h2>
+  <p class="sub">3 การทดลองเริ่มพร้อมกันได้ ใช้เวลารวมราว 12 สัปดาห์ และใช้กระถางทั้งหมด 45 ใบ</p>
+  <div class="sumg">
+    <a class="sc" href="#t1"><b>1</b><h3>ดินอุ้มน้ำได้แค่ไหน</h3><p>ดิน 3 ชนิด × 3 ตำรับ × 3 ซ้ำ</p><span>27 กระถาง · 4 สัปดาห์</span></a>
+    <a class="sc" href="#t2"><b>2</b><h3>พริกรอดไหมเมื่อน้ำน้อย</h3><p>3 ตำรับ × รดน้ำ 2 ระดับ × 3 ซ้ำ</p><span>18 กระถาง · 10 สัปดาห์</span></a>
+    <a class="sc" href="#t3"><b>3</b><h3>เม็ดย่อยสลายเร็วแค่ไหน</h3><p>ดิน 2 ชนิด × เก็บ 5 ครั้ง × 3 ซ้ำ</p><span>30 ถุงตาข่าย · 12 สัปดาห์</span></a>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>ไทม์ไลน์</h3>
+    <div class="gantt">
+      <div class="gl"></div><div class="gw"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span></div>
+      <div class="gl">การทดลองที่ 1</div><div class="gb"><i style="left:0;width:33.3%;background:#34d399">ชั่งทุกวัน</i></div>
+      <div class="gl">การทดลองที่ 2</div><div class="gb"><i style="left:0;width:16.7%;background:#bbf7d0;color:#14532d">ตั้งตัว</i><i style="left:16.7%;width:66.6%;background:#10b981">ให้น้ำ 2 ระดับ</i></div>
+      <div class="gl">การทดลองที่ 3</div><div class="gb"><i style="left:0;width:100%;background:#60a5fa">ขุดชั่งสัปดาห์ 0 · 2 · 4 · 8 · 12</i></div>
+    </div><p class="src">ตัวเลขด้านบนคือสัปดาห์</p></div>
+  <div class="card"><h3>สิ่งที่ต้องเตรียม</h3><div class="tw"><table class="t">
+    <tr><th>รายการ</th><th>จำนวน</th><th>หมายเหตุ</th></tr>
+    <tr><td>กระถาง 6 นิ้ว มีรูระบาย</td><td>45 ใบ</td><td>การทดลองที่ 1 ใช้ 27 ใบ การทดลองที่ 2 ใช้ 18 ใบ</td></tr>
+    <tr><td>ดินทราย / ดินร่วน</td><td>อย่างละ 9 กก.</td><td>การทดลองที่ 1 (กระถางละ 1 กก.) และเผื่อสำหรับการทดลองที่ 3</td></tr>
+    <tr><td>ดินร่วนปนทราย</td><td>63 กก.</td><td>การทดลองที่ 1 จำนวน 9 กก. และการทดลองที่ 2 จำนวน 54 กก. (กระถางละ 3 กก.)</td></tr>
+    <tr><td>เม็ดไบโอชาร์ 2% (แห้ง)</td><td>≈ 330 ก.</td><td>การทดลองที่ 1 จำนวน 90 ก. · การทดลองที่ 2 จำนวน 180 ก. · การทดลองที่ 3 จำนวน 60 ก. ต้องผลิตหลายรอบ (รอบละไม่เกินราว 40 ก.)</td></tr>
+    <tr><td>สารอุ้มน้ำทางการค้า</td><td>1 ถุง</td><td>ใช้ตามอัตราบนฉลาก</td></tr>
+    <tr><td>ต้นกล้าพริกขี้หนู</td><td>22 ต้น</td><td>ใช้ 18 ต้น เผื่อสำรอง 4 ต้น เลือกขนาดใกล้เคียงกัน</td></tr>
+    <tr><td>ถุงตาข่ายไนลอน</td><td>30 ใบ</td><td>การทดลองที่ 3</td></tr>
+    <tr><td>เครื่องชั่ง · เครื่องวัดความชื้นดิน · เครื่องวัด pH/EC · เทอร์โมมิเตอร์</td><td>อย่างละ 1</td><td>ใช้เครื่องเดิมตลอดการทดลอง</td></tr>
+  </table></div></div>
+</section>
 
 <section><div class="card"><h3 style="margin-top:0">คำถามวิจัย</h3><ol style="margin:0;padding-left:22px">
   <li>เม็ดไฮโดรเจลไคโตซาน–ไบโอชาร์ช่วยให้ดินแต่ละชนิดเก็บความชื้นได้นานขึ้นแค่ไหน และอัตราใส่เท่าไรเหมาะสม</li>
