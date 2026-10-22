@@ -1,5 +1,5 @@
 {
- "_how_to_add_a_shop": "Team: after approving an application, add an object to 'shops' (unique id, Thai/English names, area, description, items). Items use side 'shop' (they sell) or 'buy' (they buy). 'img' is optional (put the photo in img/market/). Never put personal phone numbers or ID numbers here.",
+ "_how_to_add_a_shop": "Team buys raw materials (shop 'hk', side 'buy'). Other sellers: after approving an application, add a new object to 'shops' with their products (side 'shop'). 'img' optional (photo in img/market/). Never put personal phone numbers or ID numbers here.",
  "shops": [
   {
    "id": "hk",
@@ -67,63 +67,6 @@
      "img": "img/market/charpile.jpg",
      "credit": "Biochar pile — U.S. Department of Agriculture, public domain",
      "credit_url": "https://commons.wikimedia.org/wiki/File:Biochar_pile_in_tarp.jpg"
-    },
-    {
-     "id": "biochar",
-     "side": "shop",
-     "em": "🪨",
-     "th": "ไบโอชาร์ซังข้าวโพด",
-     "en": "Corn-cob biochar",
-     "unit": [
-      "ถุง 1 กก.",
-      "1 kg bag"
-     ],
-     "nt": [
-      "ทุบละเอียด ≤ 1 ซม. พร้อมคู่มือวิธีใช้",
-      "Crushed ≤ 1 cm, with a how-to guide"
-     ],
-     "learn": "learn.html#use",
-     "img": "img/market/biochar.jpg",
-     "credit": "Biochar — Permaculture Association, CC BY-SA 2.0",
-     "credit_url": "https://commons.wikimedia.org/wiki/File:Biochar_made_at_convergence_2016.jpg"
-    },
-    {
-     "id": "beads",
-     "side": "shop",
-     "em": "🫧",
-     "img": "img/beads.jpg",
-     "th": "เม็ดอุ้มน้ำไคโตซาน–ไบโอชาร์",
-     "en": "Chitosan–biochar water beads",
-     "unit": [
-      "ถุง 500 ก.",
-      "500 g bag"
-     ],
-     "nt": [
-      "วัสดุปรับปรุงดิน สั่งจองล่วงหน้า ผลิตเป็นรอบ",
-      "Soil conditioner, pre-order, made in batches"
-     ],
-     "learn": "learn.html#bead",
-     "credit": "",
-     "credit_url": ""
-    },
-    {
-     "id": "kit",
-     "side": "shop",
-     "em": "📦",
-     "th": "ชุดทดลองสำหรับโรงเรียน",
-     "en": "School trial kit",
-     "unit": [
-      "ชุด",
-      "kit"
-     ],
-     "nt": [
-      "เม็ด 2 สูตร + คู่มือการทดลองในกระถาง",
-      "2 bead recipes + a pot-trial guide"
-     ],
-     "learn": "trials.html",
-     "img": "img/results_th.jpg",
-     "credit": "",
-     "credit_url": ""
     }
    ],
    "img": "img/hero.jpg"

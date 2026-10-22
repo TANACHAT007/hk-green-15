@@ -155,19 +155,16 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
 
 <header class="wrap">
   <div class="chips"><span class="chip">🛒 ตลาดชุมชน</span><span class="chip">ต้นแบบ ยังไม่เปิดขายจริง</span></div>
-  <h1>ขายของเหลือทิ้งให้เรา<br>รับ<em>วัสดุปรับปรุงดิน</em>กลับไป</h1>
-  <p class="lead">ชุมชนขายซังข้าวโพดและเปลือกกุ้งให้ศูนย์ผลิต แล้วสั่งจองไบโอชาร์และเม็ดอุ้มน้ำที่ผลิตจากวัตถุดิบนั้น ทุกสินค้ามีคู่มือวิธีใช้แนบไปด้วย</p>
+  <h1>ขายของเหลือทิ้งให้เรา<br>หรือ<em>เปิดร้านของคุณ</em></h1>
+  <p class="lead">ทีมรับซื้อซังข้าวโพด เปลือกกุ้ง และไบโอชาร์จากชุมชน ส่วนวิสาหกิจชุมชนและเกษตรกรเปิดร้านขายสินค้าของตัวเองในตลาดนี้ได้ พร้อมลิงก์ความรู้วิธีทำและวิธีใช้</p>
 </header>
 <main class="wrap">
-<section><div class="card warnb"><b>สถานะ</b> หน้านี้เป็นต้นแบบระบบ ยังไม่รับเงินและยังไม่รับคำสั่งซื้อจริง ราคาจะกำหนดจากต้นทุนจริงหลังผลิตนำร่อง กดสั่งแล้วจะได้ข้อความสั่งจองไว้คัดลอกส่งทีมงาน</div></section>
+<section><div class="card warnb"><b>สถานะ</b> หน้านี้เป็นต้นแบบระบบ ยังไม่รับเงินผ่านเว็บ ราคารับซื้อจะประกาศหลังผลิตนำร่อง กดเสนอขายแล้วจะได้ข้อความไว้คัดลอกส่งทีมงาน</div></section>
 
-<section id="shops"><h2><span class="ic">🏪</span>ร้านค้าชุมชน</h2><p class="sub">ร้านที่ผ่านการตรวจจากทีมแล้ว แต่ละร้านขายหรือรับซื้อสินค้าของตัวเอง</p><div class="mk" id="shopsList"></div>
-  <p style="margin-top:10px"><a class="btn2" href="#apply" style="text-decoration:none;display:inline-block">➕ สมัครเป็นร้านค้าชุมชน</a></p></section>
+<section id="buy"><h2><span class="ic">♻️</span>เรารับซื้อ</h2><p class="sub">ทีมรับซื้อวัตถุดิบจากชุมชน เพื่อนำไปผลิตไบโอชาร์และไคโตซาน</p><div class="mk" id="buyList"></div></section>
+<section id="shop"><h2><span class="ic">🏪</span>ร้านค้าในตลาด</h2><p class="sub">สินค้าจากร้านค้าที่มาเปิดร้านในตลาดนี้ แต่ละร้านดูแลสินค้าของตัวเอง</p><div class="mk" id="shopList"></div><p style="margin-top:10px"><a class="btn2" href="#apply" style="text-decoration:none;display:inline-block">➕ เปิดร้านในตลาด</a></p></section>
 
-<section id="buy"><h2><span class="ic">♻️</span>ประกาศรับซื้อ</h2><p class="sub">ร้านในตลาดที่รับซื้อวัตถุดิบจากชุมชน เพื่อนำไปผลิตไบโอชาร์และไคโตซาน</p><div class="mk" id="buyList"></div></section>
-<section id="shop"><h2><span class="ic">🌱</span>สินค้า</h2><p class="sub">ผลิตจากของเหลือทิ้งของชุมชน รายได้ส่วนหนึ่งเข้ากองทุนชุมชน</p><div class="mk" id="shopList"></div></section>
-
-<section id="apply"><h2><span class="ic">📝</span>สมัครเป็นร้านค้าชุมชน</h2><div class="card">
+<section id="apply"><h2><span class="ic">📝</span>เปิดร้านในตลาด</h2><div class="card">
   <p class="sub" style="margin-top:0">วิสาหกิจชุมชน กลุ่มเกษตรกร หรือโรงเรียน ที่ผลิตวัตถุดิบหรือสินค้าปรับปรุงดิน สมัครได้ ทีมจะตรวจข้อมูลก่อนเพิ่มร้านขึ้นเว็บ</p>
   <label class="lb" for="apName">ชื่อร้าน / กลุ่ม / วิสาหกิจชุมชน</label><input class="in" id="apName" autocomplete="off">
   <label class="lb" for="apType">ประเภท</label><select class="in" id="apType"><option>วิสาหกิจชุมชน</option><option>กลุ่มเกษตรกร</option><option>โรงเรียน / สถานศึกษา</option><option>เกษตรกรรายบุคคล</option><option>อื่น ๆ</option></select>
@@ -200,9 +197,10 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
   function cards() {
     ['buy', 'shop'].forEach((side) => {
       const box = document.getElementById(side + 'List'); box.innerHTML = '';
+      if (!ITEMS.some((i) => i.side === side)) box.innerHTML = '<div class="it"><span class="nt">' + T('ยังไม่มีร้านค้า เปิดร้านเป็นร้านแรกได้เลย', 'No shops yet — be the first to open one') + '</span></div>';
       ITEMS.filter((i) => i.side === side).forEach((i) => {
         const d = document.createElement('div'); d.className = 'it';
-        d.innerHTML = `${i.img ? `<figure class="pf"><img class="pimg" src="${i.img}" alt="${T(i.th, i.en)}" loading="lazy">${i.credit ? `<figcaption><a href="${i.credit_url}" target="_blank" rel="noopener">${T('ภาพประกอบ: ', 'Photo: ')}${i.credit}</a></figcaption>` : ''}</figure>` : `<div class="em">${i.em}</div>`}<span class="badge">🏪 ${T(i.shop.th, i.shop.en)}</span><h3>${T(i.th, i.en)}</h3><span class="pr">${T('ราคา: กำหนดหลังผลิตนำร่อง', 'Price: set after the pilot')}</span>
+        d.innerHTML = `${i.img ? `<figure class="pf"><img class="pimg" src="${i.img}" alt="${T(i.th, i.en)}" loading="lazy">${i.credit ? `<figcaption><a href="${i.credit_url}" target="_blank" rel="noopener">${T('ภาพประกอบ: ', 'Photo: ')}${i.credit}</a></figcaption>` : ''}</figure>` : `<div class="em">${i.em}</div>`}${i.shop.official ? '' : `<span class="badge">🏪 ${T(i.shop.th, i.shop.en)}</span>`}<h3>${T(i.th, i.en)}</h3><span class="pr">${side === 'buy' ? T('ราคารับซื้อ: ประกาศหลังผลิตนำร่อง', 'Buying price: announced after the pilot') : T('ราคา: สอบถามร้าน', 'Price: ask the shop')}</span>
           <span class="nt">${T(i.nt[0], i.nt[1])}</span><a class="nt" href="${i.learn}">📖 ${T('วิธีทำ/วิธีใช้', 'How to make / use')}</a>
           <div class="row"><input type="number" min="1" value="${side === 'buy' ? 10 : 1}" aria-label="qty"><span class="nt">${T(i.unit[0], i.unit[1])}</span>
           <button class="btn2${side === 'buy' ? ' alt' : ''}">${side === 'buy' ? T('เสนอขาย', 'Offer to sell') : T('ใส่รถเข็น', 'Add to cart')}</button></div>`;
@@ -215,7 +213,7 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
     const c = get(), ids = Object.keys(c).filter((k) => c[k] > 0 && ITEMS.find((x) => x.id === k)), b = document.getElementById('cartBody');
     if (!ids.length) { b.innerHTML = '<p class="nt">' + T('ยังไม่มีรายการ', 'Nothing yet') + '</p>'; return; }
     b.innerHTML = '<table><tr><th>' + T('รายการ', 'Item') + '</th><th>' + T('ประเภท', 'Type') + '</th><th>' + T('จำนวน', 'Qty') + '</th><th></th></tr>' + ids.map((k) => {
-      const i = ITEMS.find((x) => x.id === k); return `<tr><td>${i.em} ${T(i.th, i.en)}<br><span class="nt">🏪 ${T(i.shop.th, i.shop.en)}</span></td><td><span class="badge">${i.side === 'buy' ? T('เสนอขายให้ร้าน', 'Selling to the shop') : T('สั่งจอง', 'Pre-order')}</span></td><td>${c[k]} ${T(i.unit[0], i.unit[1])}</td><td><button class="sz" data-k="${k}" style="border:0;background:none;cursor:pointer">✕</button></td></tr>`;
+      const i = ITEMS.find((x) => x.id === k); return `<tr><td>${i.em} ${T(i.th, i.en)}<br>${i.shop.official ? '' : `<span class="nt">🏪 ${T(i.shop.th, i.shop.en)}</span>`}</td><td><span class="badge">${i.side === 'buy' ? T('เสนอขายให้ร้าน', 'Selling to the shop') : T('สั่งจอง', 'Pre-order')}</span></td><td>${c[k]} ${T(i.unit[0], i.unit[1])}</td><td><button class="sz" data-k="${k}" style="border:0;background:none;cursor:pointer">✕</button></td></tr>`;
     }).join('') + '</table>';
     b.querySelectorAll('button[data-k]').forEach((x) => x.onclick = () => { const c2 = get(); delete c2[x.dataset.k]; put(c2); list(); });
   }
@@ -237,17 +235,17 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
       d.innerHTML = `${sh.img ? `<img class="simg" src="${sh.img}" alt="" loading="lazy">` : ''}<h3>🏪 ${T(sh.th, sh.en)} ${sh.official ? '<span class="badge">' + T('ทีมผู้จัดทำ', 'Project team') + '</span>' : ''}</h3><span class="nt">📍 ${T(sh.area_th, sh.area_en)}</span><span class="nt">${T(sh.desc_th, sh.desc_en)}</span><span class="nt">${sh.items.length} ${T('รายการ', 'items')}</span>`;
       box.appendChild(d); });
   }
-  function all() { shops(); cards(); list(); }
+  function all() { cards(); list(); }
   fetch('shops.json', { cache: 'no-store' }).then((r) => r.json()).then((j) => {
     SHOPS = j.shops || []; ITEMS = SHOPS.flatMap((sh) => sh.items.map((i) => ({ ...i, id: sh.id + ':' + i.id, shop: sh })));
     all();
-  }).catch(() => { document.getElementById('shopsList').textContent = T('โหลดรายชื่อร้านไม่ได้', 'Could not load shops'); });
+  }).catch(() => { document.getElementById('shopList').textContent = T('โหลดรายการไม่ได้', 'Could not load the list'); });
   window.addEventListener('hklang', all);
   // shop application → message for the team (nothing is stored online)
   document.getElementById('apMk').onclick = () => {
     const v = (id) => document.getElementById(id).value.trim();
     if (!v('apName') || !v('apItems') || !document.getElementById('apOk').checked) { document.getElementById('apMsg').value = T('กรอกชื่อร้าน สินค้า และติ๊กยืนยันก่อน', 'Fill in the shop name and products, and tick the confirmation'); return; }
-    document.getElementById('apMsg').value = T('สมัครเป็นร้านค้าชุมชน HK-Green-15', 'Application: HK-Green-15 community shop') + '\n'
+    document.getElementById('apMsg').value = T('ขอเปิดร้านในตลาดชุมชน', 'Request to open a shop in the community market') + '\n'
       + T('ชื่อร้าน/กลุ่ม: ', 'Shop / group: ') + v('apName') + '\n' + T('ประเภท: ', 'Type: ') + document.getElementById('apType').value + '\n'
       + T('อำเภอ จังหวัด: ', 'District, province: ') + (v('apArea') || '-') + '\n' + T('สินค้า/วัตถุดิบ: ', 'Products / materials: ') + v('apItems') + '\n'
       + T('มาตรฐาน/การรับรอง: ', 'Standards / certification: ') + (v('apStd') || '-') + '\n' + T('ช่องทางให้ทีมติดต่อกลับ: ', 'How the team can reach you: ') + (v('apContact') || '-') + '\n'
