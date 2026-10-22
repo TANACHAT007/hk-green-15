@@ -35,6 +35,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 760px) { .learn-card { grid-template-columns: 1fr; } }
 .bd { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; vertical-align: middle; }
 .bd.ok { background: #dcfce7; color: #166534; } .bd.ds { background: #e0e7ff; color: #3730a3; }
+@media (max-width: 600px) { nav .btn.dark.sm { display: none; } }   /* "open dashboard" overflowed on phones; it is in the ☰ menu */
 /* nav */
 nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 1px solid transparent; transition: border-color .3s; }
 nav.scrolled { border-color: var(--line); }
@@ -179,9 +180,9 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { *, .reveal { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; } }
 
-@media (max-width: 1180px) { nav .links { display: none; } #themeBtn { margin-left: auto; } }
+
 @media (max-width: 920px) {
-  nav .links { display: none; } #themeBtn { margin-left: auto; }
+
   .hero .hgrid, .disp { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); } .stats .stat:last-child { grid-column: span 2; }
   .feats, .more { grid-template-columns: 1fr; }
@@ -224,11 +225,12 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
 }
 @media (max-width: 420px) { .wrap { padding: 0 16px; } .ctas .btn { width: 100%; justify-content: center; } }
 </style>
+<script src="site_nav.js" defer></script>
 </head>
 <body>
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#"><span class="logo">🫧</span>HK-Green-15</a>
-  <div class="links"><a href="#video">วิดีโอ</a><a href="#feat">จุดเด่น</a><a href="#how">การทำงาน</a><a href="#crop">เลือกสูตร</a><a href="#screen">จอควบคุม</a><a href="#spec">สเปก</a><a href="#roadmap">แผนพัฒนา</a><a href="learn.html">ความรู้เกษตรกร</a><a href="business.html">โมเดลธุรกิจ</a></div>
+  <div class="links"></div>
   <button class="lang" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด (light / dark)">◐</button><button class="lang" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
   <a class="btn dark sm" href="app.html">เปิดแดชบอร์ด →</a>
 </div></nav>
