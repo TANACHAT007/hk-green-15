@@ -223,7 +223,7 @@ table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { ove
       else SOIL2.forEach((s) => TRT2.forEach((t) => W.forEach((w) => units.push({ s, t, w }))));
       shuffle(units);
       const h = document.createElement('div'); h.innerHTML = '<b>' + T('บล็อก ', 'Block ') + b + '</b>';
-      const g = document.createElement('div'); g.className = 'grid-pots'; g.style.gridTemplateColumns = 'repeat(' + (e === '1' ? 10 : 6) + ', minmax(0, 1fr))';
+      const g = document.createElement('div'); g.className = 'grid-pots'; const narrow = innerWidth < 640; g.style.gridTemplateColumns = 'repeat(' + (e === '1' ? (narrow ? 5 : 10) : (narrow ? 4 : 6)) + ', minmax(0, 1fr))';
       units.forEach((u, i) => {
         const id = 'B' + b + '-' + String(i + 1).padStart(2, '0'), d = document.createElement('div'); d.className = 'pot'; d.style.background = u.t[1];
         d.innerHTML = '<b>' + (i + 1) + '</b><br>' + u.s[0] + ' ' + u.t[0] + (u.w ? '<br>' + u.w : '');

@@ -36,6 +36,8 @@ a { color: inherit; text-decoration: none; }
 .bd { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; vertical-align: middle; }
 .bd.ok { background: #dcfce7; color: #166534; } .bd.ds { background: #e0e7ff; color: #3730a3; }
 @media (max-width: 600px) { nav .btn.dark.sm { display: none; } }   /* "open dashboard" overflowed on phones; it is in the ☰ menu */
+@media (max-width: 700px) { .v3d { inset: 0; } }   /* the 3D canvas bled 6% past the hero and widened the page on phones */
+html { overflow-x: clip; }
 /* nav */
 nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 1px solid transparent; transition: border-color .3s; }
 nav.scrolled { border-color: var(--line); }
@@ -273,12 +275,12 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   <h2 class="reveal">ออกแบบให้ทำงานแทนคน ตั้งแต่ผงจนเป็นเม็ด</h2>
   <p class="sub reveal">ทุกขั้นตอนในสูตรของทีม (ไคโตซาน 6 % ในกรดอะซิติก 1 M + ไบโอชาร์ 2 % ของน้ำหนักกรดรวมไคโตซาน หยดลง NaOH 2 M) ถูกแปลงเป็นงานของเครื่อง</p>
   <div class="feats">
-    <div class="feat reveal"><div class="ic" style="background:#fff3d6">🥄</div><b>ชั่งผงด้วยสกรู 2 ชุด</b><span class="bd ds">📐 ตามแบบ</span><p>สกรูใหญ่ป้อนไคโตซาน สกรูมอเตอร์ N20 ป้อนไบโอชาร์ 2 % ของน้ำหนักกรด + ไคโตซาน (≈ 10.6 g ต่อรอบ)</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#e3f6ff">🌀</div><b>กวนให้เป็นเนื้อเดียว</b><span class="bd ok">✅ มีในเครื่องจริง</span><p>ไม่มีแกนทะลุถัง ไม่รั่ว ล้างง่าย พัดลม 12 V หมุนแม่เหล็กใต้ถังผสมและถังขึ้นรูป</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#ffe6f2">💧</div><b>หยดพร้อมกัน 12 เข็ม</b><span class="bd ok">✅ มีในเครื่องจริง</span><p>ปั๊มรีดท่อคุมอัตราไหล ~1 mL/นาที/เข็ม ให้หยดเป็นเม็ด ไม่เป็นสาย</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#e4fbef">🧪</div><b>ล้างจนเป็นกลางเอง</b><span class="bd ds">📐 ตามแบบ</span><p>สเปรย์ล้าง รอสะเด็ด วัด pH น้ำที่ออก ทำซ้ำจนถึงเป้า ไม่ต้องยืนเช็กกระดาษ pH</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#efe8ff">🛑</div><b>ปลอดภัยไว้ก่อน</b><span class="bd ds">📐 ตามแบบ</span><p>E-stop ตัดไฟมอเตอร์ด้วยฮาร์ดแวร์ · เซนเซอร์ระดับ 3 จุดติดนอกถัง: กรดไม่พอไม่ยอมเริ่ม น้ำล้างหมดหรือถังน้ำทิ้งเต็มเครื่องจะรอ</p></div>
-    <div class="feat reveal"><div class="ic" style="background:#fff0e0">📱</div><b>สั่งงานได้หลายทาง</b><span class="bd ok">✅ มีในเครื่องจริง</span><p>จอสัมผัส 7″ ภาษาไทยหน้าเครื่อง เว็บแดชบอร์ด และปุ่ม START/STOP บนแผงหน้า</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#fff3d6">🥄</div><b>ชั่งผงด้วยสกรู 2 ชุด <span class="bd ds">📐 ตามแบบ</span></b><p>สกรูใหญ่ป้อนไคโตซาน สกรูมอเตอร์ N20 ป้อนไบโอชาร์ 2 % ของน้ำหนักกรด + ไคโตซาน (≈ 10.6 g ต่อรอบ)</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#e3f6ff">🌀</div><b>กวนให้เป็นเนื้อเดียว <span class="bd ok">✅ มีในเครื่องจริง</span></b><p>ไม่มีแกนทะลุถัง ไม่รั่ว ล้างง่าย พัดลม 12 V หมุนแม่เหล็กใต้ถังผสมและถังขึ้นรูป</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#ffe6f2">💧</div><b>หยดพร้อมกัน 12 เข็ม <span class="bd ok">✅ มีในเครื่องจริง</span></b><p>ปั๊มรีดท่อคุมอัตราไหล ~1 mL/นาที/เข็ม ให้หยดเป็นเม็ด ไม่เป็นสาย</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#e4fbef">🧪</div><b>ล้างจนเป็นกลางเอง <span class="bd ds">📐 ตามแบบ</span></b><p>สเปรย์ล้าง รอสะเด็ด วัด pH น้ำที่ออก ทำซ้ำจนถึงเป้า ไม่ต้องยืนเช็กกระดาษ pH</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#efe8ff">🛑</div><b>ปลอดภัยไว้ก่อน <span class="bd ds">📐 ตามแบบ</span></b><p>E-stop ตัดไฟมอเตอร์ด้วยฮาร์ดแวร์ · เซนเซอร์ระดับ 3 จุดติดนอกถัง: กรดไม่พอไม่ยอมเริ่ม น้ำล้างหมดหรือถังน้ำทิ้งเต็มเครื่องจะรอ</p></div>
+    <div class="feat reveal"><div class="ic" style="background:#fff0e0">📱</div><b>สั่งงานได้หลายทาง <span class="bd ok">✅ มีในเครื่องจริง</span></b><p>จอสัมผัส 7″ ภาษาไทยหน้าเครื่อง เว็บแดชบอร์ด และปุ่ม START/STOP บนแผงหน้า</p></div>
   </div>
 </div></section>
 
