@@ -95,7 +95,6 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
 <nav><div class="wrap">
   <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
   <div class="links"></div>
-  <button class="tbtn" id="printBtn" title="พิมพ์เป็นคู่มือแจกเกษตรกร" aria-label="พิมพ์คู่มือ">🖨️</button>
   <button class="tbtn" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
   <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
 </div></nav>
@@ -416,7 +415,6 @@ footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top:
   window.addEventListener('hklang', () => { batch(); if ($('m1').value || $('m2').value) moist(); if ($('w1').value || $('w2').value) whc(); });
   const root = document.documentElement, KEY = 'theme';
   try { const t = localStorage.getItem(KEY); if (t) root.dataset.theme = t; } catch (e) {}
-  $('printBtn').addEventListener('click', () => window.print());
   $('themeBtn').addEventListener('click', () => {
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(KEY, root.dataset.theme); } catch (e) {}
