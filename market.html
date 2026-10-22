@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#10b981"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>ตลาดชุมชน</title>
+<meta name="description" content="ตลาดชุมชน HK-Green-15: รับซื้อซังข้าวโพดและเปลือกกุ้งจากชุมชน และสั่งจองไบโอชาร์กับเม็ดอุ้มน้ำ (ต้นแบบ)">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8ff; --panel: #fff; --panel2: #f1f3ff; --line: #e6e8f5; --text: #1d1b3a; --muted: #5d6180;
+  --accent: #10b981; --accent2: #22c3a6; --sky: #5b8cff; --grape: #8b5cf6; --sun: #ffc23d; --bad: #ef4444; --char: #3a3a46;
+  --shadow: 0 2px 4px rgba(60, 50, 140, .04), 0 14px 34px rgba(60, 50, 140, .08); --r: 22px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13122a; --panel: #1c1b38; --panel2: #25244a; --line: #302f58; --text: #eeeefe; --muted: #a3a2cc; --char: #c9c9da; --shadow: 0 1px 2px rgba(0,0,0,.3); } }
+:root[data-theme="dark"] { --bg: #13122a; --panel: #1c1b38; --panel2: #25244a; --line: #302f58; --text: #eeeefe; --muted: #a3a2cc; --char: #c9c9da; --shadow: 0 1px 2px rgba(0,0,0,.3); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; overflow-wrap: break-word; background: var(--bg); color: var(--text); font: 17px/1.7 "Anuphan", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--sky); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; min-width: 0; }
+html { overflow-x: hidden; }
+td:first-child { min-width: 92px; }
+nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 85%, transparent); border-bottom: 1px solid var(--line); }
+nav .wrap { display: flex; align-items: center; gap: 10px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--text); text-decoration: none; white-space: nowrap; }
+.logo { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+.links { display: flex; gap: 2px; margin-left: auto; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.links a { white-space: nowrap; padding: 6px 11px; border-radius: 999px; color: var(--muted); font-size: 15px; text-decoration: none; }
+.links a:hover { background: var(--panel2); color: var(--text); }
+.tbtn { border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 14px; padding: 7px 11px; border-radius: 999px; background: var(--panel2); color: var(--text); }
+header { padding: 34px 0 10px; }
+h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.2; margin: 0 0 10px; letter-spacing: -.01em; }
+h1 em { font-style: normal; background: linear-gradient(135deg, var(--accent), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--muted); font-size: 18px; margin: 0 0 18px; max-width: 720px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.chip { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--panel); box-shadow: var(--shadow); color: var(--muted); }
+section { padding: 26px 0 8px; }
+h2 { font-size: clamp(22px, 4.5vw, 30px); line-height: 1.3; margin: 0 0 6px; display: flex; gap: 10px; align-items: center; }
+h2 .ic { width: 42px; height: 42px; flex: none; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: var(--panel2); }
+h3 { font-size: 19px; margin: 18px 0 6px; }
+.sub { color: var(--muted); margin: 0 0 14px; }
+.card { background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); padding: 18px 20px; margin: 12px 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 6px 0; }
+ol.steps > li { counter-increment: s; position: relative; padding: 4px 0 12px 48px; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+  font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+ol.steps.char > li::before { background: linear-gradient(135deg, #4b4b5c, #22222c); }
+ol.steps.shell > li::before { background: linear-gradient(135deg, #ff8a5c, #ff5e7a); }
+b.k { color: var(--accent); }
+.warn { border-left: 5px solid var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--panel)); }
+.tip { border-left: 5px solid var(--sun); background: color-mix(in srgb, var(--sun) 10%, var(--panel)); }
+.ok { border-left: 5px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--panel)); }
+.src { font-size: 13px; color: var(--muted); margin-top: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 14px; }
+.tw { overflow-x: auto; }
+.calc label { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; }
+.calc input { width: 100%; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.out { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--panel2); font-weight: 600; min-height: 50px; }
+.pass { color: var(--accent); } .fail { color: var(--bad); }
+.flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; font-size: 14px; }
+.flow span { background: var(--panel2); padding: 5px 10px; border-radius: 10px; }
+.flow i { font-style: normal; color: var(--muted); }
+.hero-ill { margin: 8px 0 0; background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); padding: 10px 8px 4px; }
+.hero-ill svg { width: 100%; height: auto; display: block; }
+.split { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: start; }
+.kiln { margin: 0; } .kiln svg { width: 100%; height: auto; }
+@media (max-width: 640px) { .split { grid-template-columns: 1fr; } .kiln { max-width: 220px; margin: 0 auto; } }
+.photo2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 10px 0; }
+.ph { margin: 0; background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+.ph img { width: 100%; height: 220px; object-fit: cover; display: block; background: #fff; }
+.ph figcaption { font-size: 14px; color: var(--muted); padding: 8px 12px 10px; }
+img.chart { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; margin: 8px 0; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
+.mini { background: var(--panel2); border-radius: 14px; padding: 10px 12px; font-size: 15px; }
+.mini b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 9px; margin-right: 6px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0 4px; }
+.stat { background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); padding: 12px 16px; }
+.stat b { display: block; font-size: 30px; line-height: 1.1; background: linear-gradient(135deg, var(--accent), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat span { font-size: 14px; color: var(--muted); }
+footer { color: var(--muted); font-size: 14px; padding: 30px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
+@media print { nav, .calc, .tbtn, #community .grid4 { display: none !important; } body { background: #fff; font-size: 13px; }
+  .card, .hero-ill, .stat, .ph { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; } section { break-inside: auto; } h2 { break-after: avoid; } }
+.chain { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; align-items: stretch; gap: 6px; }
+.st { border-radius: 18px; padding: 14px 10px; text-align: center; font-size: 15px; color: #1d1b3a; }
+.st b { display: block; font-size: 17px; margin: 2px 0 4px; } .st .e { font-size: 30px; display: block; }
+.arw { display: grid; place-items: center; color: var(--accent); font-size: 26px; font-weight: 800; }
+@media (max-width: 760px) { .chain { grid-template-columns: 1fr; } .arw { transform: rotate(90deg); height: 26px; } }
+.money { margin-top: 12px; border: 2px dashed #e5484d; border-radius: 16px; padding: 10px 14px; color: #e5484d; font-weight: 600; text-align: center; }
+.inc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+.inc div { background: color-mix(in srgb, #e5484d 9%, var(--panel)); border-radius: 16px; padding: 12px 14px; }
+.inc b { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; background: #e5484d; color: #fff; margin-right: 8px; }
+.canvas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.cv { background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); padding: 14px 16px; font-size: 15.5px; }
+.cv h3 { margin: 0 0 4px; font-size: 17px; color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.stat { background: var(--panel); border-radius: 18px; box-shadow: var(--shadow); padding: 12px 16px; }
+.stat b { display: block; font-size: 30px; line-height: 1.1; background: linear-gradient(135deg, var(--accent), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat span { font-size: 14px; color: var(--muted); }
+.sdg { display: flex; flex-wrap: wrap; gap: 8px; } .sdg span { color: #fff; font-weight: 700; font-size: 14px; border-radius: 10px; padding: 6px 12px; }
+.prob li { margin: 4px 0; } .prob b { color: #e5484d; }
+.ph { margin: 0; } .ph img { width: 100%; border-radius: 16px; display: block; }
+.dl { display: inline-flex; gap: 8px; align-items: center; padding: 10px 18px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 700; text-decoration: none; }
+table.imp { width: 100%; border-collapse: collapse; font-size: 15px; } table.imp th, table.imp td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; } table.imp th { color: var(--muted); font-size: 14px; }
+.lb { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; }
+.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.out2 { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--panel2); font-weight: 600; line-height: 1.8; }
+.phd { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; margin-bottom: 8px; }
+.phd .n { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-weight: 800; font-size: 20px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); }
+table.t { width: 100%; border-collapse: collapse; font-size: 15px; } table.t th, table.t td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { overflow-x: auto; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; } .tags span { font-size: 14px; padding: 4px 11px; border-radius: 999px; background: var(--panel2); }
+.grid-pots { display: grid; gap: 6px; margin-top: 10px; }
+.pot { border-radius: 10px; padding: 6px 4px; text-align: center; font-size: 12px; line-height: 1.3; color: #1d1b3a; }
+.ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.ctl select, .ctl button { font: inherit; font-size: 15px; padding: 8px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); cursor: pointer; }
+.ctl button.go { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: 0; font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--muted); margin-top: 8px; } .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 4px; vertical-align: -1px; }
+.mk { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.it { background: var(--panel); border-radius: 20px; box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.it .em { font-size: 40px; line-height: 1; } .it h3 { margin: 4px 0 0; font-size: 18px; }
+.it .pr { font-weight: 700; color: var(--accent); } .it .nt { font-size: 13.5px; color: var(--muted); }
+.it .row { margin-top: auto; display: flex; gap: 8px; align-items: center; padding-top: 8px; }
+.it input { width: 80px; font: inherit; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.btn2 { border: 0; cursor: pointer; font: inherit; font-weight: 700; padding: 9px 16px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+.btn2.alt { background: linear-gradient(135deg, #f59e0b, #f97316); }
+.badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--panel2); }
+#cart table { width: 100%; border-collapse: collapse; font-size: 15px; } #cart td, #cart th { padding: 8px; border-bottom: 1px solid var(--line); text-align: left; }
+#cart textarea { width: 100%; min-height: 150px; font: inherit; font-size: 14px; padding: 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+#cart .lb { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; } #cart input.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.warnb { border-left: 5px solid #f59e0b; background: color-mix(in srgb, #f59e0b 10%, var(--panel)); }
+</style>
+<script src="farm_i18n.js"></script>
+<script src="site_nav.js" defer></script>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="index.html"><span class="logo">🫧</span>HK-Green-15</a>
+  <div class="links"></div>
+  <button class="tbtn" id="lang" title="ภาษา / Language" aria-label="ภาษา / Language">EN</button>
+  <button class="tbtn" id="themeBtn" title="สว่าง / มืด" aria-label="สว่าง / มืด">◐</button>
+</div></nav>
+
+<header class="wrap">
+  <div class="chips"><span class="chip">🛒 ตลาดชุมชน</span><span class="chip">ต้นแบบ ยังไม่เปิดขายจริง</span></div>
+  <h1>ขายของเหลือทิ้งให้เรา<br>รับ<em>วัสดุปรับปรุงดิน</em>กลับไป</h1>
+  <p class="lead">ชุมชนขายซังข้าวโพดและเปลือกกุ้งให้ศูนย์ผลิต แล้วสั่งจองไบโอชาร์และเม็ดอุ้มน้ำที่ผลิตจากวัตถุดิบนั้น ทุกสินค้ามีคู่มือวิธีใช้แนบไปด้วย</p>
+</header>
+<main class="wrap">
+<section><div class="card warnb"><b>สถานะ</b> หน้านี้เป็นต้นแบบระบบ ยังไม่รับเงินและยังไม่รับคำสั่งซื้อจริง ราคาจะกำหนดจากต้นทุนจริงหลังผลิตนำร่อง กดสั่งแล้วจะได้ข้อความสั่งจองไว้คัดลอกส่งทีมงาน</div></section>
+
+<section id="buy"><h2><span class="ic">♻️</span>เรารับซื้อ</h2><p class="sub">วัตถุดิบจากชุมชน นำไปผลิตไบโอชาร์และไคโตซาน</p><div class="mk" id="buyList"></div></section>
+<section id="shop"><h2><span class="ic">🌱</span>สินค้าจากศูนย์ผลิต</h2><p class="sub">ผลิตจากของเหลือทิ้งของชุมชน รายได้ส่วนหนึ่งเข้ากองทุนชุมชน</p><div class="mk" id="shopList"></div></section>
+
+<section id="cart"><h2><span class="ic">🧺</span>รายการของฉัน</h2><div class="card">
+  <div id="cartBody"></div>
+  <label class="lb" for="cname">ชื่อ / กลุ่ม / วิสาหกิจชุมชน</label><input class="in" id="cname" autocomplete="off">
+  <label class="lb" for="carea">อำเภอ จังหวัด</label><input class="in" id="carea" autocomplete="off">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn2" id="mk">📝 สร้างข้อความสั่งจอง/เสนอขาย</button><button class="btn2 alt" id="clr">ล้างรายการ</button></div>
+  <textarea id="msg" readonly placeholder="ข้อความจะขึ้นที่นี่"></textarea>
+  <button class="btn2" id="cp" style="margin-top:8px">📋 คัดลอกข้อความ</button>
+  <p class="src">ส่งข้อความนี้ให้ทีมงานทางช่องทางที่ทีมประกาศ ระบบนี้ไม่เก็บข้อมูลของคุณไว้บนเว็บ ข้อมูลอยู่ในเครื่องของคุณเท่านั้น</p></div></section>
+</main>
+<footer class="wrap">HK-Green-15 · ตลาดชุมชน (ต้นแบบ) · <a href="business.html">โมเดลธุรกิจ</a> · <a href="learn.html">คลังความรู้</a></footer>
+<script>
+(function () {
+  const T = (th, en) => (window.tr ? window.tr(th, en) : th);
+  const ITEMS = [
+    { id: 'cob', side: 'buy', em: '🌽', th: 'ซังข้าวโพดแห้ง', en: 'Dry corn cobs', unit: ['กก.', 'kg'], nt: ['ตากแห้ง ไม่ขึ้นรา ไม่ปนดินหรือพลาสติก', 'Sun-dried, no mould, no soil or plastic'], learn: 'learn.html#biochar' },
+    { id: 'shell', side: 'buy', em: '🦐', th: 'เปลือกกุ้ง / เปลือกปู', en: 'Shrimp / crab shells', unit: ['กก.', 'kg'], nt: ['ต้มสุกแล้วตากแห้ง แยกเนื้อและหัวออก', 'Boiled, then dried; meat and heads removed'], learn: 'learn.html#chitosan' },
+    { id: 'char', side: 'buy', em: '⚫', th: 'ไบโอชาร์จากชุมชน', en: 'Community biochar', unit: ['กก.', 'kg'], nt: ['ผ่านเกณฑ์ มผช.1752/2569 (ความชื้น ≤ 20%, pH ≥ 7)', 'Meets TCPS 1752/2569 (moisture ≤ 20%, pH ≥ 7)'], learn: 'learn.html#check' },
+    { id: 'biochar', side: 'shop', em: '🪨', th: 'ไบโอชาร์ซังข้าวโพด', en: 'Corn-cob biochar', unit: ['ถุง 1 กก.', '1 kg bag'], nt: ['ทุบละเอียด ≤ 1 ซม. พร้อมคู่มือวิธีใช้', 'Crushed ≤ 1 cm, with a how-to guide'], learn: 'learn.html#use' },
+    { id: 'beads', side: 'shop', em: '🫧', th: 'เม็ดอุ้มน้ำไคโตซาน–ไบโอชาร์', en: 'Chitosan–biochar water beads', unit: ['ถุง 500 ก.', '500 g bag'], nt: ['วัสดุปรับปรุงดิน สั่งจองล่วงหน้า ผลิตเป็นรอบ', 'Soil conditioner, pre-order, made in batches'], learn: 'learn.html#bead' },
+    { id: 'kit', side: 'shop', em: '📦', th: 'ชุดทดลองสำหรับโรงเรียน', en: 'School trial kit', unit: ['ชุด', 'kit'], nt: ['เม็ด 2 สูตร + คู่มือการทดลองในกระถาง', '2 bead recipes + a pot-trial guide'], learn: 'trials.html' },
+  ];
+  const KEY = 'hk15_cart', get = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } };
+  const put = (c) => { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) {} window.dispatchEvent(new Event('hkcart')); };
+  function cards() {
+    ['buy', 'shop'].forEach((side) => {
+      const box = document.getElementById(side + 'List'); box.innerHTML = '';
+      ITEMS.filter((i) => i.side === side).forEach((i) => {
+        const d = document.createElement('div'); d.className = 'it';
+        d.innerHTML = `<div class="em">${i.em}</div><h3>${T(i.th, i.en)}</h3><span class="pr">${T('ราคา: กำหนดหลังผลิตนำร่อง', 'Price: set after the pilot')}</span>
+          <span class="nt">${T(i.nt[0], i.nt[1])}</span><a class="nt" href="${i.learn}">📖 ${T('วิธีทำ/วิธีใช้', 'How to make / use')}</a>
+          <div class="row"><input type="number" min="1" value="${side === 'buy' ? 10 : 1}" aria-label="qty"><span class="nt">${T(i.unit[0], i.unit[1])}</span>
+          <button class="btn2${side === 'buy' ? ' alt' : ''}">${side === 'buy' ? T('เสนอขาย', 'Offer to sell') : T('ใส่รถเข็น', 'Add to cart')}</button></div>`;
+        d.querySelector('button').onclick = () => { const q = Math.max(1, +d.querySelector('input').value || 1), c = get(); c[i.id] = (c[i.id] || 0) + q; put(c); list(); };
+        box.appendChild(d);
+      });
+    });
+  }
+  function list() {
+    const c = get(), ids = Object.keys(c).filter((k) => c[k] > 0), b = document.getElementById('cartBody');
+    if (!ids.length) { b.innerHTML = '<p class="nt">' + T('ยังไม่มีรายการ', 'Nothing yet') + '</p>'; return; }
+    b.innerHTML = '<table><tr><th>' + T('รายการ', 'Item') + '</th><th>' + T('ประเภท', 'Type') + '</th><th>' + T('จำนวน', 'Qty') + '</th><th></th></tr>' + ids.map((k) => {
+      const i = ITEMS.find((x) => x.id === k); return `<tr><td>${i.em} ${T(i.th, i.en)}</td><td><span class="badge">${i.side === 'buy' ? T('เสนอขายให้ทีม', 'Selling to us') : T('สั่งจอง', 'Pre-order')}</span></td><td>${c[k]} ${T(i.unit[0], i.unit[1])}</td><td><button class="sz" data-k="${k}" style="border:0;background:none;cursor:pointer">✕</button></td></tr>`;
+    }).join('') + '</table>';
+    b.querySelectorAll('button[data-k]').forEach((x) => x.onclick = () => { const c2 = get(); delete c2[x.dataset.k]; put(c2); list(); });
+  }
+  document.getElementById('mk').onclick = () => {
+    const c = get(), ids = Object.keys(c).filter((k) => c[k] > 0); if (!ids.length) return;
+    const sell = ids.filter((k) => ITEMS.find((i) => i.id === k).side === 'buy'), buy = ids.filter((k) => ITEMS.find((i) => i.id === k).side === 'shop');
+    const ln = (k) => { const i = ITEMS.find((x) => x.id === k); return '- ' + T(i.th, i.en) + ' ' + c[k] + ' ' + T(i.unit[0], i.unit[1]); };
+    let m = T('สวัสดีครับ/ค่ะ ทีม HK-Green-15', 'Hello HK-Green-15 team') + '\n' + T('จาก: ', 'From: ') + (document.getElementById('cname').value || '-') + ' (' + (document.getElementById('carea').value || '-') + ')\n';
+    if (sell.length) m += '\n' + T('ต้องการเสนอขายวัตถุดิบ:', 'I would like to sell:') + '\n' + sell.map(ln).join('\n') + '\n';
+    if (buy.length) m += '\n' + T('ต้องการสั่งจอง:', 'I would like to pre-order:') + '\n' + buy.map(ln).join('\n') + '\n';
+    m += '\n' + T('รบกวนแจ้งราคาและวิธีส่ง/รับของครับ/ค่ะ', 'Please let me know the price and delivery/pick-up.');
+    document.getElementById('msg').value = m;
+  };
+  document.getElementById('cp').onclick = () => { const t = document.getElementById('msg'); t.select(); try { navigator.clipboard.writeText(t.value); } catch (e) { document.execCommand('copy'); } };
+  document.getElementById('clr').onclick = () => { put({}); list(); document.getElementById('msg').value = ''; };
+  window.addEventListener('hklang', () => { cards(); list(); });
+  cards(); list();
+  const root = document.documentElement, TK = 'theme';
+  try { const t = localStorage.getItem(TK); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(TK, root.dataset.theme); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
