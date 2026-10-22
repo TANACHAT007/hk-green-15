@@ -1,0 +1,114 @@
+{
+ "_how_to_add_a_shop": "Team: after approving an application, add an object to 'shops' (unique id, Thai/English names, area, description, items). Items use side 'shop' (they sell) or 'buy' (they buy). 'img' is optional (put the photo in img/market/). Never put personal phone numbers or ID numbers here.",
+ "shops": [
+  {
+   "id": "hk",
+   "official": true,
+   "th": "ศูนย์ผลิต HK-Green-15",
+   "en": "HK-Green-15 production centre",
+   "area_th": "โครงงานนักเรียน (ต้นแบบ)",
+   "area_en": "Student project (prototype)",
+   "desc_th": "รับซื้อวัตถุดิบจากชุมชน และผลิตไบโอชาร์กับเม็ดอุ้มน้ำ",
+   "desc_en": "Buys raw materials from communities and makes biochar and water beads",
+   "items": [
+    {
+     "id": "cob",
+     "side": "buy",
+     "em": "🌽",
+     "th": "ซังข้าวโพดแห้ง",
+     "en": "Dry corn cobs",
+     "unit": [
+      "กก.",
+      "kg"
+     ],
+     "nt": [
+      "ตากแห้ง ไม่ขึ้นรา ไม่ปนดินหรือพลาสติก",
+      "Sun-dried, no mould, no soil or plastic"
+     ],
+     "learn": "learn.html#biochar"
+    },
+    {
+     "id": "shell",
+     "side": "buy",
+     "em": "🦐",
+     "th": "เปลือกกุ้ง / เปลือกปู",
+     "en": "Shrimp / crab shells",
+     "unit": [
+      "กก.",
+      "kg"
+     ],
+     "nt": [
+      "ต้มสุกแล้วตากแห้ง แยกเนื้อและหัวออก",
+      "Boiled, then dried; meat and heads removed"
+     ],
+     "learn": "learn.html#chitosan"
+    },
+    {
+     "id": "char",
+     "side": "buy",
+     "em": "⚫",
+     "th": "ไบโอชาร์จากชุมชน",
+     "en": "Community biochar",
+     "unit": [
+      "กก.",
+      "kg"
+     ],
+     "nt": [
+      "ผ่านเกณฑ์ มผช.1752/2569 (ความชื้น ≤ 20%, pH ≥ 7)",
+      "Meets TCPS 1752/2569 (moisture ≤ 20%, pH ≥ 7)"
+     ],
+     "learn": "learn.html#check"
+    },
+    {
+     "id": "biochar",
+     "side": "shop",
+     "em": "🪨",
+     "th": "ไบโอชาร์ซังข้าวโพด",
+     "en": "Corn-cob biochar",
+     "unit": [
+      "ถุง 1 กก.",
+      "1 kg bag"
+     ],
+     "nt": [
+      "ทุบละเอียด ≤ 1 ซม. พร้อมคู่มือวิธีใช้",
+      "Crushed ≤ 1 cm, with a how-to guide"
+     ],
+     "learn": "learn.html#use"
+    },
+    {
+     "id": "beads",
+     "side": "shop",
+     "em": "🫧",
+     "img": "img/beads.jpg",
+     "th": "เม็ดอุ้มน้ำไคโตซาน–ไบโอชาร์",
+     "en": "Chitosan–biochar water beads",
+     "unit": [
+      "ถุง 500 ก.",
+      "500 g bag"
+     ],
+     "nt": [
+      "วัสดุปรับปรุงดิน สั่งจองล่วงหน้า ผลิตเป็นรอบ",
+      "Soil conditioner, pre-order, made in batches"
+     ],
+     "learn": "learn.html#bead"
+    },
+    {
+     "id": "kit",
+     "side": "shop",
+     "em": "📦",
+     "th": "ชุดทดลองสำหรับโรงเรียน",
+     "en": "School trial kit",
+     "unit": [
+      "ชุด",
+      "kit"
+     ],
+     "nt": [
+      "เม็ด 2 สูตร + คู่มือการทดลองในกระถาง",
+      "2 bead recipes + a pot-trial guide"
+     ],
+     "learn": "trials.html"
+    }
+   ]
+  }
+ ]
+}

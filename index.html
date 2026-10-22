@@ -86,7 +86,7 @@ h1 em { font-style: normal; background: linear-gradient(120deg, var(--accent), v
 .shot.live img.hero-img { opacity: 0; transition: opacity .4s; }
 .spin3d { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); z-index: 3; border: 0; cursor: pointer; font: inherit; font-weight: 600; font-size: 14px;
   padding: 9px 16px; border-radius: 999px; background: var(--panel); color: var(--text); box-shadow: var(--shadow); transition: transform .3s var(--spring); white-space: nowrap; }
-.spin3d:hover { transform: translateX(-50%) translateY(-2px); }
+.spin3d:hover { transform: translateX(-50%); } .spin3d { pointer-events: none; min-width: 120px; padding: 6px 12px !important; } .spin3d.hint { animation: hintout 3.5s 2s forwards; } @keyframes hintout { to { opacity: 0; } }
 .spin3d i { font-style: normal; display: inline-block; animation: wob 2.4s ease-in-out infinite; } @keyframes wob { 50% { transform: rotate(-14deg) scale(1.1); } }
 .spin3d .bar { display: block; height: 3px; border-radius: 2px; background: var(--accent); width: 0; margin-top: 4px; transition: width .2s; }
 /* stats */
@@ -248,7 +248,7 @@ footer { padding: 60px 0 40px; color: var(--muted); font-size: 14px; text-align:
   <div class="shot">
     <img class="hero-img" src="img/hero.jpg" width="1600" height="1000" fetchpriority="high" alt="ภาพเรนเดอร์เครื่อง HK-Green-15">
     <div class="v3d" id="v3d"></div>
-    <button class="spin3d" id="spin3d"><i>🧊</i> หมุนดูแบบ 3 มิติ<span class="bar" id="v3bar"></span></button>
+    <div class="spin3d" id="spin3d" aria-hidden="true"><span class="bar" id="v3bar"></span></div>
     <div class="chip c1"><span>💧</span><div>หยดพร้อมกัน 12 เข็ม<small>เม็ดขนาดสม่ำเสมอ</small></div></div>
     <div class="chip c2"><span>🧪</span><div>ล้างจน pH 7.5<small>วัดเองทุกรอบล้าง</small></div></div>
     <div class="chip c3"><span>📱</span><div>จอสัมผัส 7″ + เว็บ<small>ดู/สั่งงานได้ทั้งสองทาง</small></div></div>
@@ -454,17 +454,20 @@ document.getElementById('tryScr').onclick = async (e) => {
   } catch (err) { b.textContent = 'โหลดจอไม่ได้'; }
 };
 // hero: render → live 3D on demand
-document.getElementById('spin3d').onclick = async (e) => {
-  const b = e.currentTarget, host = document.getElementById('v3d'), bar = document.getElementById('v3bar');
-  if (host.classList.contains('on')) return;
-  b.disabled = true;
-  try {
-    const { mount } = await import('./landing3d.js');
-    await mount(host, (f) => { bar.style.width = Math.round(f * 100) + '%'; });
-    host.classList.add('on'); document.querySelector('.shot').classList.add('live');
-    b.innerHTML = '<i>👆</i> ' + (window.LANG === 'en' ? 'Drag to rotate' : 'ลากเพื่อหมุน');
-  } catch (err) { b.textContent = 'โหลดโมเดลไม่ได้'; }
-};
+// hero: the live 3D model loads by itself once the page is idle (render image stays until it is ready)
+(function load3d() {
+  const b = document.getElementById('spin3d'), host = document.getElementById('v3d'), bar = document.getElementById('v3bar');
+  const go = async () => {
+    try {
+      const { mount } = await import('./landing3d.js');
+      await mount(host, (f) => { bar.style.width = Math.round(f * 100) + '%'; });
+      host.classList.add('on'); document.querySelector('.shot').classList.add('live');
+      b.innerHTML = '<i>👆</i> ' + (window.LANG === 'en' ? 'Drag to rotate' : 'ลากเพื่อหมุน'); b.classList.add('hint');
+    } catch (err) { b.remove(); }                       // keep the still render if WebGL/model fails
+  };
+  const start = () => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 800));
+  if (document.readyState === 'complete') start(); else addEventListener('load', start);
+})();
 addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 10), { passive: true });
 </script>
 <script src="pwa.js"></script>
