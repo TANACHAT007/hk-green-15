@@ -25,7 +25,10 @@
       "ตากแห้ง ไม่ขึ้นรา ไม่ปนดินหรือพลาสติก",
       "Sun-dried, no mould, no soil or plastic"
      ],
-     "learn": "learn.html#biochar"
+     "learn": "learn.html#biochar",
+     "img": "img/market/cob.jpg",
+     "credit": "Empty corn cob — Penny Mayes, geograph.org.uk, CC BY-SA 2.0",
+     "credit_url": "https://commons.wikimedia.org/wiki/File:Empty_corn_cob_-_geograph.org.uk_-_365620.jpg"
     },
     {
      "id": "shell",
@@ -41,7 +44,10 @@
       "ต้มสุกแล้วตากแห้ง แยกเนื้อและหัวออก",
       "Boiled, then dried; meat and heads removed"
      ],
-     "learn": "learn.html#chitosan"
+     "learn": "learn.html#chitosan",
+     "img": "img/market/shell.jpg",
+     "credit": "Shrimp shells — W.carter, CC BY-SA 4.0",
+     "credit_url": "https://commons.wikimedia.org/wiki/File:A_heap_of_shrimp_shells_in_Tuntorp_2.jpg"
     },
     {
      "id": "char",
@@ -57,7 +63,10 @@
       "ผ่านเกณฑ์ มผช.1752/2569 (ความชื้น ≤ 20%, pH ≥ 7)",
       "Meets TCPS 1752/2569 (moisture ≤ 20%, pH ≥ 7)"
      ],
-     "learn": "learn.html#check"
+     "learn": "learn.html#check",
+     "img": "img/market/charpile.jpg",
+     "credit": "Biochar pile — U.S. Department of Agriculture, public domain",
+     "credit_url": "https://commons.wikimedia.org/wiki/File:Biochar_pile_in_tarp.jpg"
     },
     {
      "id": "biochar",
@@ -73,7 +82,10 @@
       "ทุบละเอียด ≤ 1 ซม. พร้อมคู่มือวิธีใช้",
       "Crushed ≤ 1 cm, with a how-to guide"
      ],
-     "learn": "learn.html#use"
+     "learn": "learn.html#use",
+     "img": "img/market/biochar.jpg",
+     "credit": "Biochar — Permaculture Association, CC BY-SA 2.0",
+     "credit_url": "https://commons.wikimedia.org/wiki/File:Biochar_made_at_convergence_2016.jpg"
     },
     {
      "id": "beads",
@@ -90,7 +102,9 @@
       "วัสดุปรับปรุงดิน สั่งจองล่วงหน้า ผลิตเป็นรอบ",
       "Soil conditioner, pre-order, made in batches"
      ],
-     "learn": "learn.html#bead"
+     "learn": "learn.html#bead",
+     "credit": "",
+     "credit_url": ""
     },
     {
      "id": "kit",
@@ -106,9 +120,13 @@
       "เม็ด 2 สูตร + คู่มือการทดลองในกระถาง",
       "2 bead recipes + a pot-trial guide"
      ],
-     "learn": "trials.html"
+     "learn": "trials.html",
+     "img": "img/results_th.jpg",
+     "credit": "",
+     "credit_url": ""
     }
-   ]
+   ],
+   "img": "img/hero.jpg"
   }
  ]
 }

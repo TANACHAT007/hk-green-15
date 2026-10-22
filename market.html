@@ -139,6 +139,8 @@ table.t th { color: var(--muted); font-size: 14px; font-weight: 600; } .tw { ove
 select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
 #apply textarea { width: 100%; min-height: 150px; font: inherit; font-size: 14px; padding: 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); margin-top: 8px; }
 #apply .lb { display: block; font-size: 14px; color: var(--muted); margin: 8px 0 3px; } #apply input.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
+.simg { width: 100%; height: 170px; object-fit: contain; background: #fff; border-radius: 14px; }
+.pf { margin: 0; } .pf figcaption { font-size: 10.5px; color: var(--muted); margin-top: 3px; line-height: 1.3; } .pf figcaption a { color: inherit; }
 </style>
 <script src="farm_i18n.js"></script>
 <script src="site_nav.js" defer></script>
@@ -200,7 +202,7 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
       const box = document.getElementById(side + 'List'); box.innerHTML = '';
       ITEMS.filter((i) => i.side === side).forEach((i) => {
         const d = document.createElement('div'); d.className = 'it';
-        d.innerHTML = `${i.img ? `<img class="pimg" src="${i.img}" alt="" loading="lazy">` : `<div class="em">${i.em}</div>`}<span class="badge">🏪 ${T(i.shop.th, i.shop.en)}</span><h3>${T(i.th, i.en)}</h3><span class="pr">${T('ราคา: กำหนดหลังผลิตนำร่อง', 'Price: set after the pilot')}</span>
+        d.innerHTML = `${i.img ? `<figure class="pf"><img class="pimg" src="${i.img}" alt="${T(i.th, i.en)}" loading="lazy">${i.credit ? `<figcaption><a href="${i.credit_url}" target="_blank" rel="noopener">${T('ภาพประกอบ: ', 'Photo: ')}${i.credit}</a></figcaption>` : ''}</figure>` : `<div class="em">${i.em}</div>`}<span class="badge">🏪 ${T(i.shop.th, i.shop.en)}</span><h3>${T(i.th, i.en)}</h3><span class="pr">${T('ราคา: กำหนดหลังผลิตนำร่อง', 'Price: set after the pilot')}</span>
           <span class="nt">${T(i.nt[0], i.nt[1])}</span><a class="nt" href="${i.learn}">📖 ${T('วิธีทำ/วิธีใช้', 'How to make / use')}</a>
           <div class="row"><input type="number" min="1" value="${side === 'buy' ? 10 : 1}" aria-label="qty"><span class="nt">${T(i.unit[0], i.unit[1])}</span>
           <button class="btn2${side === 'buy' ? ' alt' : ''}">${side === 'buy' ? T('เสนอขาย', 'Offer to sell') : T('ใส่รถเข็น', 'Add to cart')}</button></div>`;
@@ -232,7 +234,7 @@ select.in { width: 100%; font: inherit; padding: 9px 12px; border-radius: 12px; 
   function shops() {
     const box = document.getElementById('shopsList'); box.innerHTML = '';
     SHOPS.forEach((sh) => { const d = document.createElement('div'); d.className = 'it';
-      d.innerHTML = `<div class="em">🏪</div><h3>${T(sh.th, sh.en)} ${sh.official ? '<span class="badge">' + T('ทีมผู้จัดทำ', 'Project team') + '</span>' : ''}</h3><span class="nt">📍 ${T(sh.area_th, sh.area_en)}</span><span class="nt">${T(sh.desc_th, sh.desc_en)}</span><span class="nt">${sh.items.length} ${T('รายการ', 'items')}</span>`;
+      d.innerHTML = `${sh.img ? `<img class="simg" src="${sh.img}" alt="" loading="lazy">` : ''}<h3>🏪 ${T(sh.th, sh.en)} ${sh.official ? '<span class="badge">' + T('ทีมผู้จัดทำ', 'Project team') + '</span>' : ''}</h3><span class="nt">📍 ${T(sh.area_th, sh.area_en)}</span><span class="nt">${T(sh.desc_th, sh.desc_en)}</span><span class="nt">${sh.items.length} ${T('รายการ', 'items')}</span>`;
       box.appendChild(d); });
   }
   function all() { shops(); cards(); list(); }
