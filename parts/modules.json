@@ -1,0 +1,140 @@
+[
+ {
+  "name": "Frame_2020",
+  "title": "โครงอะลูมิเนียมโปรไฟล์ 2020",
+  "desc": "เสา 900 มม. ×4, คานรอบชั้น 300/480 มม. · T-slot 6 มม. + ฉาก 44 ตัว + น็อต M5 พร้อม T-nut",
+  "file": "hkgpart_Frame_2020.png"
+ },
+ {
+  "name": "Bracket_2020_corner_20x20x17",
+  "title": "ฉากยึดมุมโปรไฟล์ 2020",
+  "desc": "หล่อไดคาสต์ 20×20×17 ใช้ 44 ตัว · สกรู M5×8 หัวกลมหกเหลี่ยมจม",
+  "file": "hkgpart_Bracket_2020_corner_20x20x17.png"
+ },
+ {
+  "name": "Plates_PP",
+  "title": "แผ่นชั้น",
+  "desc": "แผ่นอะคริลิกดำ/PP ปูแต่ละชั้น หนา 6 มม. เจาะรูยึดและรูท่อ",
+  "file": "hkgpart_Plates_PP.png"
+ },
+ {
+  "name": "Crosslinking_Chamber",
+  "title": "ห้องหยด (ทรงกระบอกใส)",
+  "desc": "หลอดอะคริลิก Ø190×250 บนฐาน PP ใส่ NaOH 2 M · วาล์วระบายออกด้านข้าง",
+  "file": "hkgpart_Crosslinking_Chamber.png"
+ },
+ {
+  "name": "Chamber_Magnetic_Stirrer_12V",
+  "title": "กวนแม่เหล็กใต้ห้องหยด",
+  "desc": "มอเตอร์ RS-385 12 V + จานแม่เหล็ก N52 ใต้พื้นห้อง หมุนแท่ง PTFE 50 มม.",
+  "file": "hkgpart_Chamber_Magnetic_Stirrer_12V.png"
+ },
+ {
+  "name": "Plumbing_Outlet_1in",
+  "title": "ท่อระบายขาออก 1 นิ้ว",
+  "desc": "PVC 1\" + ข้อต่อ + ข้อศอก ลงถาดตะแกรง",
+  "file": "hkgpart_Plumbing_Outlet_1in.png"
+ },
+ {
+  "name": "Solenoid_Valve_1in_PIK2",
+  "title": "โซลินอยด์วาล์ว 1 นิ้ว (ของทีม)",
+  "desc": "ทองเหลือง 12 V ปกติปิด เปิดที่ 0 bar (ไหลตามแรงโน้มถ่วง) — ล้างหลังระบาย NaOH ทุกครั้ง",
+  "file": "hkgpart_Solenoid_Valve_1in_PIK2.png"
+ },
+ {
+  "name": "Rinsing_Zone",
+  "title": "โซนล้างน้ำและถาดตะแกรง",
+  "desc": "ถาดตะแกรงเอียงได้ด้วยเซอร์โว DS3218 · แขนพ่นน้ำ · ถาดรอง + probe pH",
+  "file": "hkgpart_Rinsing_Zone.png"
+ },
+ {
+  "name": "Tanks_Under_Extension",
+  "title": "ถังใต้ส่วนต่อขยาย",
+  "desc": "ถังของเสีย ~7 L และถังน้ำสะอาด ~8 L พร้อมฝาและพอร์ต",
+  "file": "hkgpart_Tanks_Under_Extension.png"
+ },
+ {
+  "name": "Plumbing_Water",
+  "title": "ท่อน้ำล้าง",
+  "desc": "ปั๊มจุ่ม 12 V → สาย 8×12 → ทีและแขนพ่น 3 หัว",
+  "file": "hkgpart_Plumbing_Water.png"
+ },
+ {
+  "name": "Drying_Tray",
+  "title": "ถาดตากเม็ด",
+  "desc": "ถาดสแตนเลส 300×260 พร้อมหูจับ รับเม็ดจากถาดตะแกรง",
+  "file": "hkgpart_Drying_Tray.png"
+ },
+ {
+  "name": "Dispensing_Box",
+  "title": "กล่องหยดสารละลาย",
+  "desc": "ปั๊มเพอริสตัลติก + แมนิโฟลด์เข็ม 12 ตัว 2 แถว (18G) แขวนเหนือห้องหยด",
+  "file": "hkgpart_Dispensing_Box.png"
+ },
+ {
+  "name": "Magnetic_Stirrer_DIY_12V",
+  "title": "กวนถังกรด (แม่เหล็ก)",
+  "desc": "มอเตอร์ RS-385 + จานแม่เหล็กใต้ถังกรด ตัวเรือนพิมพ์ 3D ปิดด้วยอะคริลิกใส",
+  "file": "hkgpart_Magnetic_Stirrer_DIY_12V.png"
+ },
+ {
+  "name": "Acid_Mix_Tank",
+  "title": "ถังผสมกรดอะซิติก",
+  "desc": "ถังใส Ø120×80 (≈0.9 L) แท่งกวน PTFE 40 มม. ท่อออกด้านล่างไปปั๊มหยด",
+  "file": "hkgpart_Acid_Mix_Tank.png"
+ },
+ {
+  "name": "Powder_Hopper_Auger",
+  "title": "ถังผงและสกรูป้อน",
+  "desc": "ถังผงไคโตซาน+ไบโอชาร์ · สกรู auger Ø24 พิมพ์ 3D · มอเตอร์ JGA25-370 พร้อมแหวนจับ",
+  "file": "hkgpart_Powder_Hopper_Auger.png"
+ },
+ {
+  "name": "Plumbing_Solution",
+  "title": "ท่อสารละลายไคโตซาน",
+  "desc": "ซิลิโคน 4×7 จากถังกรดผ่านกรอมเมต ไปปั๊มหยด · กรวยเติม NaOH",
+  "file": "hkgpart_Plumbing_Solution.png"
+ },
+ {
+  "name": "Front_Panel",
+  "title": "แผงหน้า",
+  "desc": "จอสัมผัส 7\" ในตัวเรือนพิมพ์ 3D บนอะคริลิกใส 3 มม. สลักชื่อเครื่อง",
+  "file": "hkgpart_Front_Panel.png"
+ },
+ {
+  "name": "E_stop_LAY37_real",
+  "title": "ปุ่มฉุกเฉิน E-stop",
+  "desc": "22 มม. มี 2 หน้าสัมผัส NC — ตัดไฟมอเตอร์ 12 V ที่ฮาร์ดแวร์",
+  "file": "hkgpart_E_stop_LAY37_real.png"
+ },
+ {
+  "name": "Btn_start_LAY37_green_real",
+  "title": "ปุ่ม START (เขียว)",
+  "desc": "ปุ่มกด 22 มม. มีไฟ 12 V",
+  "file": "hkgpart_Btn_start_LAY37_green_real.png"
+ },
+ {
+  "name": "Btn_stop_LAY37_red_real",
+  "title": "ปุ่ม STOP (แดง)",
+  "desc": "ปุ่มกด 22 มม. มีไฟ 12 V",
+  "file": "hkgpart_Btn_stop_LAY37_red_real.png"
+ },
+ {
+  "name": "Acrylic_Enclosure_Top",
+  "title": "ผนังอะคริลิกห้องบน",
+  "desc": "ด้านซ้าย/ขวา/หลัง อะคริลิกใส 3 มม. ยึดสกรู M5",
+  "file": "hkgpart_Acrylic_Enclosure_Top.png"
+ },
+ {
+  "name": "Levelling_Feet",
+  "title": "ขาปรับระดับ",
+  "desc": "6 ขา ปรับให้เครื่องตั้งตรงบนพื้นไม่เรียบ",
+  "file": "hkgpart_Levelling_Feet.png"
+ },
+ {
+  "name": "Electronics_Bay",
+  "title": "ห้องอิเล็กทรอนิกส์",
+  "desc": "PSU Mean Well 12 V 150 W, Arduino Mega, ไดรเวอร์ Cytron MDD10A/MDD3A, SSR, บั๊ก, รางสาย, เต้ารับ AC พร้อมฟิวส์+สวิตช์",
+  "file": "hkgpart_Electronics_Bay.png"
+ }
+]

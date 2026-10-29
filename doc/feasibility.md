@@ -4,7 +4,7 @@
 
 | | Group | Check | Requirement | Capability | Margin | Note |
 |---|---|---|---|---|---|---|
-| ⚠️ | Process | Magnetic coupling: top acid-tank stirrer (v8) | gap ≤ 6.0 mm | 6.5 mm | - | pole spacing 40 mm vs bar 40 mm |
+| ✅ | Process | Magnetic coupling: top acid-tank stirrer (v9.2: 20×10×5 N52, disc raised, Ø90 window) | gap ≤ 6.0 mm | 3.5 mm | 1.7× | pole spacing 40 mm vs bar 40 mm; was 6.0 mm = no margin (v9.1) |
 | ⚠️ | Materials | Release valve body | NaOH 2 M | brass | - | team decision: keep; rinse after every drain |
 | ✅ | Electrical | Power budget (PSU) | typ 4.18 A ×1.25, worst 9.51 A | 12.5 A | 1.32× | worst = every listed load at stall/peak at once |
 | ✅ | Electrical | MDD10A ch1 → peristaltic pump | run 0.25 A, stall 0.5 A | 10 A cont / 30 A peak | 28.00× |  |
@@ -27,7 +27,7 @@
 | ✅ | Process | Dripping regime: 12 needles (2 rows, v8), 500 mL in 40 min | 500 mL in 40 min | 1.04 mL/min/needle (1.2 drops/s) | 1.4× | keep ≤ 1.5 mL/min/needle to avoid jetting |
 | ✅ | Process | Pump time: peristaltic, viscous 6 % chitosan | ≤ 45 min | 20.8 min (Q 60×0.4) | 2.16× |  |
 | ✅ | Process | Gravity drain: chamber through 1" valve | ≤ 60 s | 15 s | 4.1× | Torricelli, Cd 0.6 |
-| ✅ | Process | Magnetic coupling: chamber stirrer (v8, N52) | gap ≤ 8.0 mm | 7.5 mm | - | pole spacing 50 mm vs bar 50 mm |
+| ✅ | Process | Magnetic coupling: chamber stirrer (v9.2: 20×10×5 N52 + 1.5 mm steel back plate) | gap ≤ 8.0 mm | 4.8 mm | 1.7× | pole spacing 50 mm vs bar 50 mm; was 6.0 mm with 14×10×3 |
 | ✅ | Materials | Chamber tube | NaOH 2 M | acrylic (PMMA) | - |  |
 | ✅ | Materials | Chamber base | NaOH 2 M | PP (turned) | - |  |
 | ✅ | Materials | Solution tubing | acetic acid 1 M + chitosan | silicone | - |  |
