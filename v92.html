@@ -87,7 +87,7 @@ const groups = {}; let home = null, xray = false;
 const KNOWN = Object.keys(LABEL).sort((x, y) => y.length - x.length);
 const keyOf = (n) => { n = (n || '').replace(/:\d+$/, ''); const k = KNOWN.find((x) => n.startsWith(x)); if (k) return k;
   if (/^M\d/.test(n)) return 'Fasteners'; return n.replace(/\s*\(\d+\)$/, '').replace(/\d+$/, ''); };
-new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load('model/hk-green-15-v92.glb', (g) => {
+new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load('model/hk-green-15-v92r2.glb', (g) => {
   const model = g.scene; model.scale.setScalar(1000); model.rotation.x = -Math.PI / 2;      // m -> mm, Fusion Z-up -> Y-up
   const top = model.children[0] || model;
   for (const c of top.children) {

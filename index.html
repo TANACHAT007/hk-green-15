@@ -378,8 +378,8 @@ GAL.forEach(([f, c, big]) => { const el = document.createElement('figure'); el.c
   el.querySelector('img').onerror = () => el.remove();   // render not made yet
   el.onclick = () => { const lb = document.getElementById('lb'); lb.querySelector('img').src = `img/${f}.jpg`; lb.querySelector('p').textContent = window.LANG === 'en' && EN[c] ? EN[c] : c; lb.classList.add('on'); };
   gal.appendChild(el); });
-const GAL9 = [['v92_full', 'ภาพรวมเครื่อง v9.2 (ด้านหน้า-ซ้าย)', 1], ['v92_stock', 'ถังสต็อกกรด/NaOH อะคริลิกในถาดกันหก (เทใส่คอถังได้)', 1], ['v92_back', 'ด้านหลัง: ท่ออ่อนร้อยสาย 3 เส้นและท่อน้ำยึดคลิป', 1],
-  ['v92_wiring', 'กล่องต่อสาย IP65 + สายเซอร์โวและโซลินอยด์'], ['v92_stops', 'ตัวล็อกถังน้ำแบบฉากเสริมแรง + สแนปฟิต'], ['v9_valves', 'ชุดโซลินอยด์ 3 ตัวหลังเครื่อง'],
+const GAL9 = [['v92r2_full', 'ภาพรวมเครื่อง v9.2 (ด้านหน้า-ซ้าย)', 1], ['v92r2_stock', 'ถังสต็อกกรด/NaOH อะคริลิกในถาดกันหก (เทใส่คอถังได้)', 1], ['v92r2_back', 'ด้านหลัง: ท่ออ่อนร้อยสาย 3 เส้นและท่อน้ำยึดคลิป', 1],
+  ['v92r2_wiring', 'กล่องต่อสาย IP65 + สายเซอร์โวและโซลินอยด์'], ['v92r2_stops', 'ตัวล็อกถังน้ำแบบฉากเสริมแรง + สแนปฟิต'], ['v9_valves', 'ชุดโซลินอยด์ 3 ตัวหลังเครื่อง'],
   ['v9_jets', 'หัวฉีดไล่เม็ดที่ฐานถังขึ้นรูป'], ['v9_dryer', 'ถาดอบ 60 °C + พัดลม'], ['v9_electronics', 'บอร์ดใหม่ในกล่องไฟ'],
   ['v9_hopper', 'ถังไบโอชาร์ใหม่ทะลุฝาบน'], ['v9_level', 'ขายึดเซนเซอร์ระดับ']];
 const gal9 = document.getElementById('gal9');
