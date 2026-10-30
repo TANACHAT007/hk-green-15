@@ -145,6 +145,7 @@ ul.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
 ul.ticks li { display: flex; gap: 12px; align-items: flex-start; }
 ul.ticks li span { flex: none; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 16%, var(--panel)); }
 
+.device canvas[hidden] { display: none; }
 .device canvas { width: 100%; display: block; border-radius: 10px; aspect-ratio: 800/480; touch-action: none; }
 .trybtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 16px; padding: 12px 22px;
   border-radius: 999px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--sky)); box-shadow: 0 14px 30px rgba(16, 185, 129, .4); transition: transform .3s var(--spring); }
